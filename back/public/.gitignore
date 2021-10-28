@@ -3,7 +3,10 @@ content/*
 !content/plugins/
 content/plugins/*
 !content/plugins/ochope
-content/plugins/ochope/vendor-ochope/*
+content/plugins/ochope/*
+!content/plugins/ochope/class
+!content/plugins/ochope/composer.json
+!content/plugins/ochope/ochope.php
 
 vendor
 wp
