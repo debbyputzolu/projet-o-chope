@@ -6,7 +6,7 @@
 
         @change="selectType"
     >
-        <option value="0" selected>Choisir un type de plat</option>
+        <option value="0" selected>Choisir un type de bière</option>
         <option
             v-for="type in recipeTypes"
             :key="type.id"

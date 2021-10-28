@@ -1,0 +1,69 @@
+$header-height: 5vh;
+//$header-width: 25%;
+
+
+
+.header {
+    align-items: center;
+    background-image: url(../images/fondmenuheader.png);
+    background-size: contain; 
+    display: flex;
+    flex-direction: row;
+    height: 5vh;
+    padding: 2rem;
+    width: 150px;
+    border: 1px solid black;
+  }
+  .header .logo {
+  align-items: center;
+  box-sizing: border-box;
+  width: 25%;
+  }
+  .header--vertical {
+    bottom: 0;
+    flex-direction: column;
+    grid-area: header;
+    height: auto;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 25%;
+  }
+  .header--vertical .logo {
+    height: auto;
+    margin-bottom: 4rem;
+    margin-right: 0;
+  }
+  .header--vertical .menu {
+    width: 100%;
+  }
+
+.navHeader, .navHeaderItem, .navHeaderBottom {
+  padding: 0.5rem;
+
+}
+
+.navHeaderBottom {
+    display: flex;
+    flex-flow: row wrap;
+    align-content: space-between;
+    gap: 10px 30px;
+    margin-top: 5em;
+    align-items: center;
+}
+
+.picture {
+ width: 25%;
+ 
+}
+.navHeaderBottomItem {
+    flex-basis: 30%;
+}
+
+.section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  
+}
+

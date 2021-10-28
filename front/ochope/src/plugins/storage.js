@@ -1,3 +1,4 @@
+
 const storage = {
 
   set: function(variableName, value) {
@@ -17,9 +18,6 @@ const storage = {
   unset: function(variableName) {
     window.localStorage.removeItem(variableName);
   }
-
-
-
 
 }
 

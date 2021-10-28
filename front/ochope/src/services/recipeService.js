@@ -24,7 +24,7 @@ const recipeService = {
   },
 
   async getRecipesByType(selectedType) {
-   
+
     const response = await axios.get(recipeService.baseURI + '/recipe?_embed=true&recipe-type=' + selectedType);
     return response.data;
   },
@@ -154,4 +154,3 @@ const recipeService = {
 };
 
 export default recipeService;
-
