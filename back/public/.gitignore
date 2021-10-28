@@ -1,12 +1,7 @@
+content/*
+!content/plugins/ochope
+
 vendor
 wp
 composer.lock
-.htaccess
 wp-config.php
-content/*
-content/plugins/*
-!content/plugins/
-!content/plugins/ochope
-content/themes/*
-!content/themes
-!content/themes/custom_theme
