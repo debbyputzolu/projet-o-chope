@@ -1,7 +1,9 @@
 $header-height: 5vh;
 //$header-width: 25%;
 
-
+header, section {
+  display: block;
+}
 
 .header {
     align-items: center;
@@ -13,13 +15,15 @@ $header-height: 5vh;
     padding: 2rem;
     width: 150px;
     border: 1px solid black;
-  }
-  .header .logo {
+}
+
+.header .logo {
   align-items: center;
   box-sizing: border-box;
   width: 25%;
-  }
-  .header--vertical {
+}
+  
+.header--vertical {
     bottom: 0;
     flex-direction: column;
     grid-area: header;
@@ -28,8 +32,9 @@ $header-height: 5vh;
     position: fixed;
     top: 0;
     width: 25%;
-  }
-  .header--vertical .logo {
+}
+  
+.header--vertical .logo {
     height: auto;
     margin-bottom: 4rem;
     margin-right: 0;
