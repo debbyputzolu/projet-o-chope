@@ -2,7 +2,6 @@
   <header class="header header--vertical">
   <div class="headerTop">
   <img class="logo" src="../assets/logo.png">
-  <div>O'Chope</div>
   </div> 
   <nav class="navHeader">
     <div class="navHeaderItem">Home</div>

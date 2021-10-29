@@ -2,8 +2,8 @@
 
     <section class="pagination">
         <div class="recipeListDiv">
-        <h1 class="recipeListTitle">Recettes de bière</h1>
         <img class="recipeListImage" src="../assets/images/recipeList.png">
+        <h1 class="recipeListTitle">Recettes de bière</h1>
         </div>
         <div>
         
