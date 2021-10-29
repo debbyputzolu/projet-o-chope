@@ -1,8 +1,14 @@
 $header-height: 5vh;
 //$header-width: 25%;
 
-header, section {
-  display: block;
+
+#app{
+  //display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  text-align: center;
+  margin-top: 60px;
 }
 
 .header {
@@ -11,9 +17,9 @@ header, section {
     background-size: contain; 
     display: flex;
     flex-direction: row;
-    height: 5vh;
+    height: 100%;
     padding: 2rem;
-    width: 150px;
+    flex-basis: 30%;
     border: 1px solid black;
 }
 
@@ -26,12 +32,12 @@ header, section {
 .header--vertical {
     bottom: 0;
     flex-direction: column;
-    grid-area: header;
     height: auto;
     left: 0;
     position: fixed;
     top: 0;
     width: 25%;
+
 }
   
 .header--vertical .logo {
@@ -62,13 +68,14 @@ header, section {
  
 }
 .navHeaderBottomItem {
-    flex-basis: 30%;
+  flex-basis: 30%;
 }
 
-.section {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+main {
+  margin-left: 25%;
+  width: 75%;
+ 
   
 }
+ 
 
