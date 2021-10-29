@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import Recipe from '../views/Recipe.vue'
 import RecipeList from '../views/RecipeList.vue'
 //import HelloWorld from '../views/HelloWorld.vue'
 
@@ -12,7 +13,13 @@ const routes = [
       name: 'recipes', // nom de la route
       component: RecipeList // composant a appeler
     },
+    {
+      path: '/recipe', // configuration de l'url a "matcher"
+      name: 'recipeOnly', // nom de la route
+      component: Recipe // composant a appeler
+    },
 ]
+
 
 const router = new VueRouter({
     mode: 'history',

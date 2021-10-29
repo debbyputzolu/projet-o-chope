@@ -1,11 +1,11 @@
 <template>
    <article class="card">
-       <img :src="getImageURL"  alt="">
+       <img class="cardImage" :src="getImageURL"  alt="">
         
-       <h2 > {{recipeProps.title.rendered}} </h2>
+       <h2 class="cardTitle"> {{recipeProps.title.rendered}} </h2>
        
        <div 
-         class="card__content" 
+         class="cardContent" 
          v-html="recipeProps.excerpt.rendered"
        >
        </div>
@@ -19,7 +19,7 @@
               }
             }"
           >
-           Lire la suite
+           Découvrir
           </router-link>
        </div>
    </article>
