@@ -1,7 +1,8 @@
 {
     "autoload": {
         "psr-4" : {
-            "OChope\\" : "./class"
+            "OChope\\" : "./class",
+            "Database\\" : "./class"
         }
     },
     "config": {

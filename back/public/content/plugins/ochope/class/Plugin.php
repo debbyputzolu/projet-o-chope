@@ -4,6 +4,7 @@ namespace OChope;
 
 use Database\Recipe_Ingredient;
 
+
 class Plugin
 {
     public function __construct()
@@ -31,9 +32,77 @@ class Plugin
         );
 
         add_action(
+            'init', 
+            [$this, 'create_test_taxonomy']
+        );
+
+        add_action(
+            'add_meta_boxes', 
+            [$this, 'add_test_box']
+        );
+
+        add_action(
             'add_meta_boxes',
             [$this,'global_notice_meta_box']
         );
+
+        add_action(
+            'add_meta_boxes',
+            [$this,'global_notice_meta_box']
+        );
+
+        add_action(
+            'admin_enqueue_scripts', 
+            [$this,'pw_load_scripts']
+        );
+    }
+
+    public function add_test_box() {
+        add_meta_box('theme_box_ID', __('Theme'), [$this,'your_styling_function'], 'post', 'side', 'core');
+    }
+
+    public function your_styling_function($post) {
+ 
+        echo '<input type="hidden" name="taxonomy_noncename" id="taxonomy_noncename" value="' . 
+                wp_create_nonce( 'taxonomy_theme' ) . '" />';
+     
+         
+        // Get all theme taxonomy terms
+        $themes = get_terms('theme', 'hide_empty=0'); 
+     
+    ?>
+    <select name='post_theme' id='post_theme'>
+        <!-- Display themes as options -->
+        <?php 
+            $names = wp_get_object_terms($post->ID, 'theme'); 
+            ?>
+            <option class='theme-option' value=''
+            <?php if (!count($names)) echo "selected";?>>None</option>
+            <?php
+        foreach ($themes as $theme) {
+            if (!is_wp_error($names) && !empty($names) && !strcmp($theme->slug, $names[0]->slug)) 
+                echo "<option class='theme-option' value='" . $theme->slug . "' selected>" . $theme->name . "</option>\n"; 
+            else
+                echo "<option class='theme-option' value='" . $theme->slug . "'>" . $theme->name . "</option>\n"; 
+        }
+       ?>
+    </select>    
+    <?php
+    }
+    
+    public function pw_load_scripts($hook) {
+     
+        wp_enqueue_script( 'meta_menu.js', plugins_url( 'class/js/meta_menu.js' , dirname(__FILE__) ) );
+    }
+
+    public function create_test_taxonomy() {
+        if (!taxonomy_exists('theme')) {
+            register_taxonomy( 'theme', 'post', array( 'hierarchical' => false, 'label' => __('Test 20211029'), 'query_var' => 'theme', 'rewrite' => array( 'slug' => 'theme' ) ) );
+     
+            wp_insert_term('Beauty', 'theme');
+            wp_insert_term('Dragons', 'theme');
+            wp_insert_term('Halloween', 'theme');
+        }
     }
     
     public function global_notice_meta_box() {
@@ -45,7 +114,7 @@ class Plugin
         );
     }
 
-    public function ochope_ingredientRecipe( $post ) {
+    /*public function ochope_ingredientRecipe( $post ) {
 
         // Add a nonce field so we can check for it later.
         wp_nonce_field( 'global_notice_nonce', 'global_notice_nonce' );
@@ -60,7 +129,59 @@ class Plugin
                 <tr><td><select><option>Houblon</option><option>Orge</option></select></td><td><input type="number"></td><td><select><option>Cl</option><option>G</option></select></td></tr>
             </table>
         <?php
-    }
+    }/**/
+
+    public function ochope_ingredientRecipe( $post ) {
+
+        // Add a nonce field so we can check for it later.
+        wp_nonce_field( 'global_notice_nonce', 'global_notice_nonce' );
+    
+        $value = get_post_meta( $post->ID, '_global_notice', true );
+    
+        //echo '<textarea style="width:100%" id="global_notice" name="global_notice">' . esc_attr( $value ) . '</textarea>';
+
+        $taxonomies = get_terms(['taxonomy' => 'ingredient']);
+        $names = wp_list_pluck($taxonomies, 'name');
+        //var_dump($taxonomies);die();
+
+         ?>
+            <table id="array">
+                <tr>
+                    <td>Nom</td><td>Quantité</td><td>Unité</td>
+                </tr>
+                <tr class = "ingredient-rows">
+                    <td>
+                        <select>
+                        <?php foreach($names as $name) {
+                            echo '<option>';
+                                echo $name;
+                            echo '</option>';
+                        } ?>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number">
+                    </td>
+                    <td>
+                        <select>
+                            <option>L</option>
+                            <option>g</option>
+                            <option>unité</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            
+            <table>
+                <tr>
+                    <td>
+                        <input type="button" id="add-row" name="add-row" value="Add row">
+                    </td>
+                </tr>
+            </table>
+        <?php
+            
+    }/**/
 
     public function createRecipePostType()
     {
@@ -95,12 +216,25 @@ class Plugin
 
     public function createIngredientCustomTaxonomy()
     {
+        $labels = array(
+            'name' => _x( 'Ingrédient', 'taxonomy general name' ),
+            'singular_name' => _x( 'Ingrédient', 'taxonomy singular name' ),
+            'search_items' =>  __( 'Chercher ingrédient' ),
+            'all_items' => __( 'Tous les ingrédients' ),
+            'parent_item' => __( 'Ingrédient parent' ),
+            'parent_item_colon' => __( 'Ingrédient parent:' ),
+            'edit_item' => __( 'Modifier l\'ingrédient' ), 
+            'update_item' => __( 'Sauvegarder l\'ingrédient' ),
+            'add_new_item' => __( 'Ajouter un nouvel ingrédient' ),
+            'new_item_name' => __( 'Nouveau nom de l\ingrédient' ),
+            'menu_name' => __( 'Ingrédients' ),
+        );    
         // Methode qui nous permet d'ajouter la Custom taxo "Ingredient"
         register_taxonomy(
             'ingredient',
             ['recipe'], // seul les recettes pourront avoir un/des ingredients
             [
-                'label' => 'Ingrédient',
+                'labels' => $labels,
                 'hierarchical' => true,
                 'public' => true,
                 'show_in_rest' => true
