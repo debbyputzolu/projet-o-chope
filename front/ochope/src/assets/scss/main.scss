@@ -1,0 +1,120 @@
+$header-height: 5vh;
+//$header-width: 25%;
+
+
+#app{
+  //display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  text-align: center;
+  margin-top: 60px;
+  background-color: #32325B;
+  margin-top: 0;
+}
+
+body {
+  margin: 0;
+}
+
+.header {
+    align-items: center;
+    background-image: url(../images/fondmenuheader.png);
+    background-size: contain; 
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    padding: 2rem;
+    flex-basis: 30%;
+    border: 1px solid black;
+    color: #32325B;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.header .logo {
+  align-items: center;
+  box-sizing: border-box;
+  width: 55%;
+}
+  
+.header--vertical {
+    bottom: 0;
+    flex-direction: column;
+    height: auto;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 25%;
+
+}
+  
+.header--vertical .logo {
+    height: auto;
+    margin-bottom: 4rem;
+    margin-right: 0;
+  }
+  .header--vertical .menu {
+    width: 100%;
+  }
+
+.navHeader, .navHeaderItem, .navHeaderBottom {
+  padding: 0.5rem;
+
+}
+
+.navHeaderBottom {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 10px 30px;
+    margin-top: 5em;
+    align-items: center;
+}
+
+.pictureFb {
+  width: 27%;
+}
+
+.pictureTwitter {
+ width: 25%;
+}
+.navHeaderBottomItem {
+  flex-basis: 30%;
+}
+
+main {
+  margin-left: 30%;
+  width: 70%;
+  
+}
+
+ 
+.recipeListDiv{
+display: inline;
+}
+
+.recipeListTitle {
+color:#FFCE00;
+margin: 0px;
+font-size: 3rem;
+}
+
+.recipeListImage {
+  height: 25%;
+  width: 70%;
+}
+
+.cardImage {
+  width: 30%;
+  margin-top: 1em;
+}
+
+.card {
+  border: solid 1px white;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  color: white;
+}
