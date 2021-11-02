@@ -1,0 +1,11 @@
+{
+    "autoload": {
+        "psr-4" : {
+            "OChope\\" : "./class",
+            "Database\\" : "./class"
+        }
+    },
+    "config": {
+        "vendor-dir": "vendor-ochope"
+    }
+}
