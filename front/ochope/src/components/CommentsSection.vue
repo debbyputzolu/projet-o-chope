@@ -2,18 +2,12 @@
     <div>
         <section>
             <h2>Commentaires</h2>
-            <CommentForm v-if="user" :recipe="recipe"/>
+            <CommentForm/>
         </section>
 
 
 
-        <section v-if="recipe._embedded.replies">
-            <CommentCard
-                v-for="comment in recipe._embedded.replies[0]"
-                :key="comment.id"
-                :comment="comment"
-            />
-        </section>
+        
     </div>
 
 </template>
@@ -21,12 +15,12 @@
 
 <script>
 import CommentForm from './CommentForm.vue';
-import CommentCard from './CommentCard.vue';
+
 export default({
     name: 'CommentsSection',
     components: {
         CommentForm,
-        CommentCard
+        
     },
     computed: {
         user() {

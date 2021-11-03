@@ -12,6 +12,8 @@
        </div>
   <div>
 
+    <CommentSection/>
+
     
 
   </div>
@@ -20,9 +22,14 @@
 </template>
 
 <script>
+import CommentSection from '../components/CommentsSection.vue'
 
 export default {
   name: 'Recipe',
+  components: {
+        CommentSection,
+        
+    },
   data(){
       return {
        

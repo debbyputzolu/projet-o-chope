@@ -5,9 +5,7 @@
         <form @submit="saveComment">
             <textarea v-model="comment"></textarea>
 
-            <div class="error" v-if="userDisconnected">
-                Vous devez vous connecter.
-            </div>
+            
 
             <button>Envoyer</button>
         </form>
@@ -21,7 +19,7 @@ export default({
     data() {
         return {
             comment: '',
-            userDisconnected: false
+            
         }
     },
     props: {
