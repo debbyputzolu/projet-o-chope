@@ -26,20 +26,10 @@ class Plugin
             [$this, 'createRecipeTypeCustomTaxonomy']
         );
 
-        add_action(
-            'init', 
-            [$this, 'createRecipeDifficultyCustomTaxonomy']
-        );
 
-        add_action(
-            'init', 
-            [$this, 'create_test_taxonomy']
-        );
+        
 
-        add_action(
-            'add_meta_boxes', 
-            [$this, 'add_test_box']
-        );
+        
 
         add_action(
             'add_meta_boxes',
@@ -57,10 +47,7 @@ class Plugin
         );
     }
 
-    public function add_test_box() {
-        add_meta_box('theme_box_ID', __('Theme'), [$this,'your_styling_function'], 'post', 'side', 'core');
-    }
-
+    
     public function your_styling_function($post) {
  
         echo '<input type="hidden" name="taxonomy_noncename" id="taxonomy_noncename" value="' . 
@@ -68,7 +55,11 @@ class Plugin
      
          
         // Get all theme taxonomy terms
-        $themes = get_terms('theme', 'hide_empty=0'); 
+        $termArgs = [
+            'taxonomy' => 'theme',
+            'hide_empty' => false
+        ]; 
+        $themes = get_terms($termArgs); 
      
     ?>
     <select name='post_theme' id='post_theme'>
@@ -95,15 +86,6 @@ class Plugin
         wp_enqueue_script( 'meta_menu.js', plugins_url( 'class/js/meta_menu.js' , dirname(__FILE__) ) );
     }
 
-    public function create_test_taxonomy() {
-        if (!taxonomy_exists('theme')) {
-            register_taxonomy( 'theme', 'post', array( 'hierarchical' => false, 'label' => __('Test 20211029'), 'query_var' => 'theme', 'rewrite' => array( 'slug' => 'theme' ) ) );
-     
-            wp_insert_term('Beauty', 'theme');
-            wp_insert_term('Dragons', 'theme');
-            wp_insert_term('Halloween', 'theme');
-        }
-    }
     
     public function global_notice_meta_box() {
         add_meta_box(
@@ -140,14 +122,24 @@ class Plugin
     
         //echo '<textarea style="width:100%" id="global_notice" name="global_notice">' . esc_attr( $value ) . '</textarea>';
 
-        $taxonomies = get_terms(['taxonomy' => 'ingredient']);
+        $ingredientArgs = [
+            'taxonomy' => 'ingredient',
+            'hide_empty' => false
+        ]; 
+        $themes = get_terms($ingredientArgs); 
+        $taxonomies = get_terms($ingredientArgs);
         $names = wp_list_pluck($taxonomies, 'name');
         //var_dump($taxonomies);die();
 
          ?>
             <table id="array">
                 <tr>
+                <td><input type="button" id="add-row" name="add-row" value="Add Ingredient"></td>
+                </tr>
+            
+                <tr>
                     <td>Nom</td><td>Quantité</td><td>Unité</td>
+                    
                 </tr>
                 <tr class = "ingredient-rows">
                     <td>
@@ -257,20 +249,7 @@ class Plugin
         );
     }
 
-    public function createRecipeDifficultyCustomTaxonomy()
-    {
-        // Methode qui nous permet d'ajouter la Custom taxo "Difficulty"
-        register_taxonomy(
-            'difficulty',
-            ['recipe'], // seul les recettes pourront avoir un/des ingredients
-            [
-                'label' => 'Difficulté',
-                'hierarchical' => false,
-                'public' => true,
-                'show_in_rest' => true
-            ]
-        );
-    }
+    
 
     public function addCapAdmin()
     {
