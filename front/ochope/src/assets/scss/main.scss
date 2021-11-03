@@ -7,7 +7,6 @@ $header-height: 5vh;
   justify-content: space-between;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   text-align: center;
-  background-color: #32325B;
   height: 100%;
   margin-top: 0;
 }
@@ -15,6 +14,7 @@ $header-height: 5vh;
 body {
   margin: 0;
   height: 100vh; 
+  background-color: #32325B;
 }
 
 .header {
@@ -88,9 +88,7 @@ body {
 main {
   margin-left: 30%;
   width: 70%;
-  
 }
-
  
 .recipeListDiv{
 display: inline;
@@ -128,10 +126,8 @@ font-size: 3rem;
   border-radius: 1rem;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  margin: 1rem;
   color: white;
-  
 }
 
 .recipeImage {
@@ -176,18 +172,16 @@ font-size: 3rem;
 
 .commentFormButton {
   border-radius: 0.5rem;
-  
 }
 
 .register {
   display: flex;
-  box-sizing: border-box;
-  height: auto;
 }
 
 .login, .inscription {
   width: 45%;
   height: 60%;
+  margin: 1rem;
 }
 
 .inscriptionImage, .loginImage {
@@ -212,3 +206,13 @@ font-size: 3rem;
   justify-content: center;
 }
 
+.inscriptionButton, .loginButton {
+  width: 25%;
+  align-self: center;
+}
+
+.error {
+  color: #FFCE00;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
