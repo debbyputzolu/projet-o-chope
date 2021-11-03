@@ -1,15 +1,13 @@
 $header-height: 5vh;
-//$header-width: 25%;
 
 
 #app{
-  //display: flex;
   flex-direction: column;
   justify-content: space-between;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   text-align: center;
-  margin-top: 60px;
   background-color: #32325B;
+  height: 100%;
   margin-top: 0;
 }
 
@@ -32,6 +30,9 @@ body {
     font-weight: bold;
 }
 
+.logo {
+  border-radius: 5%;
+}
 .header .logo {
   align-items: center;
   box-sizing: border-box;
@@ -46,7 +47,6 @@ body {
     position: fixed;
     top: 0;
     width: 25%;
-
 }
   
 .header--vertical .logo {
@@ -103,11 +103,13 @@ font-size: 3rem;
 .recipeListImage {
   height: 25%;
   width: 70%;
+  border-radius: 1rem;
 }
 
 .cardImage {
   width: 30%;
   margin-top: 1em;
+  border-radius: 5%;
 }
 
 .card {
@@ -117,4 +119,60 @@ font-size: 3rem;
   margin-left: 1rem;
   margin-right: 1rem;
   color: white;
+}
+
+.recipe {
+  border: solid 1px white;
+  border-radius: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  color: white;
+  
+}
+
+.recipeImage {
+  width: 60%;
+  border-radius: 5%;
+}
+
+.recipeTitle, .commentSectionTitle {
+  color:#FFCE00;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.recipeAuthor {
+  font-style: italic;
+}
+
+.recipeType{
+  padding-bottom: 1rem;
+  font-style: italic;
+}
+
+.recipeSubtitle {
+  font-size: 1.5rem;
+  margin: 1rem;
+  border: solid 1px white;
+  border-radius: 1rem;
+  color:#FFCE00;
+}
+
+.commentSection{
+  border: solid 1px white;
+  border-radius: 1rem;
+  color: white;
+  margin: 1rem;
+  padding-bottom: 2rem;
+}
+
+.commentFormTextarea {
+  border-radius: 0.5rem;
+}
+
+.commentFormButton {
+  border-radius: 0.5rem;
+  
 }

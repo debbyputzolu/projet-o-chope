@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="commentSection">
         <section>
-            <h2>Commentaires</h2>
+            <h2 class="commentSectionTitle">Commentaires</h2>
             <CommentForm/>
         </section>
 

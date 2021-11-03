@@ -1,14 +1,16 @@
 <template>
 
     <section>
-        <h3>Poster un commentaire</h3>
+        <div class="commentForm">
+        <h3 class="commentFormTitle">Poster un commentaire</h3>
         <form @submit="saveComment">
-            <textarea v-model="comment"></textarea>
+            <textarea v-model="comment" class="commentFormTextarea"></textarea><br>
 
             
 
-            <button>Envoyer</button>
+            <button class="commentFormButton">Envoyer</button>
         </form>
+        </div>
     </section>
 
 </template>
