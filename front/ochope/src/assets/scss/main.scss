@@ -96,7 +96,7 @@ display: inline;
 
 .recipeListTitle, .recipeCreateTitle {
 color:#FFCE00;
-margin: 0px;
+margin: 0.5 px;
 font-size: 3rem;
 }
 
@@ -191,14 +191,15 @@ font-size: 3rem;
   flex-direction: column;
 }
 
-.inscriptionLabel, .loginLabel {
+.inscriptionLabel, .loginLabel, .recipeCreateLabel {
   margin-bottom: 1rem;
   justify-content: center;
 }
 
-.inscriptionButton, .loginButton {
-  width: 25%;
+.inscriptionButton, .loginButton, .recipeCreateButton {
+  width: 15%;
   align-self: center;
+  margin-top: 0.5rem;
 }
 
 .error {
@@ -239,3 +240,9 @@ font-size: 3rem;
 .infoProfileItem {
   margin: 0.2rem;
 }
+
+.recipeCreateImage {
+  border-radius: 1rem;
+  width: 35%;
+}
+
