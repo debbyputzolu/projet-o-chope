@@ -246,3 +246,31 @@ font-size: 3rem;
   width: 35%;
 }
 
+.home {
+  display: grid;
+  grid-template-areas: 
+ "caroussel caroussel log log"
+ "caroussel caroussel log log"
+ "caroussel caroussel forum forum"
+ "caroussel caroussel forum forum";
+ grid-gap:0px;
+}
+
+.carousselHome {
+  width: 25%;
+  grid-area: caroussel;
+}
+
+.registerHome {
+  grid-area: log;
+} 
+
+.forumHome {
+  grid-area: forum;
+}
+
+
+.registerHomeImage, .forumHomeImage {
+  width: 50%;
+}
+

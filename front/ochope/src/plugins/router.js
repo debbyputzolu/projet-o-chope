@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import Home from '../views/Home.vue'
 import Recipe from '../views/Recipe.vue'
 import RecipeList from '../views/RecipeList.vue'
 import Register from '../views/Register.vue'
@@ -13,6 +14,12 @@ Vue.use(VueRouter)
 const routes = [
     {
       path: '/', // configuration de l'url a "matcher"
+      name: 'home', // nom de la route
+      component: Home // composant a appeler
+    },
+
+    {
+      path: '/recipes', // configuration de l'url a "matcher"
       name: 'recipes', // nom de la route
       component: RecipeList // composant a appeler
     },
