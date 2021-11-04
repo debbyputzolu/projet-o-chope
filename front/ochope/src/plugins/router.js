@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Recipe from '../views/Recipe.vue'
 import RecipeList from '../views/RecipeList.vue'
 import Register from '../views/Register.vue'
+import Profile from '../views/Profile.vue'
 //import HelloWorld from '../views/HelloWorld.vue'
 
 Vue.use(VueRouter)
@@ -26,7 +27,14 @@ const routes = [
       name: 'register', // nom de la route
       component: Register // composant a appeler
     },
+
+    {
+      path: '/profile', // configuration de l'url a "matcher"
+      name: 'profile', // nom de la route
+      component: Profile // composant a appeler
+    },
 ]
+
 
 
 const router = new VueRouter({

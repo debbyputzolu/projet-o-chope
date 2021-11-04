@@ -121,7 +121,7 @@ font-size: 3rem;
   color: white;
 }
 
-.recipe, .login, .inscription {
+.recipe, .login, .inscription, .infoProfile, .headProfile, .recipeProfile{
   border: solid 1px white;
   border-radius: 1rem;
   padding-top: 1rem;
@@ -135,7 +135,7 @@ font-size: 3rem;
   border-radius: 5%;
 }
 
-.recipeTitle, .commentSectionTitle {
+.recipeTitle, .commentSectionTitle, .profileTitle {
   color:#FFCE00;
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -150,7 +150,7 @@ font-size: 3rem;
   font-style: italic;
 }
 
-.recipeSubtitle {
+.recipeSubtitle, .subtitleProfile {
   font-size: 1.5rem;
   margin: 1rem;
   border: solid 1px white;
@@ -187,7 +187,6 @@ font-size: 3rem;
 .inscriptionImage, .loginImage {
   border-radius: 1rem;
   width: 65%;
-  padding-top: 2rem;
 }
 
 .loginTitle, .inscriptionTitle {
@@ -215,4 +214,37 @@ font-size: 3rem;
   color: #FFCE00;
   font-style: italic;
   margin-bottom: 1rem;
+}
+
+.profile {
+ display: grid;
+ grid-template-areas: 
+ "head info info info"
+ "head recipe recipe recipe"
+ "head recipe recipe recipe";
+}
+
+.headProfile {
+  grid-area: head;
+}
+
+.infoProfile {
+  grid-area: info;
+}
+
+.recipeProfile {
+  grid-area: recipe;
+}
+
+.profileImage{
+  width: 60%;
+  border-radius: 50%;
+}
+
+.buttonProfile {
+  margin: 0.5rem;
+}
+
+.infoProfileItem {
+  margin: 0.2rem;
 }

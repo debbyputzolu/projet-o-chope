@@ -11,7 +11,7 @@ import Login from '../components/Login.vue';
 import Inscription from '../components/Inscription.vue';
 
 export default {
-  name: 'App',
+  name: 'Register',
   components: {
     Login,
     Inscription
