@@ -32,37 +32,36 @@ class Plugin
         );
 
         add_action(
+            'add_meta_boxes',
+            [$this,'global_notice_meta_box']
+        );
+
+        add_action(
             'admin_enqueue_scripts', 
             [$this,'pw_load_scripts']
         );
-    }
 
-    public function ochope_insert_ingredient() {
-        if (isset($_POST['new_post']) == '1') {
-            $post_title = $_POST['posttitle'];
-            $post_content = $_POST['postcontent'];
-            $new_post = array(
-                'ID' => '',
-                'post_author' => 1,
-                'post_type' => 'cars',
-                'post_content' => $post_content,
-                'post_title' => $post_title,
-                'comment_status' => 'closed',
-                'ping_status' => 'closed',
-                'post_status' => 'publish',
-                'tax_input' => array('cars' => array('bmw', 'audi'))
-            );
+        //executer ajax
+        add_action(
+            'wp_ajax_create_ingredient',
+            [$this, 'create_ingredient']
+        );
 
-            $post_id = wp_insert_post($new_post);
-        }
+        //executer ajax
+        add_action(
+            'wp_ajax_nopriv_create_ingredient',
+            [$this, 'create_ingredient']
+        );
     }
     
-    public function pw_load_scripts($hook) {
-        wp_enqueue_script( 'meta_menu.js', plugins_url( 'class/js/meta_menu.js' , dirname(__FILE__) ) );
-        wp_enqueue_script( 'button_ingredient_add.js', plugins_url( 'class/js/button_ingredient_add.js' , dirname(__FILE__) ) );
+    public function pw_load_scripts() {
+     
+        wp_enqueue_script( 'ochope-meta_menu', plugins_url( 'class/js/meta_menu.js' , dirname(__FILE__) ) );
+        wp_enqueue_script( 'ochope-add_ingredients', plugins_url( 'class/js/add_ingredients.js' , dirname(__FILE__) ) );
+
+        wp_localize_script('ochope-add_ingredients', 'ajaxurl', array(admin_url('admin-ajax.php')));
     }
 
-    
     public function global_notice_meta_box() {
         add_meta_box(
             'global-notice',
@@ -70,6 +69,27 @@ class Plugin
             [$this,'ochope_ingredientRecipe'],
             'recipe'
         );
+    }
+
+    public function create_ingredient() {
+        // var_dump($_POST);
+        if (isset($_POST['post_id']) && isset($_POST['name']))
+        {
+            $postId = intval($_POST['post_id']);
+            $name = sanitize_text_field($_POST['name']);
+
+            // wp_insert_term( string $term, string $taxonomy, array|string $args = array() )
+            $newTerm = wp_insert_term($name, 'ingredient');
+
+            if (is_wp_error($newTerm)) {
+                echo $newTerm->get_error_message();
+                wp_die();
+            }
+
+            echo $newTerm['term_id'];
+        }
+
+        wp_die();
     }
 
     public function ochope_ingredientRecipe( $post ) {
@@ -85,30 +105,27 @@ class Plugin
             'taxonomy' => 'ingredient',
             'hide_empty' => false
         ]; 
-        $themes = get_terms($ingredientArgs); 
+        //$themes = get_terms($ingredientArgs); 
         $taxonomies = get_terms($ingredientArgs);
         $names = wp_list_pluck($taxonomies, 'name');
-        //var_dump($taxonomies);die();
 
          ?>
-            <table id="array-add-ingredient">
-                <tr>
-                    <td>
-                        <input type="text" id="ingredient" name="ingredient" required minlength="3" maxlength="20" size="10">
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="button" id="add-ingredient" name="add-ingredient" value="Add Ingredient"></td>
-                </tr>
-            </table>
             <table id="array">
                 <tr>
+                    <td>Nom de l'ingredient</td>
+                </tr>
+                
+                <tr> 
+                    <td><input class="ing" id="new-ingredient-name" type="text" name ="ing"></td>
+                    <td><input class="addButton" type="button" id="add-ingredient" name="add-ingredient" value="Add Ingredient" data-post-id="<?= $post->ID ?>" ></td>
+                </tr>
+            
+                <tr>
                     <td>Nom</td><td>Quantité</td><td>Unité</td>
-                    
                 </tr>
                 <tr class = "ingredient-rows">
                     <td>
-                        <select>
+                        <select id="ingredient-list">
                         <?php foreach($names as $name) {
                             echo '<option>';
                                 echo $name;
@@ -136,9 +153,14 @@ class Plugin
                     </td>
                 </tr>
             </table>
+            
         <?php
             
-    }/**/
+    }/*<table class="add-ingredient">
+                        <tr><td>Nom</td></tr>
+                        <tr><td><input type="texte" id="name"></td></tr>
+
+            </table>*/
 
     public function createRecipePostType()
     {
@@ -214,7 +236,20 @@ class Plugin
         );
     }
 
-    
+    public function createRecipeDifficultyCustomTaxonomy()
+    {
+        // Methode qui nous permet d'ajouter la Custom taxo "Difficulty"
+        register_taxonomy(
+            'difficulty',
+            ['recipe'], // seul les recettes pourront avoir un/des ingredients
+            [
+                'label' => 'Difficulté',
+                'hierarchical' => false,
+                'public' => true,
+                'show_in_rest' => true
+            ]
+        );
+    }
 
     public function addCapAdmin()
     {
