@@ -26,16 +26,6 @@ class Plugin
             [$this, 'createRecipeTypeCustomTaxonomy']
         );
 
-
-        
-
-        
-
-        add_action(
-            'add_meta_boxes',
-            [$this,'global_notice_meta_box']
-        );
-
         add_action(
             'add_meta_boxes',
             [$this,'global_notice_meta_box']
@@ -47,43 +37,29 @@ class Plugin
         );
     }
 
-    
-    public function your_styling_function($post) {
- 
-        echo '<input type="hidden" name="taxonomy_noncename" id="taxonomy_noncename" value="' . 
-                wp_create_nonce( 'taxonomy_theme' ) . '" />';
-     
-         
-        // Get all theme taxonomy terms
-        $termArgs = [
-            'taxonomy' => 'theme',
-            'hide_empty' => false
-        ]; 
-        $themes = get_terms($termArgs); 
-     
-    ?>
-    <select name='post_theme' id='post_theme'>
-        <!-- Display themes as options -->
-        <?php 
-            $names = wp_get_object_terms($post->ID, 'theme'); 
-            ?>
-            <option class='theme-option' value=''
-            <?php if (!count($names)) echo "selected";?>>None</option>
-            <?php
-        foreach ($themes as $theme) {
-            if (!is_wp_error($names) && !empty($names) && !strcmp($theme->slug, $names[0]->slug)) 
-                echo "<option class='theme-option' value='" . $theme->slug . "' selected>" . $theme->name . "</option>\n"; 
-            else
-                echo "<option class='theme-option' value='" . $theme->slug . "'>" . $theme->name . "</option>\n"; 
+    public function ochope_insert_ingredient() {
+        if (isset($_POST['new_post']) == '1') {
+            $post_title = $_POST['posttitle'];
+            $post_content = $_POST['postcontent'];
+            $new_post = array(
+                'ID' => '',
+                'post_author' => 1,
+                'post_type' => 'cars',
+                'post_content' => $post_content,
+                'post_title' => $post_title,
+                'comment_status' => 'closed',
+                'ping_status' => 'closed',
+                'post_status' => 'publish',
+                'tax_input' => array('cars' => array('bmw', 'audi'))
+            );
+
+            $post_id = wp_insert_post($new_post);
         }
-       ?>
-    </select>    
-    <?php
     }
     
     public function pw_load_scripts($hook) {
-     
         wp_enqueue_script( 'meta_menu.js', plugins_url( 'class/js/meta_menu.js' , dirname(__FILE__) ) );
+        wp_enqueue_script( 'button_ingredient_add.js', plugins_url( 'class/js/button_ingredient_add.js' , dirname(__FILE__) ) );
     }
 
     
@@ -95,23 +71,6 @@ class Plugin
             'recipe'
         );
     }
-
-    /*public function ochope_ingredientRecipe( $post ) {
-
-        // Add a nonce field so we can check for it later.
-        wp_nonce_field( 'global_notice_nonce', 'global_notice_nonce' );
-    
-        $value = get_post_meta( $post->ID, '_global_notice', true );
-    
-        //echo '<textarea style="width:100%" id="global_notice" name="global_notice">' . esc_attr( $value ) . '</textarea>';
-
-        ?>
-            <table>
-                <tr><td>Nom</td><td>Quantité</td><td>Unité</td></tr>
-                <tr><td><select><option>Houblon</option><option>Orge</option></select></td><td><input type="number"></td><td><select><option>Cl</option><option>G</option></select></td></tr>
-            </table>
-        <?php
-    }/**/
 
     public function ochope_ingredientRecipe( $post ) {
 
@@ -132,11 +91,17 @@ class Plugin
         //var_dump($taxonomies);die();
 
          ?>
-            <table id="array">
+            <table id="array-add-ingredient">
                 <tr>
-                <td><input type="button" id="add-row" name="add-row" value="Add Ingredient"></td>
+                    <td>
+                        <input type="text" id="ingredient" name="ingredient" required minlength="3" maxlength="20" size="10">
+                    </td>
                 </tr>
-            
+                <tr>
+                    <td><input type="button" id="add-ingredient" name="add-ingredient" value="Add Ingredient"></td>
+                </tr>
+            </table>
+            <table id="array">
                 <tr>
                     <td>Nom</td><td>Quantité</td><td>Unité</td>
                     
