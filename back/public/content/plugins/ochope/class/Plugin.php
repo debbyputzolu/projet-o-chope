@@ -26,11 +26,6 @@ class Plugin
             [$this, 'createRecipeTypeCustomTaxonomy']
         );
 
-
-        
-
-        
-
         add_action(
             'add_meta_boxes',
             [$this,'global_notice_meta_box']
@@ -45,48 +40,28 @@ class Plugin
             'admin_enqueue_scripts', 
             [$this,'pw_load_scripts']
         );
+
+        //executer ajax
+        add_action(
+            'wp_ajax_create_ingredient',
+            [$this, 'create_ingredient']
+        );
+
+        //executer ajax
+        add_action(
+            'wp_ajax_nopriv_create_ingredient',
+            [$this, 'create_ingredient']
+        );
+    }
+    
+    public function pw_load_scripts() {
+     
+        wp_enqueue_script( 'ochope-meta_menu', plugins_url( 'class/js/meta_menu.js' , dirname(__FILE__) ) );
+        wp_enqueue_script( 'ochope-add_ingredients', plugins_url( 'class/js/add_ingredients.js' , dirname(__FILE__) ) );
+
+        wp_localize_script('ochope-add_ingredients', 'ajaxurl', array(admin_url('admin-ajax.php')));
     }
 
-    
-    public function your_styling_function($post) {
- 
-        echo '<input type="hidden" name="taxonomy_noncename" id="taxonomy_noncename" value="' . 
-                wp_create_nonce( 'taxonomy_theme' ) . '" />';
-     
-         
-        // Get all theme taxonomy terms
-        $termArgs = [
-            'taxonomy' => 'theme',
-            'hide_empty' => false
-        ]; 
-        $themes = get_terms($termArgs); 
-     
-    ?>
-    <select name='post_theme' id='post_theme'>
-        <!-- Display themes as options -->
-        <?php 
-            $names = wp_get_object_terms($post->ID, 'theme'); 
-            ?>
-            <option class='theme-option' value=''
-            <?php if (!count($names)) echo "selected";?>>None</option>
-            <?php
-        foreach ($themes as $theme) {
-            if (!is_wp_error($names) && !empty($names) && !strcmp($theme->slug, $names[0]->slug)) 
-                echo "<option class='theme-option' value='" . $theme->slug . "' selected>" . $theme->name . "</option>\n"; 
-            else
-                echo "<option class='theme-option' value='" . $theme->slug . "'>" . $theme->name . "</option>\n"; 
-        }
-       ?>
-    </select>    
-    <?php
-    }
-    
-    public function pw_load_scripts($hook) {
-     
-        wp_enqueue_script( 'meta_menu.js', plugins_url( 'class/js/meta_menu.js' , dirname(__FILE__) ) );
-    }
-
-    
     public function global_notice_meta_box() {
         add_meta_box(
             'global-notice',
@@ -96,22 +71,26 @@ class Plugin
         );
     }
 
-    /*public function ochope_ingredientRecipe( $post ) {
+    public function create_ingredient() {
+        // var_dump($_POST);
+        if (isset($_POST['post_id']) && isset($_POST['name']))
+        {
+            $postId = intval($_POST['post_id']);
+            $name = sanitize_text_field($_POST['name']);
 
-        // Add a nonce field so we can check for it later.
-        wp_nonce_field( 'global_notice_nonce', 'global_notice_nonce' );
-    
-        $value = get_post_meta( $post->ID, '_global_notice', true );
-    
-        //echo '<textarea style="width:100%" id="global_notice" name="global_notice">' . esc_attr( $value ) . '</textarea>';
+            // wp_insert_term( string $term, string $taxonomy, array|string $args = array() )
+            $newTerm = wp_insert_term($name, 'ingredient');
 
-        ?>
-            <table>
-                <tr><td>Nom</td><td>Quantité</td><td>Unité</td></tr>
-                <tr><td><select><option>Houblon</option><option>Orge</option></select></td><td><input type="number"></td><td><select><option>Cl</option><option>G</option></select></td></tr>
-            </table>
-        <?php
-    }/**/
+            if (is_wp_error($newTerm)) {
+                echo $newTerm->get_error_message();
+                wp_die();
+            }
+
+            echo $newTerm['term_id'];
+        }
+
+        wp_die();
+    }
 
     public function ochope_ingredientRecipe( $post ) {
 
@@ -126,24 +105,27 @@ class Plugin
             'taxonomy' => 'ingredient',
             'hide_empty' => false
         ]; 
-        $themes = get_terms($ingredientArgs); 
+        //$themes = get_terms($ingredientArgs); 
         $taxonomies = get_terms($ingredientArgs);
         $names = wp_list_pluck($taxonomies, 'name');
-        //var_dump($taxonomies);die();
 
          ?>
             <table id="array">
                 <tr>
-                <td><input type="button" id="add-row" name="add-row" value="Add Ingredient"></td>
+                    <td>Nom de l'ingredient</td>
+                </tr>
+                
+                <tr> 
+                    <td><input class="ing" id="new-ingredient-name" type="text" name ="ing"></td>
+                    <td><input class="addButton" type="button" id="add-ingredient" name="add-ingredient" value="Add Ingredient" data-post-id="<?= $post->ID ?>" ></td>
                 </tr>
             
                 <tr>
                     <td>Nom</td><td>Quantité</td><td>Unité</td>
-                    
                 </tr>
                 <tr class = "ingredient-rows">
                     <td>
-                        <select>
+                        <select id="ingredient-list">
                         <?php foreach($names as $name) {
                             echo '<option>';
                                 echo $name;
@@ -171,9 +153,14 @@ class Plugin
                     </td>
                 </tr>
             </table>
+            
         <?php
             
-    }/**/
+    }/*<table class="add-ingredient">
+                        <tr><td>Nom</td></tr>
+                        <tr><td><input type="texte" id="name"></td></tr>
+
+            </table>*/
 
     public function createRecipePostType()
     {
@@ -249,7 +236,20 @@ class Plugin
         );
     }
 
-    
+    public function createRecipeDifficultyCustomTaxonomy()
+    {
+        // Methode qui nous permet d'ajouter la Custom taxo "Difficulty"
+        register_taxonomy(
+            'difficulty',
+            ['recipe'], // seul les recettes pourront avoir un/des ingredients
+            [
+                'label' => 'Difficulté',
+                'hierarchical' => false,
+                'public' => true,
+                'show_in_rest' => true
+            ]
+        );
+    }
 
     public function addCapAdmin()
     {
