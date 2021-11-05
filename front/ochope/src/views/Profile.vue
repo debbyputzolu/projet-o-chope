@@ -3,7 +3,10 @@
       <div class="headProfile">
           <img src="../assets/images/machin.png" class="profileImage">
           <h2 class="profileTitle">Machindu75</h2>
-          <button class="buttonProfile">Ajouter une recette</button> <br>
+          <button class="buttonProfile"><router-link :to="{
+                    name: 'recipe-create',
+                }"
+            >Ajouter une recette</router-link></button> <br>
           <button class="buttonProfile">Déconnexion</button>
       </div>
       <div class="infoProfile">
