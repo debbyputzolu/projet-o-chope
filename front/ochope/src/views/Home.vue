@@ -1,9 +1,9 @@
 <template>
     <div class="home">
         
-        <div class="card carousselHome">
+        
         <CarouselHome/>
-       </div>
+       
        
         
        <router-link

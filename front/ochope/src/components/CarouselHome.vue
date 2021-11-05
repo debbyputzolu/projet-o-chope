@@ -1,27 +1,27 @@
 <template>
-<carousel>
+<carousel class="carousselHome" :perPage="1">
   <slide>
-    TOTO
+    <Recipe/>
   </slide>
   <slide>
-    TATA
+    <Recipe/>
   </slide>
   <slide>
-    TITI
+    <Recipe/>
   </slide>
 </carousel>
 </template>
 
 <script>
 import { Carousel, Slide } from 'vue-carousel';
-//import Recipe from './Recipe.vue';
+import Recipe from './Recipe.vue';
 
 export default{
     name: 'CarouselHome',
     components: {
     Carousel,
     Slide,
-   // Recipe
+   Recipe
   },
        
    
