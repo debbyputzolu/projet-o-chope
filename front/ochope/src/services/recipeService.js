@@ -5,7 +5,7 @@ import storage from '../plugins/storage.js';
 const recipeService = {
 
     baseURI: process.env.VUE_APP_WORDPRESS_API_URL + '/wp/v2',
-    oCookingBaseURI: process.env.VUE_APP_WORDPRESS_API_URL + '/ocooking/v1',
+    oChopeBaseURI: process.env.VUE_APP_WORDPRESS_API_URL + '/ochope/v1',
 
     async loadRecipes() {
       const response = await axios.get(recipeService.baseURI + '/recipe?_embed=true');
@@ -75,7 +75,7 @@ const recipeService = {
 
 
         const result = await axios.post(
-          recipeService.oCookingBaseURI + '/recipe-save',
+          recipeService.oChopeBaseURI + '/recipe-save',
           {
             title: title,
             type: type,
@@ -105,7 +105,7 @@ const recipeService = {
 
 
     const result = await axios.post(
-      recipeService.oCookingBaseURI + '/upload-image',
+      recipeService.oChopeBaseURI + '/upload-image',
       formData,
       {
         headers: {
@@ -134,7 +134,7 @@ const recipeService = {
 
 
         const result = await axios.post(
-          recipeService.oCookingBaseURI + '/comment-save',
+          recipeService.oChopeBaseURI + '/comment-save',
           {
             recipeId: recipeId,
             comment: comment,

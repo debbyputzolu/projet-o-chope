@@ -25,27 +25,15 @@
 
 
             <div class="recipeCreateLabel">
-                <div >
+                <div v-for="type in types" :key="type.id">
                     <label> Type de recette<br>
                         <div>
-  <input type="radio" id="huey" name="drone" value="huey"
-         checked>
-  <label for="huey">Ambré</label>
-</div>
-
-<div>
-  <input type="radio" id="dewey" name="drone" value="dewey">
-  <label for="dewey">Blonde</label>
-</div>
-
-<div>
-  <input type="radio" id="louie" name="drone" value="louie">
-  <label for="louie">Brune</label>
-</div>
+                    <input type="radio" name="type" :value="type.id" v-model="selectedTypes" > {{type.name}}
+                        </div>
                     </label>
                 </div>
             </div>
-             <div class="error" v-if="typeEmpty">
+            <div class="error" v-if="typeEmpty">
                 Vous devez sélectionner un type de recette
             </div>
 
@@ -111,8 +99,7 @@ import recipeService from '../services/recipeService.js';
 export default{
     name: 'RecipeCreate',
     data() {
-        return {
-            
+        return {     
         title:'',
         description:'',
         types: [],
@@ -127,6 +114,11 @@ export default{
         }
     },
     
+     async created(){
+      
+      
+      this.loadTypes();
+  },
     
     async handleSubmit(evt){
           evt.preventDefault();
@@ -182,7 +174,11 @@ export default{
                 console.log('image ok');
             }
         }
-      }
+      },
+
+     async loadTypes(){
+    this.types = await recipeService.loadRecipesTypes();
+    }
     
    
 }
