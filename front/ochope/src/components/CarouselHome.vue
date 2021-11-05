@@ -1,5 +1,5 @@
 <template>
-<carousel class="carousselHome" :perPage="1">
+<carousel class="carousselHome" :perPage="1" :autoplay='true' :loop="true" :autoplayTimeout="2000">
   <slide>
     <Recipe/>
   </slide>
@@ -21,7 +21,7 @@ export default{
     components: {
     Carousel,
     Slide,
-   Recipe
+    Recipe
   },
        
    
