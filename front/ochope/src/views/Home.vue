@@ -2,7 +2,7 @@
     <div class="home">
         
         <div class="card carousselHome">
-        <Carousel/>
+        <CarouselHome/>
        </div>
        
         
@@ -19,11 +19,11 @@
 </template>
 
 <script>
-import Carousel from '../components/Carousel.vue';
+import CarouselHome from '../components/CarouselHome.vue';
 export default{
     name: 'Home',
     components: {
-    Carousel,
+    CarouselHome,
 
   },
 
