@@ -255,18 +255,22 @@ font-size: 3rem;
 }
 
 .carousselHome {
-  width: 95%;
+  width: 35%;
   grid-area: caroussel;
 }
 
 .registerHomeImage {
   grid-area: log;
  width: 35rem;
+ border: solid 1.5px black;
+ border-radius: 1rem;
 } 
 
 .forumHomeImage {
   grid-area: forum;
   width: 35rem;
+  border: solid 1.5px black;
+  border-radius: 1rem;
 }
 
 
