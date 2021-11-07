@@ -11,11 +11,11 @@ $oChope = new Plugin();
 // J'utilise la notation [$monObjet, 'maMethode']
 register_activation_hook(
     __FILE__,
-    [$oChope, 'activate']
+    [$oChope, 'ochope_activate']
 );
 // On branche une methode sur l'desactivation du plugin
 register_deactivation_hook(
     __FILE__,
-    [$oChope, 'deactivate']
+    [$oChope, 'ochope_deactivate']
 );
 $api = new Api();

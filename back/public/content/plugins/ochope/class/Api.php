@@ -12,10 +12,10 @@ class Api {
     public function __construct()
     {
         // Enregistrement de notre API Custom
-        add_action('rest_api_init', [$this, 'initialize']);
+        add_action('rest_api_init', [$this, 'ochope_api_initialize']);
     }
 
-    public function initialize()
+    public function ochope_api_initialize()
     {
         // récupération du nom d'un dossier depuis le chemin de fichier 
         // https://www.php.net/dirname
@@ -25,11 +25,21 @@ class Api {
 
         register_rest_route(
             'ochope/v1', // le nom de notre API
+            '/dose-save', // la route qui se mettra après le nom de notre api
+            [
+                // Attention, methods avec un S
+                'methods' => 'post',
+                'callback' => [$this, 'ochope_dose_save']  
+            ]
+        );
+
+        register_rest_route(
+            'ochope/v1', // le nom de notre API
             '/recipe-save', // la route qui se mettra après le nom de notre api
             [
                 // Attention, methods avec un S
                 'methods' => 'post',
-                'callback' => [$this, 'recipeSave']  
+                'callback' => [$this, 'ochope_recipe_save']  
             ]
         );
 
@@ -39,12 +49,12 @@ class Api {
             [
                 // Attention, methods avec un S
                 'methods' => 'post',
-                'callback' => [$this, 'inscription']  
+                'callback' => [$this, 'ochope_inscription']  
             ]
         );
     }
 
-    public function recipeSave(WP_REST_Request $request)
+    public function ochope_recipe_save(WP_REST_Request $request)
     {
         // première étape, récupération des éléments de ma nouvelle recette (qui sont en transit dans ma requête)
         
@@ -57,11 +67,10 @@ class Api {
         $user = wp_get_current_user();
         //var_dump($user);die();
         if(
-            in_array('chef', (array) $user->roles) ||
+            in_array('brewer', (array) $user->roles) ||
             in_array('contributor', (array) $user->roles) ||
             in_array('administrator', (array) $user->roles))
         {
-
             $recipeCreateResult = wp_insert_post(
                 [
                     'post_title' => $title,
@@ -110,8 +119,34 @@ class Api {
 
     }
 
+    public function ochope_dose_save(WP_REST_Request $request)
+    {
+        // première étape, récupération des éléments de ma nouvelle recette (qui sont en transit dans ma requête)
+        
+        $title = $request->get_param('recipeId'); 
+        $type = $request->get_param('ingredientId');
+        $description = $request->get_param('quantity');
+        $ingredients = $request->get_param('unit');
 
-    public function inscription(WP_REST_Request $request) {
+        // récupération de l'utilisateur ayant envoyé la requête
+        $user = wp_get_current_user();
+        //var_dump($user);die();
+        if(
+            in_array('brewer', (array) $user->roles) ||
+            in_array('contributor', (array) $user->roles) ||
+            in_array('administrator', (array) $user->roles))
+        {
+
+        }
+
+        return [
+            'success' => false,
+        ];
+        
+
+    }
+
+    public function ochope_inscription(WP_REST_Request $request) {
         echo "hello";
         $email = $request->get_param('email');
         $password = $request->get_param('password');

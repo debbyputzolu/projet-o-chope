@@ -13,66 +13,72 @@ class Plugin
         // ces derniers me permettent de brancher une methode sur un hook
         add_action(
             'init', 
-            [$this, 'createRecipePostType']
+            [$this, 'ochope_create_recipe_post_type']
         );
 
         add_action(
             'init', 
-            [$this, 'createIngredientCustomTaxonomy']
+            [$this, 'ochope_create_ingredient_custom_taxonomy']
         );
 
         add_action(
             'init', 
-            [$this, 'createRecipeTypeCustomTaxonomy']
+            [$this, 'ochope_create_recipe_type_custom_taxonomy']
         );
 
         add_action(
             'add_meta_boxes',
-            [$this,'global_notice_meta_box']
-        );
-
-        add_action(
-            'add_meta_boxes',
-            [$this,'global_notice_meta_box']
+            [$this,'ochope_metabox_recipe_data']
         );
 
         add_action(
             'admin_enqueue_scripts', 
-            [$this,'pw_load_scripts']
+            [$this,'ochope_pw_load_scripts']
         );
 
         //executer ajax
         add_action(
             'wp_ajax_create_ingredient',
-            [$this, 'create_ingredient']
+            [$this, 'ochope_create_ingredient']
         );
 
         //executer ajax
         add_action(
             'wp_ajax_nopriv_create_ingredient',
-            [$this, 'create_ingredient']
+            [$this, 'ochope_create_ingredient']
+        );
+
+        //executer ajax
+        add_action(
+            'wp_ajax_meta_menu',
+            [$this, 'ochope_meta_menu']
+        );
+
+        //executer ajax
+        add_action(
+            'wp_ajax_nopriv_meta_menu',
+            [$this, 'ochope_meta_menu']
         );
     }
     
-    public function pw_load_scripts() {
-     
-        wp_enqueue_script( 'ochope-meta_menu', plugins_url( 'class/js/meta_menu.js' , dirname(__FILE__) ) );
-        wp_enqueue_script( 'ochope-add_ingredients', plugins_url( 'class/js/add_ingredients.js' , dirname(__FILE__) ) );
+    public function ochope_pw_load_scripts() {
+        wp_enqueue_script( 'ochope-meta_menu', plugins_url( 'class/js/meta_menu.js' , dirname(__FILE__) ) , array('jquery') );
+        wp_localize_script('ochope-meta_menu', 'ajaxurl', array(admin_url('admin-ajax.php')));
 
+        wp_enqueue_script( 'ochope-add_ingredients', plugins_url( 'class/js/add_ingredients.js' , dirname(__FILE__) ) , array('jquery') );
         wp_localize_script('ochope-add_ingredients', 'ajaxurl', array(admin_url('admin-ajax.php')));
     }
 
-    public function global_notice_meta_box() {
+    public function ochope_metabox_recipe_data() {
         add_meta_box(
-            'global-notice',
-            __( 'Insérer une dose', 'sitepoint' ),
-            [$this,'ochope_ingredientRecipe'],
+            'ochope_recipe_parameters_control',
+            __( 'Paramétrage de la recette', 'sitepoint' ),
+            [$this,'ochope_ingredient_recipe'],
             'recipe'
         );
     }
 
-    public function create_ingredient() {
-        // var_dump($_POST);
+    public function ochope_create_ingredient() {
         if (isset($_POST['post_id']) && isset($_POST['name']))
         {
             $postId = intval($_POST['post_id']);
@@ -80,89 +86,117 @@ class Plugin
 
             // wp_insert_term( string $term, string $taxonomy, array|string $args = array() )
             $newTerm = wp_insert_term($name, 'ingredient');
-
-            if (is_wp_error($newTerm)) {
-                echo $newTerm->get_error_message();
-                wp_die();
-            }
-
-            echo $newTerm['term_id'];
         }
+
+        wp_send_json($newTerm);
 
         wp_die();
     }
 
-    public function ochope_ingredientRecipe( $post ) {
+    public function ochope_meta_menu() {
+        global $wpdb;
+        $response = "failure";
+
+        if(isset($_POST['post_id']) && isset($_POST['ingredient_id']) && isset($_POST['quantity']) && isset($_POST['unit']))
+        {
+            $recipe_id = intval($_POST['post_id']);
+            $ingredient_id = intval($_POST['ingredient_id']);
+            $quantity = intval($_POST['quantity']);
+            $unit = sanitize_text_field($_POST['unit']);
+
+            $cmd = "SELECT * FROM `wp_ochope_recipe_ingredient` WHERE recipe_id='$recipe_id' AND ingredient_id='$ingredient_id'";
+
+            $result = $wpdb->get_results($cmd);
+   
+            /*$wpdb->show_errors();   
+            $wpdb->print_error();
+            var_dump($cmd);
+            var_dump($result);
+            var_dump($recipe_id,$ingredient_id,$quantity,$unit);
+            var_dump(Recipe_Ingredient::ochope_insert($recipe_id,$ingredient_id,$quantity,$unit)); 
+            die();*/
+
+            if( count($result) == 0 ) {
+                if( Recipe_Ingredient::ochope_insert($recipe_id,$ingredient_id,$quantity,$unit) == false ) {
+                    //$wpdb->show_errors();
+                    //$wpdb->hide_errors();
+                    
+                    $wpdb->print_error(); 
+
+                } else {
+                    $response = "success";
+                }
+            }
+        }
+
+        echo $response;
+
+        wp_die();
+    }
+
+    public function ochope_ingredient_recipe( $post ) {
 
         // Add a nonce field so we can check for it later.
         wp_nonce_field( 'global_notice_nonce', 'global_notice_nonce' );
     
         $value = get_post_meta( $post->ID, '_global_notice', true );
-    
-        //echo '<textarea style="width:100%" id="global_notice" name="global_notice">' . esc_attr( $value ) . '</textarea>';
 
         $ingredientArgs = [
             'taxonomy' => 'ingredient',
             'hide_empty' => false
         ]; 
-        //$themes = get_terms($ingredientArgs); 
         $taxonomies = get_terms($ingredientArgs);
         $names = wp_list_pluck($taxonomies, 'name');
+        $termsId = wp_list_pluck($taxonomies, 'term_id');
+        $arrLength = count($names);
 
          ?>
-            <table id="array">
-                <tr>
-                    <td>Nom de l'ingredient</td>
-                </tr>
-                
-                <tr> 
-                    <td><input class="ing" id="new-ingredient-name" type="text" name ="ing"></td>
-                    <td><input class="addButton" type="button" id="add-ingredient" name="add-ingredient" value="Add Ingredient" data-post-id="<?= $post->ID ?>" ></td>
-                </tr>
-            
-                <tr>
-                    <td>Nom</td><td>Quantité</td><td>Unité</td>
-                </tr>
-                <tr class = "ingredient-rows">
-                    <td>
-                        <select id="ingredient-list">
-                        <?php foreach($names as $name) {
-                            echo '<option>';
-                                echo $name;
-                            echo '</option>';
-                        } ?>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number">
-                    </td>
-                    <td>
-                        <select>
-                            <option>L</option>
-                            <option>g</option>
-                            <option>unité</option>
-                        </select>
-                    </td>
-                </tr>
-            </table>
-            
             <table>
-                <tr>
-                    <td>
-                        <input type="button" id="add-row" name="add-row" value="Add row">
-                    </td>
-                </tr>
+                <table>
+                    <tr>
+                        <td>Nom de l'ingredient</td>
+                    </tr>
+                    <tr> 
+                        <td><input id="new-ingredient-name" type="text" name ="ing"></td>
+                        <td><input type="button" id="add-ingredient" name="add-ingredient" value="Ajouter un ingrédient" data-post-id="<?= $post->ID ?>" ></td>
+                    </tr>
+                </table>
+            
+                <table>
+                    <tr>
+                        <td>Nom</td><td>Quantité</td><td>Unité</td>
+                    </tr>
+                    <tr class = "ingredient-rows">
+                        <td>
+                            <select id="dose-ingredient-list">
+                            <?php for($i = 0; $i < $arrLength; $i++) {
+                                echo '<option value="'.$termsId[$i].'">';
+                                    echo $names[$i];
+                                echo '</option>';
+                            } ?>
+                            </select>
+                        </td>
+                        <td>
+                            <input id="dose-quantity" type="number" name ="dose-quantity">
+                        </td>
+                        <td>
+                            <select id="dose-unit-select" name="dose-unit-select">
+                                <option>L</option>
+                                <option>g</option>
+                                <option>unité</option>
+                            </select>
+                        </td>
+                        <td><input id="dose-add-button" type="button" name="dose-add-button" value="Ajouter une dose" data-post-id="<?= $post->ID ?>" ></td>
+
+                    </tr>
+                </table>
             </table>
             
         <?php
             
-    }/*<table class="add-ingredient">
-                        <tr><td>Nom</td></tr>
-                        <tr><td><input type="texte" id="name"></td></tr>
+    }
 
-            </table>*/
-
-    public function createRecipePostType()
+    public function ochope_create_recipe_post_type()
     {
         // Methode qui nous permet d'ajouter le CPT Recipe
         register_post_type(
@@ -193,7 +227,7 @@ class Plugin
             );  
     }
 
-    public function createIngredientCustomTaxonomy()
+    public function ochope_create_ingredient_custom_taxonomy()
     {
         $labels = array(
             'name' => _x( 'Ingrédient', 'taxonomy general name' ),
@@ -221,7 +255,7 @@ class Plugin
         );
     }
 
-    public function createRecipeTypeCustomTaxonomy()
+    public function ochope_create_recipe_type_custom_taxonomy()
     {
         // Methode qui nous permet d'ajouter la Custom taxo "Type de recette"
         register_taxonomy(
@@ -236,22 +270,7 @@ class Plugin
         );
     }
 
-    public function createRecipeDifficultyCustomTaxonomy()
-    {
-        // Methode qui nous permet d'ajouter la Custom taxo "Difficulty"
-        register_taxonomy(
-            'difficulty',
-            ['recipe'], // seul les recettes pourront avoir un/des ingredients
-            [
-                'label' => 'Difficulté',
-                'hierarchical' => false,
-                'public' => true,
-                'show_in_rest' => true
-            ]
-        );
-    }
-
-    public function addCapAdmin()
+    public function ochope_add_cap_admin()
     {
         // methode qui nous permet d'ajouter les droits sur le CPT recipe pour le role administrateur
         //! Attention, sans cette opération le CPT recipe va disparaire
@@ -270,7 +289,7 @@ class Plugin
         $role->add_cap('read_private_recipes');
     }
 
-    public function registerChefRole()
+    public function ochope_register_brewer_role()
     {
         add_role(
             'brewer',
@@ -279,20 +298,20 @@ class Plugin
     }
 
     //! Pour ajouter/supprimer un role, je dois imperativement me situer dans activate/deactivate
-    public function activate()
+    public function ochope_activate()
     {
-        Recipe_Ingredient::createTable();
+        Recipe_Ingredient::ochope_create_table();
         // ajout du role chef
-        $this->registerChefRole();
+        $this->ochope_register_brewer_role();
         // ajout cap sur CPT recipe pour admin
-        $this->addCapAdmin();
+        $this->ochope_add_cap_admin();
 
     }
 
-    public function deactivate()
+    public function ochope_deactivate()
     {
         // Suppression de la table custom
-        Recipe_Ingredient::dropTable();
+        Recipe_Ingredient::ochope_drop_table();
         // suppression du role chef
         remove_role('brewer');
     }
