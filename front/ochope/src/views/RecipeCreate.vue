@@ -24,13 +24,11 @@
             </div>
 
 
-            <div class="recipeCreateLabel">
+            <div class="recipeCreateLabel">Type de recette<br>
                 <div v-for="type in types" :key="type.id">
-                    <label> Type de recette<br>
                         <div>
                     <input type="radio" name="type" :value="type.id" v-model="selectedTypes" > {{type.name}}
                         </div>
-                    </label>
                 </div>
             </div>
             <div class="error" v-if="typeEmpty">
@@ -106,7 +104,8 @@ export default{
         ingredients: [],
         selectedTypes:null,
         selectedIngredients:[],
-        picture:[],
+        image: null,
+        imageId: null,
         titleEmpty: false,
         descriptionEmpty: false,
         ingredientEmpty: false,
@@ -119,7 +118,7 @@ export default{
       
       this.loadTypes();
   },
-    
+ methods: {  
     async handleSubmit(evt){
           evt.preventDefault();
           if(this.title == ''){
@@ -179,7 +178,7 @@ export default{
      async loadTypes(){
     this.types = await recipeService.loadRecipesTypes();
     }
-    
+ }    
    
 }
 </script>

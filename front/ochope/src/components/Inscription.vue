@@ -133,7 +133,7 @@ export default {
           
           if(result && result.success == true){
               console.log('OK TOUT EST NICKEL');
-              this.$router.push('login');
+              this.$router.push('register');
           }
         }
         this.inscriptionFailed = true;

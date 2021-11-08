@@ -64,7 +64,7 @@ export default {
               if(userData){
                   storage.set('userData', userData);
                   this.loginFailed = false;
-                  this.$router.push('user-home');
+                  this.$router.push('profile');
               }
               else {
                   console.log('LOGIN FAILED');

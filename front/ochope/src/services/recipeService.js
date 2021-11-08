@@ -4,8 +4,8 @@ import storage from '../plugins/storage.js';
 
 const recipeService = {
 
-    baseURI: process.env.VUE_APP_WORDPRESS_API_URL + '/wp/v2',
-    oChopeBaseURI: process.env.VUE_APP_WORDPRESS_API_URL + '/ochope/v1',
+    baseURI: 'http://localhost/valkyrie/apotheose/ochope/back/public/wp-json/wp/v2',
+    oChopeBaseURI: 'http://localhost/valkyrie/apotheose/ochope/back/public/wp-json/ochope/v1',
 
     async loadRecipes() {
       const response = await axios.get(recipeService.baseURI + '/recipe?_embed=true');

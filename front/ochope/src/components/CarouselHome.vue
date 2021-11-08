@@ -1,5 +1,5 @@
 <template>
-<carousel class="carousselHome" :perPage="1" :autoplay='true' :loop="true" :autoplayTimeout="2000">
+<carousel class="carousselHome" :perPage="1" :autoplay='true' :loop="true" :autoplayTimeout="2500">
   <slide>
     <Recipe/>
   </slide>

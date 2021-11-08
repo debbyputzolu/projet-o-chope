@@ -16,6 +16,10 @@
                     name: 'register',
                 }"
             >Register/Login</router-link></div>
+    <div class="navHeaderItem"><router-link :to="{
+                    name: 'logout',
+                }"
+            >Logout</router-link></div>
     <div class="navHeaderItem">About</div>
     <div class="navHeaderItem">Forum</div>
     <div class="navHeaderItem"><router-link :to="{
