@@ -18,7 +18,7 @@ class Recipe_Ingredient
             ingredient_id mediumint(9) NOT NULL,
             recipe_id mediumint(9) NOT NULL,
             quantity mediumint(9) NOT NULL,
-            unit char(10) NOT NULL,
+            unit mediumint(9) NOT NULL,
             PRIMARY KEY (id)
         ) $charset;";
 
@@ -50,6 +50,22 @@ class Recipe_Ingredient
                 'unit' => $unit
             ]
         );
+    }
+
+    public static function ochope_get_doses_of_a_recipe($recipe_id) {
+        global $wpdb;
+
+        $cmd = "SELECT * FROM `wp_ochope_recipe_ingredient` WHERE recipe_id='$recipe_id'";
+        
+        return $wpdb->get_results($cmd);
+    }
+
+    public static function ochope_get_doses_of_a_recipe_and_ingredient($recipe_id,$ingredient_id) {
+        global $wpdb;
+
+        $cmd = "SELECT * FROM `wp_ochope_recipe_ingredient` WHERE recipe_id='$recipe_id' AND ingredient_id='$ingredient_id'";
+        
+        return $wpdb->get_results($cmd);
     }
 
     public function ochope_delete($id)

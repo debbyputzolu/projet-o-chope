@@ -103,23 +103,11 @@ class Plugin
             $ingredient_id = intval($_POST['ingredient_id']);
             $quantity = intval($_POST['quantity']);
             $unit = sanitize_text_field($_POST['unit']);
-
-            $cmd = "SELECT * FROM `wp_ochope_recipe_ingredient` WHERE recipe_id='$recipe_id' AND ingredient_id='$ingredient_id'";
-
-            $result = $wpdb->get_results($cmd);
-   
-            /*$wpdb->show_errors();   
-            $wpdb->print_error();
-            var_dump($cmd);
-            var_dump($result);
-            var_dump($recipe_id,$ingredient_id,$quantity,$unit);
-            var_dump(Recipe_Ingredient::ochope_insert($recipe_id,$ingredient_id,$quantity,$unit)); 
-            die();*/
+            
+            $result = Recipe_Ingredient::ochope_get_doses_of_a_recipe_and_ingredient($recipe_id,$ingredient_id);
 
             if( count($result) == 0 ) {
                 if( Recipe_Ingredient::ochope_insert($recipe_id,$ingredient_id,$quantity,$unit) == false ) {
-                    //$wpdb->show_errors();
-                    //$wpdb->hide_errors();
                     
                     $wpdb->print_error(); 
 
@@ -149,6 +137,11 @@ class Plugin
         $names = wp_list_pluck($taxonomies, 'name');
         $termsId = wp_list_pluck($taxonomies, 'term_id');
         $arrLength = count($names);
+        $doses = Recipe_Ingredient::ochope_get_doses_of_a_recipe($post->ID);
+        $arrLengthDoses = count($doses);
+        $unitTable = array("L","g","unité");
+
+        //var_dump($doses[0]->id);die();
 
          ?>
             <table>
@@ -170,7 +163,7 @@ class Plugin
                     </tr>
                     <tr class = "ingredient-rows">
                         <td>
-                            <select id="dose-ingredient-list">
+                            <select id="dose-ingredient-list-0" class="dose-ingredient-list">
                             <?php for($i = 0; $i < $arrLength; $i++) {
                                 echo '<option value="'.$termsId[$i].'">';
                                     echo $names[$i];
@@ -183,9 +176,9 @@ class Plugin
                         </td>
                         <td>
                             <select id="dose-unit-select" name="dose-unit-select">
-                                <option>L</option>
-                                <option>g</option>
-                                <option>unité</option>
+                                <option value="0">L</option>
+                                <option value="1">g</option>
+                                <option value="2">unité</option>
                             </select>
                         </td>
                         <td><input id="dose-add-button" type="button" name="dose-add-button" value="Ajouter une dose" data-post-id="<?= $post->ID ?>" ></td>
@@ -198,6 +191,33 @@ class Plugin
                     <tr id="dose-list">
                         <td>Nom</td><td>Quantité</td><td>Unité</td>
                     </tr>
+                <?php for($i = 0; $i < $arrLengthDoses; $i++) {
+                    echo "<tr>";
+                        echo "<td>";
+                            echo "<select id='dose-ingredient-list-".($i+1)."' autocomplete='off' class='dose-ingredient-list'>";
+                            for($j = 0; $j < $arrLength; $j++) {
+                                echo '<option value="'.$termsId[$j].'" '.( $termsId[$j] == $doses[$i]->ingredient_id ? 'selected="selected"' : '' ).'>';
+                                    echo $names[$j];
+                                echo '</option>';
+                            }
+                            echo "</select>";
+                        echo "</td>";
+                        echo "<td>";
+                            echo "<input id='dose-quantity' type='number' name ='dose-quantity' value='".$doses[$i]->quantity."'>";
+                        echo "</td>";
+                        echo "<td>";
+                            echo "<select id='dose-unit-select' name='dose-unit-select' autocomplete='off'>";
+                            for($j = 0; $j < count($unitTable); $j++) {
+                                echo '<option value="'.$j.'" '.( $j == $doses[$i]->unit ? 'selected="selected"' : '' ).'>'.$unitTable[$j].'</option>';
+                            }
+                            echo "</select>";
+                        echo "</td>";
+                        echo "<td><input id='dose-modify-button' type='button' name='dose-modify-button' value='Modifier la dose' data-post-id='".$post->ID."' ></td>";
+                    echo "</tr>";
+                } 
+                if ( $arrLengthDoses == 0 ) {
+                    echo "<tr><td><p>Il n'y a pas de doses pour cette recette !</p></td></tr>";
+                } ?>
                 </table>
             </table>
             

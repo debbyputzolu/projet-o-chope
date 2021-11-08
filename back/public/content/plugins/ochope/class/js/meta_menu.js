@@ -4,8 +4,6 @@ jQuery(
         var $row = $('.ingredient-rows').clone();
         var $anchor = $('#dose-list');
 
-        //console.log($row.getElementById("dose-add-button").value);
-        //.find('div').andSelf().removeAttr('style'); dose-add-button
         $button.click(
             function() {
                 $row.clone().insertAfter( $anchor );
@@ -21,7 +19,7 @@ jQuery(document).on(
     '#dose-add-button',
     function() {
         const post_id = document.getElementById('dose-add-button').dataset.postId;
-        const ingredient_id = document.getElementById('dose-ingredient-list').value;
+        const ingredient_id = document.getElementById('dose-ingredient-list-0').value;
         const quantity = document.getElementById('dose-quantity').value;
         const unit = document.getElementById('dose-unit-select').value;
         
