@@ -1,17 +1,20 @@
-
-/*jQuery(
+jQuery(
     function($) {
-        var $button = $('#add-row'), $row = $('.ingredient-rows').clone();
+        var $button = $('#dose-add-button')
+        var $row = $('.ingredient-rows').clone();
+        var $anchor = $('#dose-list');
 
+        //console.log($row.getElementById("dose-add-button").value);
+        //.find('div').andSelf().removeAttr('style'); dose-add-button
         $button.click(
             function() {
-                $row.clone().insertBefore( $button );
+                $row.clone().insertAfter( $anchor );
             }
         );
     }
 );
 
-document.addEventListener("DOMContentLoaded", jQuery);*/
+document.addEventListener("DOMContentLoaded", jQuery);
 
 jQuery(document).on(
     'click',

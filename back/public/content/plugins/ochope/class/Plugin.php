@@ -152,7 +152,8 @@ class Plugin
 
          ?>
             <table>
-                <table>
+                Ajout d'ingrédients
+                <table style="border:solid;">
                     <tr>
                         <td>Nom de l'ingredient</td>
                     </tr>
@@ -162,7 +163,8 @@ class Plugin
                     </tr>
                 </table>
             
-                <table>
+                <table style="border:solid;">
+                    Ajout de doses
                     <tr>
                         <td>Nom</td><td>Quantité</td><td>Unité</td>
                     </tr>
@@ -188,6 +190,13 @@ class Plugin
                         </td>
                         <td><input id="dose-add-button" type="button" name="dose-add-button" value="Ajouter une dose" data-post-id="<?= $post->ID ?>" ></td>
 
+                    </tr>
+                </table>
+            
+                <table style="border:solid;">
+                    Doses
+                    <tr id="dose-list">
+                        <td>Nom</td><td>Quantité</td><td>Unité</td>
                     </tr>
                 </table>
             </table>
