@@ -34,6 +34,11 @@ const recipeService = {
     return response.data;
   },
 
+  async getRecipeByAuthor(authorId) {
+    const response = await axios.get(recipeService.baseURI + '/recipe?_embed=true&author=' + authorId);
+    return response.data;
+  },
+
   async loadTerms(taxonomy) {
     const response = await axios.get(recipeService.baseURI + '/' + taxonomy);
     return response.data;
@@ -80,8 +85,43 @@ const recipeService = {
             title: title,
             type: type,
             description: description,
-            ingredients: ingredients,
+            ingredients: ingredients, //array
             imageId: imageId
+          },
+          options
+        ).catch(function(error) {
+          console.log(error);
+          return false;
+        });
+
+        return result;
+      }
+    }
+    return false;
+  },
+
+  async saveDose(recipeId, ingredientId, quantity, unit) {
+
+    const userData = storage.get('userData');
+
+    if(userData != null) {
+      const token = userData.token;
+      if(token) {
+
+        const options = {
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
+        };
+
+
+        const result = await axios.post(
+          recipeService.oChopeBaseURI + '/dose-save',
+          {
+            recipeId: recipeId,
+            ingredientId: ingredientId,
+            quantity: quantity,
+            unit: unit
           },
           options
         ).catch(function(error) {
