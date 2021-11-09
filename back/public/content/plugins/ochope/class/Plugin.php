@@ -161,9 +161,9 @@ class Plugin
                     <tr>
                         <td>Nom</td><td>Quantité</td><td>Unité</td>
                     </tr>
-                    <tr class = "ingredient-rows">
+                    <tr id="ingredient-rows">
                         <td>
-                            <select id="dose-ingredient-list-0" class="dose-ingredient-list">
+                            <select id="dose-ingredient-list-0" class="dose-ingredient-list" autocomplete="off">
                             <?php for($i = 0; $i < $arrLength; $i++) {
                                 echo '<option value="'.$termsId[$i].'">';
                                     echo $names[$i];
@@ -172,7 +172,7 @@ class Plugin
                             </select>
                         </td>
                         <td>
-                            <input id="dose-quantity" type="number" name ="dose-quantity">
+                            <input id="dose-quantity" type="number" name ="dose-quantity"></input>
                         </td>
                         <td>
                             <select id="dose-unit-select" name="dose-unit-select">
@@ -186,7 +186,7 @@ class Plugin
                     </tr>
                 </table>
             
-                <table style="border:solid;">
+                <table id="dose-table" style="border:solid;">
                     Doses
                     <tr id="dose-list">
                         <td>Nom</td><td>Quantité</td><td>Unité</td>
