@@ -53,25 +53,26 @@
                 </tr>
                 <tr class = "ingredient-rows recipeCreateTable">
                     <td>
-                        <select>
-                        <option>
-                            blé  
-                        </option>
+                        <select v-model="selectedIngredients">
+                        <option v-for="ingredient in ingredients" :key="ingredient.id" :value="ingredient.id" >{{ingredient.name}}</option>
                       
                         </select>
                     </td>
                     <td>
-                        <input type="number">
+                        <input type="number" v-model="quantity">
                     </td>
                     <td>
-                        <select>
-                            <option>L</option>
-                            <option>g</option>
-                            <option>unité</option>
-                        </select>
-                        <input type="button" id="add-row" name="add-row" value="+">
+                        <select v-model="selectedUnit">
+                            <option value="0">L</option>
+                            <option value="1">g</option>
+                            <option value="2">unité</option>
+                        </select> 
                     </td>
-                </tr>
+                 </tr>   
+                    <td>
+                      <input type="button" id="add-row" name="add-row" value="Ajouter un ingrédient" @click="handleClick">  
+                    </td>
+                
             </table></center>
             </div>
              <div class="error" v-if="ingredientEmpty">
@@ -92,6 +93,7 @@
 
 <script>
 import recipeService from '../services/recipeService.js';
+import userService from '../services/userService.js';
 
 
 export default{
@@ -104,19 +106,29 @@ export default{
         ingredients: [],
         selectedTypes:null,
         selectedIngredients:[],
+        quantity: '',
+        selectedUnit:'',
         image: null,
         imageId: null,
         titleEmpty: false,
         descriptionEmpty: false,
         ingredientEmpty: false,
         typeEmpty: false, 
+        isUserConnected: false
         }
     },
     
-     async created(){
+     async created(){const isTokenValid = await userService.isConnected();
+        if(!isTokenValid) {
+            this.$router.push('login');
+        }
+        else {
+            this.isUserConnected = true;
+        }
+
+    this.loadIngredients();
       
-      
-      this.loadTypes();
+    this.loadTypes();
   },
  methods: {  
     async handleSubmit(evt){
@@ -125,9 +137,9 @@ export default{
               console.log(' TITRE EST VIDE !!');
               this.titleEmpty = true;
           }
-          if(this.stage == ''){
+          if(this.description == ''){
               console.log('ETAPE EST VIDE !!');
-              this.stageEmpty = true;
+              this.descriptionEmpty = true;
           }
           if(this.selectedIngredients.length == 0){
               console.log('INGREDIENT EST VIDE !!');
@@ -141,14 +153,16 @@ export default{
         
           if(this.title != '' && 
           this.selectedTypes != null &&
-          this.stage != '' &&
+          this.description != '' &&
           this.selectedIngredients.length != 0
           ){
             const result = await recipeService.saveRecipe(
             this.title,
             this.selectedTypes,
-            this.stage,
-            this.selectedIngredients
+            this.description,
+            this.selectedIngredients,
+            this.quantity,
+            this.selectedUnit
             ); 
           
           
@@ -177,6 +191,21 @@ export default{
 
      async loadTypes(){
     this.types = await recipeService.loadRecipesTypes();
+    },
+
+    async loadIngredients() {
+            this.ingredients = await recipeService.loadRecipesIngredients();
+        },
+    
+    handleClick(evt){
+        evt.preventDefault();
+        
+        const row = document.querySelector(".ingredient-rows"); //premier enfant
+        const addRow = row.cloneNode(true); //a insérer
+        const arrayIngredient = document.querySelector('#array'); //parent
+
+        arrayIngredient.insertBefore(addRow, row);
+        
     }
  }    
    

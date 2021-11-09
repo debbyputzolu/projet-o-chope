@@ -13,45 +13,45 @@ Vue.use(VueRouter)
 
 const routes = [
     {
-      path: '/', // configuration de l'url a "matcher"
-      name: 'home', // nom de la route
-      component: Home // composant a appeler
+      path: '/', // URL configuration to match
+      name: 'home', // road name
+      component: Home // component to call
     },
 
     {
-      path: '/recipes', // configuration de l'url a "matcher"
-      name: 'recipes', // nom de la route
-      component: RecipeList // composant a appeler
+      path: '/recipes', // URL configuration to match
+      name: 'recipes', // road name
+      component: RecipeList // component to call
     },
 
     {
-      path: '/recipe', // configuration de l'url a "matcher"
-      name: 'recipeOnly', // nom de la route
-      component: Recipe // composant a appeler
+      path: '/recipe/:id', // URL configuration to match
+      name: 'recipe', // road name
+      component: Recipe // component to call
     },
 
     {
-      path: '/register', // configuration de l'url a "matcher"
+      path: '/register', // URL configuration to match
       name: 'register', // nom de la route
-      component: Register // composant a appeler
+      component: Register // component to call
     },
 
     {
-      path: '/profile', // configuration de l'url a "matcher"
-      name: 'profile', // nom de la route
-      component: Profile // composant a appeler
+      path: '/profile', // URL configuration to match
+      name: 'profile', // road name
+      component: Profile // component to call
     },
 
     {
-      path: '/recipe-create', // configuration de l'url a "matcher"
-      name: 'recipe-create', // nom de la route
-      component: RecipeCreate // composant a appeler
+      path: '/recipe-create', // URL configuration to match
+      name: 'recipe-create', // road name
+      component: RecipeCreate // component to call
     },
 
     {
-      path: '/logout', // configuration de l'url a "matcher"
-      name: 'logout', // nom de la route
-      component: Logout // composant a appeler
+      path: '/logout', // URL configuration to match
+      name: 'logout', // road name
+      component: Logout // component to call
     },
 ]
 

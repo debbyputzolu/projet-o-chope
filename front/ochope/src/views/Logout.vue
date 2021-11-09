@@ -1,18 +1,17 @@
 <template>
-    <section>
-        Vous etes a présent déconnectés
-
-    </section>
+ <section>
+     Vous êtes à présent déconnectés
+ </section>
 </template>
 
 <script>
-//import userService from '../services/userService'
+import userService from '../services/userService'
 export default {
-  name: 'Logout',
+    name: 'Logout',
+  
   created(){
-      // deconnexion du user
-      this.$store.commit('clearUser');
-      this.$store.state.services.storage.logout()
+      //deconnexion user
+      userService.logout();
   }
 }
 </script>

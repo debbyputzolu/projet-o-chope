@@ -60,7 +60,7 @@ export default {
           // Si j'ai bien un login ET un password
           if(!this.passwordEmpty && !this.loginEmpty){
               let userData = await userService.login(this.login, this.password);
-              //console.log(userData);
+              console.log(userData);
               if(userData){
                   storage.set('userData', userData);
                   this.loginFailed = false;
@@ -72,7 +72,7 @@ export default {
               }
 
               //Si l'utilisateur a rentré des bons identifiants/mot de passe je vais recevoir dans userData un token, que je vais devoir stocker dans le localStorage (grace a mon plugin storage)
-              storage.set('userData', userData);
+              // storage.set('userData', userData);
           }
 
 

@@ -119,13 +119,14 @@ export default {
           this.firstname != '' &&
           this.email != '' && 
           this.password != '' &&
-          this.passwordBis != '' &&
-          this.password != this.passwordBis
+          this.passwordBis != '' 
+          && this.password == this.passwordBis
           ){
+              console.log('on est la');
             const result = await userService.inscription(
             this.surname,
-            this.lastname,
-            this.firstname,
+            //this.lastname,
+            //this.firstname,
             this.email,
             this.password
             ); 
@@ -136,8 +137,9 @@ export default {
               this.$router.push('register');
           }
         }
-        this.inscriptionFailed = true;
-
+        else{
+            console.log("coucou c'est nous");
+        }
       }
   }
   

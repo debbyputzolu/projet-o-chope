@@ -1,7 +1,10 @@
 <template>
 <carousel class="carousselHome" :perPage="1" :autoplay='true' :loop="true" :autoplayTimeout="2500">
   <slide>
-    <Recipe/>
+   <!-- v-for="recipe in recipes"
+                :key="recipe.id"
+            >
+      <RecipeCard :recipeProps="recipe"/> --> 
   </slide>
   <slide>
     <Recipe/>

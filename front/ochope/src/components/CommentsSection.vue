@@ -5,9 +5,8 @@
             <CommentForm/>
         </section>
 
+       
 
-
-        
     </div>
 
 </template>
@@ -15,12 +14,13 @@
 
 <script>
 import CommentForm from './CommentForm.vue';
+//import CommentCard from './CommentCard.vue';
 
 export default({
     name: 'CommentsSection',
     components: {
         CommentForm,
-        
+        //CommentCard
     },
     computed: {
         user() {

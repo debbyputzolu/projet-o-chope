@@ -7,20 +7,17 @@
         </div>
         <div>
         
-            <Filters v-on:recipes-loaded="handleRecipesLoaded"/>
+           <!-- <Filters v-on:recipes-loaded="handleRecipesLoaded"/> -->
 
         </div>
 
 
-        <ul>
-            <li
+            <ul
                 v-for="recipe in recipes"
                 :key="recipe.id"
             >
-                <RecipeCard :recipe="recipe"/>
-            </li>
-
-        </ul>
+                <RecipeCard :recipeProps="recipe"/>
+             </ul>
 
         <div class="card">
         <img class="cardImage" src="../assets/images/recipeCard.png">
@@ -32,7 +29,7 @@
        <div class="card">
            <img class="cardImage" src="../assets/images/recipeCard.png">
         <h2 class="cardTitle">Bière à l'orge</h2>
-        <div class="cardContent">>Lorem ipsum dolor sit amet consectetur adipisicing elit.<br> Sunt quam voluptate obcaecati sint voluptatem! Mollitia quibusdam atque possimus enim modi qui harum,<br> repellendus voluptates porro maxime rerum est dolor illo?</div>
+        <div class="cardContent">Lorem ipsum dolor sit amet consectetur adipisicing elit.<br> Sunt quam voluptate obcaecati sint voluptatem! Mollitia quibusdam atque possimus enim modi qui harum,<br> repellendus voluptates porro maxime rerum est dolor illo?</div>
         <div>Découvrir</div>
        </div>
 
@@ -72,7 +69,7 @@
 
 
 import RecipeCard from '../components/RecipeCard.vue';
-import Filters from '../components/Filters.vue';
+//import Filters from '../components/Filters.vue';
 
 import recipeService from '../services/recipeService.js';
 
@@ -92,7 +89,7 @@ export default({
 
     components: {
         RecipeCard,
-        Filters,
+       // Filters,
     },
 
     methods: {

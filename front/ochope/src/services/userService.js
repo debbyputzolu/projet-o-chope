@@ -3,7 +3,7 @@ import storage from '../plugins/storage.js'
 
 const userService = {
 
-    baseURI:'http://localhost/valkyrie/apotheose/ochope/back/public/wp-json/wp-json/jwt-auth/v1',
+    baseURI:'http://localhost/valkyrie/apotheose/ochope/back/public/wp-json/jwt-auth/v1',
  
     baseOchope: 'http://localhost/valkyrie/apotheose/ochope/back/public/wp-json/ochope/v1',
 
@@ -67,15 +67,15 @@ const userService = {
         storage.unset('userData');
     },
 
-    async inscription(surname, lastname, firstname, email, password){
+    async inscription(surname, email, password){
         
-        //console.log('JE SUIS LA');
+        console.log('requete axios');
         const result = await axios.post(
                     userService.baseOchope + '/inscription',
                     {
                         surname: surname,
-                        lastname: lastname,
-                        firstname: firstname,
+                        //lastname: lastname,
+                        //firstname: firstname,
                         email: email,
                         password: password
                     } 
@@ -83,7 +83,7 @@ const userService = {
                 .catch(function(){
                     return false;
                 })
-    
+                console.log(result);
             return result;
             
     }

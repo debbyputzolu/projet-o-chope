@@ -7,7 +7,10 @@
                     name: 'recipe-create',
                 }"
             >Ajouter une recette</router-link></button> <br>
-          <button class="buttonProfile">Déconnexion</button>
+          <button class="buttonProfile"><router-link :to="{
+                    name: 'logout',
+                }"
+            >Déconnexion</router-link></button>
       </div>
       <div class="infoProfile">
           <h3 class="subtitleProfile">Informations</h3>
@@ -18,12 +21,6 @@
       <div class="recipeProfile">
           <h3 class="subtitleProfile">Mes recettes</h3>
             <RecipeCard/>
-        <div class="card">
-        <img class="cardImage" src="../assets/images/recipeCard.png">
-        <h2 class="cardTitle">Bière au thon-orge</h2>
-        <div class="cardContent">Lorem ipsum dolor sit amet consectetur adipisicing elit.<br> Sunt quam voluptate obcaecati sint voluptatem! Mollitia quibusdam atque possimus enim modi qui harum,<br> repellendus voluptates porro maxime rerum est dolor illo?</div>
-        <div>Découvrir</div>
-       </div>
       </div>
    
   </div>

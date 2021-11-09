@@ -27,6 +27,7 @@ const recipeService = {
 
     const response = await axios.get(recipeService.baseURI + '/recipe?_embed=true&recipe-type=' + selectedType);
     return response.data;
+  
   },
 
   async getRecipeById(recipeId) {
@@ -64,7 +65,7 @@ const recipeService = {
     return response.data;
   },
 
-  async saveRecipe(title, type, description, ingredients, imageId) {
+  async saveRecipe(title, type, description, idIngredient, quantity, unit, imageId) {
 
     const userData = storage.get('userData');
 
@@ -85,7 +86,7 @@ const recipeService = {
             title: title,
             type: type,
             description: description,
-            ingredients: ingredients, //array
+            ingredients: [idIngredient, quantity, unit], //array
             imageId: imageId
           },
           options

@@ -53,6 +53,26 @@ class Api {
                 'callback' => [$this, 'ochope_inscription']  
             ]
         );
+
+        register_rest_route(
+            'ochope/v1', // le nom de notre API
+            '/comment-save', // la route qui se mettra après le nom de notre api
+            [
+                // Attention, methods avec un S
+                'methods' => 'post',
+                'callback' => [$this, 'ochope_commentSave']  
+            ]
+        );
+
+        register_rest_route(
+            'ochope/v1', // le nom de notre API
+            '/upload-image', // la route qui se mettra après le nom de notre api
+            [
+                // Attention, methods avec un S
+                'methods' => 'post',
+                'callback' => [$this, 'ochope_uploadImage']  
+            ]
+        );
     }
 
     public function ochope_recipe_save(WP_REST_Request $request)
