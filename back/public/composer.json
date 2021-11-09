@@ -59,5 +59,8 @@
           "wp plugin install advanced-custom-fields --activate",
           "wp plugin install acf-to-rest-api --activate"
       ]
+  },
+  "require-dev": {
+    "symfony/var-dumper": "^5.3"
   }
 }

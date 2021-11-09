@@ -1,57 +1,50 @@
-/*const meta = {
-    init : function(){
-        console.log("appelé")
-        
-        
-        let add =  document.getElementById('add');
-        //console.log(add);
-        add.addEventListener('click', meta.teste );
-    },
-    teste: function(event){
-        event.preventDefault();
-        console.log("hello");
-        var str = 
-        '<div id="array_ingredient1">\
-            <tr>\
-                <td>\
-                    <select id=\'test1\'>\
-                    </select>\
-                </td>\
-                <td>\
-                    <input type="number">\
-                </td>\
-                <td>\
-                    <select>\
-                        <option>L</option>\
-                        <option>g</option>\
-                        <option>unité</option>\
-                    </select>\
-                </td>\
-            </tr>\
-        </div>';
-        var div = document.getElementById( 'array' );
-        div.insertAdjacentHTML( 'beforeend', str );
-        var select = document.getElementById( 'test1' );
-        //select.innerHTML = '<?php foreach("$names" as "$name") { echo "<option>"; echo "$name"; echo "</option>"; } ?>';
-        select.innerHTML = '<?php $v = 2; $v = $v * 8; echo "<option>";echo "$v";echo "</option>"; ?>';
-        //select.innerHTML = '<?php echo "<option"; ?>';
-    }
-};
-
-
-
-document.addEventListener("DOMContentLoaded", meta.init);*/
-
 jQuery(
     function($) {
-        var $button = $('#add-row'), $row = $('.ingredient-rows').clone();
+        var $button = $('#dose-add-button')
+        var $row = $('.ingredient-rows').clone();
+        var $anchor = $('#dose-list');
 
         $button.click(
             function() {
-                $row.clone().insertBefore( $button );
+                $row.clone().insertAfter( $anchor );
             }
         );
     }
 );
 
 document.addEventListener("DOMContentLoaded", jQuery);
+
+jQuery(document).on(
+    'click',
+    '#dose-add-button',
+    function() {
+        const post_id = document.getElementById('dose-add-button').dataset.postId;
+        const ingredient_id = document.getElementById('dose-ingredient-list-0').value;
+        const quantity = document.getElementById('dose-quantity').value;
+        const unit = document.getElementById('dose-unit-select').value;
+        
+        jQuery.ajax({
+            url: ajaxurl, 
+            type: "POST", 
+            data : {
+                'action' : 'meta_menu',
+                'post_id' : post_id,
+                'ingredient_id' : ingredient_id,
+                'quantity' : quantity,
+                'unit' : unit
+            }
+        }).done(
+            function(response) {
+                var doseAddButton = document.getElementById('dose-add-button');
+
+                console.log(response);
+
+                if( response === 'failure' ) {
+                    doseAddButton.style.backgroundColor = 'red';
+                } else {
+                    doseAddButton.style.backgroundColor = 'green';
+                }
+            }
+        );
+    }
+);

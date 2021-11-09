@@ -13,177 +13,219 @@ class Plugin
         // ces derniers me permettent de brancher une methode sur un hook
         add_action(
             'init', 
-            [$this, 'createRecipePostType']
+            [$this, 'ochope_create_recipe_post_type']
         );
 
         add_action(
             'init', 
-            [$this, 'createIngredientCustomTaxonomy']
+            [$this, 'ochope_create_ingredient_custom_taxonomy']
         );
 
         add_action(
             'init', 
-            [$this, 'createRecipeTypeCustomTaxonomy']
-        );
-
-        add_action(
-            'init', 
-            [$this, 'createRecipeDifficultyCustomTaxonomy']
-        );
-
-        add_action(
-            'init', 
-            [$this, 'create_test_taxonomy']
-        );
-
-        add_action(
-            'add_meta_boxes', 
-            [$this, 'add_test_box']
+            [$this, 'ochope_create_recipe_type_custom_taxonomy']
         );
 
         add_action(
             'add_meta_boxes',
-            [$this,'global_notice_meta_box']
-        );
-
-        add_action(
-            'add_meta_boxes',
-            [$this,'global_notice_meta_box']
+            [$this,'ochope_metabox_recipe_data']
         );
 
         add_action(
             'admin_enqueue_scripts', 
-            [$this,'pw_load_scripts']
+            [$this,'ochope_pw_load_scripts']
+        );
+
+        //executer ajax
+        add_action(
+            'wp_ajax_create_ingredient',
+            [$this, 'ochope_create_ingredient']
+        );
+
+        //executer ajax
+        add_action(
+            'wp_ajax_nopriv_create_ingredient',
+            [$this, 'ochope_create_ingredient']
+        );
+
+        //executer ajax
+        add_action(
+            'wp_ajax_meta_menu',
+            [$this, 'ochope_meta_menu']
+        );
+
+        //executer ajax
+        add_action(
+            'wp_ajax_nopriv_meta_menu',
+            [$this, 'ochope_meta_menu']
         );
     }
-
-    public function add_test_box() {
-        add_meta_box('theme_box_ID', __('Theme'), [$this,'your_styling_function'], 'post', 'side', 'core');
-    }
-
-    public function your_styling_function($post) {
- 
-        echo '<input type="hidden" name="taxonomy_noncename" id="taxonomy_noncename" value="' . 
-                wp_create_nonce( 'taxonomy_theme' ) . '" />';
-     
-         
-        // Get all theme taxonomy terms
-        $themes = get_terms('theme', 'hide_empty=0'); 
-     
-    ?>
-    <select name='post_theme' id='post_theme'>
-        <!-- Display themes as options -->
-        <?php 
-            $names = wp_get_object_terms($post->ID, 'theme'); 
-            ?>
-            <option class='theme-option' value=''
-            <?php if (!count($names)) echo "selected";?>>None</option>
-            <?php
-        foreach ($themes as $theme) {
-            if (!is_wp_error($names) && !empty($names) && !strcmp($theme->slug, $names[0]->slug)) 
-                echo "<option class='theme-option' value='" . $theme->slug . "' selected>" . $theme->name . "</option>\n"; 
-            else
-                echo "<option class='theme-option' value='" . $theme->slug . "'>" . $theme->name . "</option>\n"; 
-        }
-       ?>
-    </select>    
-    <?php
-    }
     
-    public function pw_load_scripts($hook) {
-     
-        wp_enqueue_script( 'meta_menu.js', plugins_url( 'class/js/meta_menu.js' , dirname(__FILE__) ) );
+    public function ochope_pw_load_scripts() {
+        wp_enqueue_script( 'ochope-meta_menu', plugins_url( 'class/js/meta_menu.js' , dirname(__FILE__) ) , array('jquery') );
+        wp_localize_script('ochope-meta_menu', 'ajaxurl', array(admin_url('admin-ajax.php')));
+
+        wp_enqueue_script( 'ochope-add_ingredients', plugins_url( 'class/js/add_ingredients.js' , dirname(__FILE__) ) , array('jquery') );
+        wp_localize_script('ochope-add_ingredients', 'ajaxurl', array(admin_url('admin-ajax.php')));
     }
 
-    public function create_test_taxonomy() {
-        if (!taxonomy_exists('theme')) {
-            register_taxonomy( 'theme', 'post', array( 'hierarchical' => false, 'label' => __('Test 20211029'), 'query_var' => 'theme', 'rewrite' => array( 'slug' => 'theme' ) ) );
-     
-            wp_insert_term('Beauty', 'theme');
-            wp_insert_term('Dragons', 'theme');
-            wp_insert_term('Halloween', 'theme');
-        }
-    }
-    
-    public function global_notice_meta_box() {
+    public function ochope_metabox_recipe_data() {
         add_meta_box(
-            'global-notice',
-            __( 'Insérer une dose', 'sitepoint' ),
-            [$this,'ochope_ingredientRecipe'],
+            'ochope_recipe_parameters_control',
+            __( 'Paramétrage de la recette', 'sitepoint' ),
+            [$this,'ochope_ingredient_recipe'],
             'recipe'
         );
     }
 
-    /*public function ochope_ingredientRecipe( $post ) {
+    public function ochope_create_ingredient() {
+        if (isset($_POST['post_id']) && isset($_POST['name']))
+        {
+            $postId = intval($_POST['post_id']);
+            $name = sanitize_text_field($_POST['name']);
+
+            // wp_insert_term( string $term, string $taxonomy, array|string $args = array() )
+            $newTerm = wp_insert_term($name, 'ingredient');
+        }
+
+        wp_send_json($newTerm);
+
+        wp_die();
+    }
+
+    public function ochope_meta_menu() {
+        global $wpdb;
+        $response = "failure";
+
+        if(isset($_POST['post_id']) && isset($_POST['ingredient_id']) && isset($_POST['quantity']) && isset($_POST['unit']))
+        {
+            $recipe_id = intval($_POST['post_id']);
+            $ingredient_id = intval($_POST['ingredient_id']);
+            $quantity = intval($_POST['quantity']);
+            $unit = sanitize_text_field($_POST['unit']);
+            
+            $result = Recipe_Ingredient::ochope_get_doses_of_a_recipe_and_ingredient($recipe_id,$ingredient_id);
+
+            if( count($result) == 0 ) {
+                if( Recipe_Ingredient::ochope_insert($recipe_id,$ingredient_id,$quantity,$unit) == false ) {
+                    
+                    $wpdb->print_error(); 
+
+                } else {
+                    $response = "success";
+                }
+            }
+        }
+
+        echo $response;
+
+        wp_die();
+    }
+
+    public function ochope_ingredient_recipe( $post ) {
 
         // Add a nonce field so we can check for it later.
         wp_nonce_field( 'global_notice_nonce', 'global_notice_nonce' );
     
         $value = get_post_meta( $post->ID, '_global_notice', true );
-    
-        //echo '<textarea style="width:100%" id="global_notice" name="global_notice">' . esc_attr( $value ) . '</textarea>';
 
-        ?>
-            <table>
-                <tr><td>Nom</td><td>Quantité</td><td>Unité</td></tr>
-                <tr><td><select><option>Houblon</option><option>Orge</option></select></td><td><input type="number"></td><td><select><option>Cl</option><option>G</option></select></td></tr>
-            </table>
-        <?php
-    }/**/
-
-    public function ochope_ingredientRecipe( $post ) {
-
-        // Add a nonce field so we can check for it later.
-        wp_nonce_field( 'global_notice_nonce', 'global_notice_nonce' );
-    
-        $value = get_post_meta( $post->ID, '_global_notice', true );
-    
-        //echo '<textarea style="width:100%" id="global_notice" name="global_notice">' . esc_attr( $value ) . '</textarea>';
-
-        $taxonomies = get_terms(['taxonomy' => 'ingredient']);
+        $ingredientArgs = [
+            'taxonomy' => 'ingredient',
+            'hide_empty' => false
+        ]; 
+        $taxonomies = get_terms($ingredientArgs);
         $names = wp_list_pluck($taxonomies, 'name');
-        //var_dump($taxonomies);die();
+        $termsId = wp_list_pluck($taxonomies, 'term_id');
+        $arrLength = count($names);
+        $doses = Recipe_Ingredient::ochope_get_doses_of_a_recipe($post->ID);
+        $arrLengthDoses = count($doses);
+        $unitTable = array("L","g","unité");
+
+        //var_dump($doses[0]->id);die();
 
          ?>
-            <table id="array">
-                <tr>
-                    <td>Nom</td><td>Quantité</td><td>Unité</td>
-                </tr>
-                <tr class = "ingredient-rows">
-                    <td>
-                        <select>
-                        <?php foreach($names as $name) {
-                            echo '<option>';
-                                echo $name;
-                            echo '</option>';
-                        } ?>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number">
-                    </td>
-                    <td>
-                        <select>
-                            <option>L</option>
-                            <option>g</option>
-                            <option>unité</option>
-                        </select>
-                    </td>
-                </tr>
+            <table>
+                Ajout d'ingrédients
+                <table style="border:solid;">
+                    <tr>
+                        <td>Nom de l'ingredient</td>
+                    </tr>
+                    <tr> 
+                        <td><input id="new-ingredient-name" type="text" name ="ing"></td>
+                        <td><input type="button" id="add-ingredient" name="add-ingredient" value="Ajouter un ingrédient" data-post-id="<?= $post->ID ?>" ></td>
+                    </tr>
+                </table>
+            
+                <table style="border:solid;">
+                    Ajout de doses
+                    <tr>
+                        <td>Nom</td><td>Quantité</td><td>Unité</td>
+                    </tr>
+                    <tr class = "ingredient-rows">
+                        <td>
+                            <select id="dose-ingredient-list-0" class="dose-ingredient-list">
+                            <?php for($i = 0; $i < $arrLength; $i++) {
+                                echo '<option value="'.$termsId[$i].'">';
+                                    echo $names[$i];
+                                echo '</option>';
+                            } ?>
+                            </select>
+                        </td>
+                        <td>
+                            <input id="dose-quantity" type="number" name ="dose-quantity">
+                        </td>
+                        <td>
+                            <select id="dose-unit-select" name="dose-unit-select">
+                                <option value="0">L</option>
+                                <option value="1">g</option>
+                                <option value="2">unité</option>
+                            </select>
+                        </td>
+                        <td><input id="dose-add-button" type="button" name="dose-add-button" value="Ajouter une dose" data-post-id="<?= $post->ID ?>" ></td>
+
+                    </tr>
+                </table>
+            
+                <table style="border:solid;">
+                    Doses
+                    <tr id="dose-list">
+                        <td>Nom</td><td>Quantité</td><td>Unité</td>
+                    </tr>
+                <?php for($i = 0; $i < $arrLengthDoses; $i++) {
+                    echo "<tr>";
+                        echo "<td>";
+                            echo "<select id='dose-ingredient-list-".($i+1)."' autocomplete='off' class='dose-ingredient-list'>";
+                            for($j = 0; $j < $arrLength; $j++) {
+                                echo '<option value="'.$termsId[$j].'" '.( $termsId[$j] == $doses[$i]->ingredient_id ? 'selected="selected"' : '' ).'>';
+                                    echo $names[$j];
+                                echo '</option>';
+                            }
+                            echo "</select>";
+                        echo "</td>";
+                        echo "<td>";
+                            echo "<input id='dose-quantity' type='number' name ='dose-quantity' value='".$doses[$i]->quantity."'>";
+                        echo "</td>";
+                        echo "<td>";
+                            echo "<select id='dose-unit-select' name='dose-unit-select' autocomplete='off'>";
+                            for($j = 0; $j < count($unitTable); $j++) {
+                                echo '<option value="'.$j.'" '.( $j == $doses[$i]->unit ? 'selected="selected"' : '' ).'>'.$unitTable[$j].'</option>';
+                            }
+                            echo "</select>";
+                        echo "</td>";
+                        echo "<td><input id='dose-modify-button' type='button' name='dose-modify-button' value='Modifier la dose' data-post-id='".$post->ID."' ></td>";
+                    echo "</tr>";
+                } 
+                if ( $arrLengthDoses == 0 ) {
+                    echo "<tr><td><p>Il n'y a pas de doses pour cette recette !</p></td></tr>";
+                } ?>
+                </table>
             </table>
             
-            <table>
-                <tr>
-                    <td>
-                        <input type="button" id="add-row" name="add-row" value="Add row">
-                    </td>
-                </tr>
-            </table>
         <?php
             
-    }/**/
+    }
 
-    public function createRecipePostType()
+    public function ochope_create_recipe_post_type()
     {
         // Methode qui nous permet d'ajouter le CPT Recipe
         register_post_type(
@@ -214,7 +256,7 @@ class Plugin
             );  
     }
 
-    public function createIngredientCustomTaxonomy()
+    public function ochope_create_ingredient_custom_taxonomy()
     {
         $labels = array(
             'name' => _x( 'Ingrédient', 'taxonomy general name' ),
@@ -242,7 +284,7 @@ class Plugin
         );
     }
 
-    public function createRecipeTypeCustomTaxonomy()
+    public function ochope_create_recipe_type_custom_taxonomy()
     {
         // Methode qui nous permet d'ajouter la Custom taxo "Type de recette"
         register_taxonomy(
@@ -257,22 +299,7 @@ class Plugin
         );
     }
 
-    public function createRecipeDifficultyCustomTaxonomy()
-    {
-        // Methode qui nous permet d'ajouter la Custom taxo "Difficulty"
-        register_taxonomy(
-            'difficulty',
-            ['recipe'], // seul les recettes pourront avoir un/des ingredients
-            [
-                'label' => 'Difficulté',
-                'hierarchical' => false,
-                'public' => true,
-                'show_in_rest' => true
-            ]
-        );
-    }
-
-    public function addCapAdmin()
+    public function ochope_add_cap_admin()
     {
         // methode qui nous permet d'ajouter les droits sur le CPT recipe pour le role administrateur
         //! Attention, sans cette opération le CPT recipe va disparaire
@@ -291,7 +318,7 @@ class Plugin
         $role->add_cap('read_private_recipes');
     }
 
-    public function registerChefRole()
+    public function ochope_register_brewer_role()
     {
         add_role(
             'brewer',
@@ -300,20 +327,20 @@ class Plugin
     }
 
     //! Pour ajouter/supprimer un role, je dois imperativement me situer dans activate/deactivate
-    public function activate()
+    public function ochope_activate()
     {
-        Recipe_Ingredient::createTable();
+        Recipe_Ingredient::ochope_create_table();
         // ajout du role chef
-        $this->registerChefRole();
+        $this->ochope_register_brewer_role();
         // ajout cap sur CPT recipe pour admin
-        $this->addCapAdmin();
+        $this->ochope_add_cap_admin();
 
     }
 
-    public function deactivate()
+    public function ochope_deactivate()
     {
         // Suppression de la table custom
-        Recipe_Ingredient::dropTable();
+        Recipe_Ingredient::ochope_drop_table();
         // suppression du role chef
         remove_role('brewer');
     }
