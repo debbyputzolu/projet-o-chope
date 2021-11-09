@@ -85,12 +85,16 @@ class Api {
             // si la recette a bien été crée
             // $recipeCreateResult va etre egal a l'id de cette dernière
             if(is_int($recipeCreateResult)){
+                foreach($ingredients as $ingredient) {
 
-                wp_set_post_terms(
-                    $recipeCreateResult,
-                    $ingredients,
-                    'ingredient'
-                );
+                    Recipe_Ingredient::ochope_insert($recipeCreateResult,$ingredient['id'],$ingredient['quantity'],$ingredient['unit']);
+
+                    wp_set_post_terms(
+                        $recipeCreateResult,
+                        [$ingredient['name']],
+                        'ingredient'
+                    );
+                }
 
                 wp_set_post_terms(
                     $recipeCreateResult,
@@ -104,6 +108,10 @@ class Api {
                     $recipeCreateResult,
                     $imageId
                 );
+
+                $recipeCreated = get_post($recipeCreateResult);
+
+                return $recipeCreated;
             }
 
 
