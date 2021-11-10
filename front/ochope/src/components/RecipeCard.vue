@@ -11,7 +11,7 @@
        </div>
 
        <div>
-          <router-link
+          <router-link class="linkDiscovery"
             :to="{
               name: 'recipe',
               params: {
@@ -54,7 +54,7 @@ export default {
 
             }
             else {
-                return 'https://picsum.photos/seed/picsum/400/300';
+                return 'http://localhost/valkyrie/apotheose/ochope/front/ochope/src/assets/images/recipeCard.png';
             }
       
     }

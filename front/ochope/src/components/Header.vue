@@ -12,17 +12,17 @@
                     name: 'recipes',
                 }"
             >Recipes</router-link></div>
-    <div class="navHeaderItem"><router-link :to="{
+    <div class="navHeaderItem"><router-link  :to="{
                     name: 'register',
                 }"
             >Register/Login</router-link></div>
-    <div class="navHeaderItem"><router-link :to="{
+    <div class="navHeaderItem"><router-link  :to="{
                     name: 'logout',
                 }"
             >Logout</router-link></div>
     <div class="navHeaderItem">About</div>
     <div class="navHeaderItem">Forum</div>
-    <div class="navHeaderItem"><router-link :to="{
+    <div class="navHeaderItem"><router-link  :to="{
                     name: 'profile',
                 }"
             >Profile</router-link></div>
@@ -37,9 +37,12 @@
 </template>
 
 <script>
+
+
 export default {
   name: 'Header',
- 
+
+  
 }
 </script>
 

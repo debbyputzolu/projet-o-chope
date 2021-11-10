@@ -58,7 +58,7 @@ const userService = {
                 return response.data;
                 
             }
-
+ 
         }
 
     },
@@ -67,13 +67,13 @@ const userService = {
         storage.unset('userData');
     },
 
-    async inscription(surname, email, password){
+    async inscription(username, email, password){
         
         console.log('requete axios');
         const result = await axios.post(
                     userService.baseOchope + '/inscription',
                     {
-                        surname: surname,
+                        username: username,
                         //lastname: lastname,
                         //firstname: firstname,
                         email: email,
@@ -83,10 +83,12 @@ const userService = {
                 .catch(function(){
                     return false;
                 })
-                console.log(result);
+                //console.log(result);
             return result;
             
-    }
+    },
+
+    
 
 };
 

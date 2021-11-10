@@ -8,6 +8,7 @@ import Register from '../views/Register.vue'
 import Profile from '../views/Profile.vue'
 import RecipeCreate from '../views/RecipeCreate.vue'
 import Logout from '../views/Logout.vue'
+import Error from '../views/Error.vue'
 
 Vue.use(VueRouter)
 
@@ -52,6 +53,12 @@ const routes = [
       path: '/logout', // URL configuration to match
       name: 'logout', // road name
       component: Logout // component to call
+    },
+
+    {
+      path: '/:catchAll(.*)', // URL configuration to match
+      name: 'not-found', // road name
+      component: Error // component to call
     },
 ]
 

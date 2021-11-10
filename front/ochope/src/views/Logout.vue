@@ -1,6 +1,6 @@
 <template>
  <section>
-     Vous êtes à présent déconnectés
+    <h2 class="logoutTitle"> Vous êtes à présent déconnectés</h2>
  </section>
 </template>
 
@@ -11,8 +11,10 @@ export default {
   
   created(){
       //deconnexion user
-      userService.logout();
-  }
+      userService.logout();  
+  },
+
+  
 }
 </script>
 

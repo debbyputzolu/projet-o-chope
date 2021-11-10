@@ -1,32 +1,40 @@
 <template>
 <carousel class="carousselHome" :perPage="1" :autoplay='true' :loop="true" :autoplayTimeout="2500">
-  <slide>
-   <!-- v-for="recipe in recipes"
+  <slide
+    v-for="recipe in recipes"
                 :key="recipe.id"
             >
-      <RecipeCard :recipeProps="recipe"/> --> 
+    <RecipeCarousel :recipe="recipe"/> 
   </slide>
-  <slide>
-    <Recipe/>
-  </slide>
-  <slide>
-    <Recipe/>
-  </slide>
+ 
 </carousel>
 </template>
 
 <script>
 import { Carousel, Slide } from 'vue-carousel';
-import Recipe from './Recipe.vue';
+import RecipeCarousel from './RecipeCarousel.vue';
+import recipeService from '../services/recipeService.js';
 
 export default{
     name: 'CarouselHome',
+
+    async created() {
+        this.recipes = await recipeService.loadRecipes();
+        //console.log(this.recipes);
+    },
+
     components: {
     Carousel,
     Slide,
-    Recipe
-  },
-       
+    RecipeCarousel
+    },
+   
+    data() {
+
+        return {
+            recipes: []
+        }
+    },
    
 };
 

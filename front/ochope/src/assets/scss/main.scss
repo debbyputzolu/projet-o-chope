@@ -180,7 +180,7 @@ font-size: 3rem;
   width: 65%;
 }
 
-.loginTitle, .inscriptionTitle {
+.loginTitle, .inscriptionTitle, .logoutTitle {
   color:#FFCE00;
   font-size: 1.7rem;
   margin-bottom: 1rem;
@@ -249,13 +249,14 @@ font-size: 3rem;
 .home {
   display: grid;
   grid-template-areas: 
- "caroussel caroussel  log"
- "caroussel caroussel  forum";
+ "caroussel log"
+ "caroussel forum";
  grid-gap:0px;
 }
 
 .carousselHome {
   grid-area: caroussel;
+  width: 35rem;
 }
 
 .registerHomeImage {
@@ -274,7 +275,28 @@ font-size: 3rem;
 
 a {
   text-decoration: none;
+  
 }
 
+.linkDiscovery{
+  font-weight: bolder;
+  color: white;
+  text-decoration: underline;
+}
+.notFound{
+  background-color: #FFCE00 ;
 
+  width: 35%;
+}
 
+.notFoundSection {
+  color: white;
+}
+
+.notFoundTitle {
+  font-size: 2.5rem;
+}
+
+.notFoundText {
+  font-size: 1.5rem;
+}

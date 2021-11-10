@@ -218,14 +218,14 @@ class Api {
         if(is_int($userCreateResult)) {
             $user = new WP_User($userCreateResult);
             $user->remove_role('subscriber');
-            $user->add_role('contributor');
+            $user->add_role('brewer');
 
             return [
                 'success' => true,
                 'userId' => $userCreateResult,
                 'username' => $$userName,
                 'email' => $email,
-                'role' => 'contributor'
+                'role' => 'brewer'
             ];
 
 

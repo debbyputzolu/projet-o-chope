@@ -10,10 +10,11 @@
             :to="{
                 name: 'register',
             }"
-        ><img src="../assets/images/registerhome.png" class="registerHomeImage"></router-link>
+        >
+        <img src="../assets/images/registerhome.png" class="registerHomeImage">
        
         <img src="../assets/images/forumhome.png" class="forumHomeImage">
-       
+       </router-link>
 
     </div>
 </template>

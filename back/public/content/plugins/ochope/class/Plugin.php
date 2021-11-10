@@ -59,6 +59,11 @@ class Plugin
             'wp_ajax_nopriv_meta_menu',
             [$this, 'ochope_meta_menu']
         );
+
+        //add_filter(
+          //  'jwt_auth_token_before_dispatch',
+         //   [$this. 'ochope_add_info_user']
+       // );
     }
     
     public function ochope_pw_load_scripts() {
@@ -180,7 +185,7 @@ class Plugin
                                 <option value="1">g</option>
                                 <option value="2">unité</option>
                             </select>
-                        </td>
+                        </td>https://developer.mozilla.org/fr/docs/Web/API/Node/cloneNode
                         <td><input id="dose-add-button" type="button" name="dose-add-button" value="Ajouter une dose" data-post-id="<?= $post->ID ?>" ></td>
 
                     </tr>
@@ -344,5 +349,11 @@ class Plugin
         // suppression du role chef
         remove_role('brewer');
     }
+
+   // public function ochope_add_info_user($data, $user)
+   // {
+     //   $data['id'] = $user->data->user_id;
+       // return $data;
+    //}
 }
 

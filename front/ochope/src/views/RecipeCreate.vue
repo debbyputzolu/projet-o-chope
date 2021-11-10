@@ -51,18 +51,19 @@
                 <tr class="recipeCreateTable">
                     <td>Nom</td><td>Quantité</td><td>Unité</td>
                 </tr>
-                <tr class = "ingredient-rows recipeCreateTable">
+                
+                <tr class = "ingredient-rows recipeCreateTable" v-for="(ingredient, index) in selectedIngredients" :key="index">
                     <td>
-                        <select v-model="selectedIngredients">
+                        <select v-model="selectedIngredients[index][ingredient]">
                         <option v-for="ingredient in ingredients" :key="ingredient.id" :value="ingredient.id" >{{ingredient.name}}</option>
                       
                         </select>
                     </td>
                     <td>
-                        <input type="number" v-model="quantity">
+                        <input type="number" v-model="selectedIngredients[index][quantity]">
                     </td>
                     <td>
-                        <select v-model="selectedUnit">
+                        <select v-model="selectedIngredients[index][unit]">
                             <option value="0">L</option>
                             <option value="1">g</option>
                             <option value="2">unité</option>
@@ -105,9 +106,11 @@ export default{
         types: [],
         ingredients: [],
         selectedTypes:null,
-        selectedIngredients:[],
-        quantity: '',
-        selectedUnit:'',
+        selectedIngredients:[{
+            ingredient: 0,
+            quantity: 0,
+            unit: 0
+        }],
         image: null,
         imageId: null,
         titleEmpty: false,
@@ -118,7 +121,8 @@ export default{
         }
     },
     
-     async created(){const isTokenValid = await userService.isConnected();
+     async created(){
+        const isTokenValid = await userService.isConnected();
         if(!isTokenValid) {
             this.$router.push('login');
         }
@@ -195,16 +199,21 @@ export default{
 
     async loadIngredients() {
             this.ingredients = await recipeService.loadRecipesIngredients();
+            this.selectedIngredients[0].ingredient = this.ingredients[0].id;
         },
     
     handleClick(evt){
         evt.preventDefault();
         
-        const row = document.querySelector(".ingredient-rows"); //premier enfant
-        const addRow = row.cloneNode(true); //a insérer
-        const arrayIngredient = document.querySelector('#array'); //parent
-
-        arrayIngredient.insertBefore(addRow, row);
+        // const row = document.querySelector(".ingredient-rows"); //premier enfant
+        // const addRow = row.cloneNode(true); //a insérer
+        // const arrayIngredient = document.querySelector('#array'); //parent
+        this.selectedIngredients.push({
+            ingredient: 0,
+            quantity: 0,
+            unit: 0
+        });
+        // arrayIngredient.insertBefore(addRow, row);
         
     }
  }    

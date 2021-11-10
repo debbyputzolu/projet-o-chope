@@ -5,9 +5,9 @@
   <h2 class="inscriptionTitle">Création d'un nouveau compte</h2>
   <form @submit="handleSubmit" class="inscriptionForm">
             <label class="inscriptionLabel">Nom d'utilisateur
-                <br><input v-model="surname" name="surname">
+                <br><input v-model="username" name="username">
             </label>
-            <div class="error" v-if="surnameEmpty">
+            <div class="error" v-if="usernameEmpty">
                 Vous devez saisir un pseudo
             </div>
             <label class="inscriptionLabel">Nom
@@ -66,13 +66,13 @@ export default {
 
      data(){
       return {
-        surname:'',
+        username:'',
         lastname:'',
         firstname:'',
         email:'',
         password:'',
         passwordBis: '',
-        surnameEmpty: false,
+        usernameEmpty: false,
         lastnameEmpty: false,
         firstnameEmpty: false,
         emailEmpty: false,
@@ -86,9 +86,9 @@ export default {
   methods: {
       async handleSubmit(evt){
           evt.preventDefault();
-          if(this.surname == ''){
+          if(this.username == ''){
               console.log('NOM UTILISATEUR EST VIDE !!');
-              this.surnameEmpty = true;
+              this.usernameEmpty = true;
           }
           if(this.lastname == ''){
               console.log('NOM EST VIDE !!');
@@ -114,7 +114,7 @@ export default {
               this.passwordNotEqual = true;
           }
 
-          if(this.surname != '' && 
+          if(this.username != '' && 
           this.lastname != '' &&
           this.firstname != '' &&
           this.email != '' && 
@@ -124,17 +124,19 @@ export default {
           ){
               console.log('on est la');
             const result = await userService.inscription(
-            this.surname,
+            this.username,
             //this.lastname,
             //this.firstname,
             this.email,
             this.password
             ); 
+
+            //console.log(result);
           
           
-          if(result && result.success == true){
+          if(result ){
               console.log('OK TOUT EST NICKEL');
-              this.$router.push('register');
+              this.$router.push('profile');
           }
         }
         else{
