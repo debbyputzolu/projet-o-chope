@@ -59,6 +59,30 @@ class Plugin
             'wp_ajax_nopriv_meta_menu',
             [$this, 'ochope_meta_menu']
         );
+
+        //executer ajax
+        add_action(
+            'wp_ajax_dose_modification',
+            [$this, 'ochope_dose_modification']
+        );
+
+        //executer ajax
+        add_action(
+            'wp_ajax_nopriv_dose_modification',
+            [$this, 'ochope_dose_modification']
+        );
+
+        //executer ajax
+        add_action(
+            'wp_ajax_element_deletion',
+            [$this, 'ochope_element_deletion']
+        );
+
+        //executer ajax
+        add_action(
+            'wp_ajax_nopriv_element_deletion',
+            [$this, 'ochope_element_deletion']
+        );
     }
     
     public function ochope_pw_load_scripts() {
@@ -67,6 +91,12 @@ class Plugin
 
         wp_enqueue_script( 'ochope-add_ingredients', plugins_url( 'class/js/add_ingredients.js' , dirname(__FILE__) ) , array('jquery') );
         wp_localize_script('ochope-add_ingredients', 'ajaxurl', array(admin_url('admin-ajax.php')));
+
+        wp_enqueue_script( 'ochope-dose_modification', plugins_url( 'class/js/dose_modification.js' , dirname(__FILE__) ) , array('jquery') );
+        wp_localize_script('ochope-dose_modification', 'ajaxurl', array(admin_url('admin-ajax.php')));
+
+        wp_enqueue_script( 'ochope-element_deletion', plugins_url( 'class/js/element_deletion.js' , dirname(__FILE__) ) , array('jquery') );
+        wp_localize_script('ochope-element_deletion', 'ajaxurl', array(admin_url('admin-ajax.php')));
     }
 
     public function ochope_metabox_recipe_data() {
@@ -108,10 +138,58 @@ class Plugin
 
             if( count($result) == 0 ) {
                 if( Recipe_Ingredient::ochope_insert($recipe_id,$ingredient_id,$quantity,$unit) == false ) {
-                    
                     $wpdb->print_error(); 
-
                 } else {
+                    $response = "success";
+                }
+            }
+        }
+
+        echo $response;
+
+        wp_die();
+    }
+
+    public function ochope_dose_modification() {
+        global $wpdb;
+        $response = "failure";
+
+        if(isset($_POST['post_id']) && isset($_POST['ingredient_id']) && isset($_POST['quantity']) && isset($_POST['unit']))
+        {
+            $recipe_id = intval($_POST['post_id']);
+            $ingredient_id = intval($_POST['ingredient_id']);
+            $quantity = intval($_POST['quantity']);
+            $unit = sanitize_text_field($_POST['unit']);
+
+            $res = Recipe_Ingredient::ochope_get_doses_of_a_recipe_and_ingredient($recipe_id,$ingredient_id);
+            
+            if( $res[0]->quantity != $quantity || $res[0]->unit != $unit ) {
+                if( Recipe_Ingredient::ochope_update($res[0]->id,$ingredient_id,$recipe_id,$quantity,$unit) ) {
+                    $response = "success";
+                }
+            }
+        }
+
+        echo $response;
+
+        wp_die();
+    }
+
+    public function ochope_element_deletion() {
+        global $wpdb;
+        $response = "failure";
+
+        if(isset($_POST['post_id']) && isset($_POST['ingredient_id']) && isset($_POST['quantity']) && isset($_POST['unit']))
+        {
+            $recipe_id = intval($_POST['post_id']);
+            $ingredient_id = intval($_POST['ingredient_id']);
+            $quantity = intval($_POST['quantity']);
+            $unit = sanitize_text_field($_POST['unit']);
+
+            $res = Recipe_Ingredient::ochope_get_doses_of_a_recipe_and_ingredient($recipe_id,$ingredient_id);
+            
+            if( $res[0]->quantity != $quantity || $res[0]->unit != $unit ) {
+                if( Recipe_Ingredient::ochope_update($res[0]->id,$ingredient_id,$recipe_id,$quantity,$unit) ) {
                     $response = "success";
                 }
             }
@@ -163,16 +241,17 @@ class Plugin
                     </tr>
                     <tr id="ingredient-rows">
                         <td>
-                            <select id="dose-ingredient-list-0" class="dose-ingredient-list" autocomplete="off">
+                            <select id="dose-ingredient-list" class="dose-ingredient-list" autocomplete="off">
                             <?php for($i = 0; $i < $arrLength; $i++) {
                                 echo '<option value="'.$termsId[$i].'">';
                                     echo $names[$i];
                                 echo '</option>';
                             } ?>
                             </select>
+                            <input id="ingredient-delete-button" class="delete-button" type="button" name="ingredient-delete-button" value="X" >
                         </td>
                         <td>
-                            <input id="dose-quantity" type="number" name ="dose-quantity"></input>
+                            <input id="dose-quantity" type="number" name ="dose-quantity" style="width:70px;"></input>
                         </td>
                         <td>
                             <select id="dose-unit-select" name="dose-unit-select">
@@ -182,7 +261,6 @@ class Plugin
                             </select>
                         </td>
                         <td><input id="dose-add-button" type="button" name="dose-add-button" value="Ajouter une dose" data-post-id="<?= $post->ID ?>" ></td>
-
                     </tr>
                 </table>
             
@@ -194,30 +272,28 @@ class Plugin
                 <?php for($i = 0; $i < $arrLengthDoses; $i++) {
                     echo "<tr>";
                         echo "<td>";
-                            echo "<select id='dose-ingredient-list-".($i+1)."' autocomplete='off' class='dose-ingredient-list'>";
                             for($j = 0; $j < $arrLength; $j++) {
-                                echo '<option value="'.$termsId[$j].'" '.( $termsId[$j] == $doses[$i]->ingredient_id ? 'selected="selected"' : '' ).'>';
-                                    echo $names[$j];
-                                echo '</option>';
+                                if($termsId[$j] == $doses[$i]->ingredient_id) {
+                                    echo "<data id='dose-ingredient-".($i+1)."' value='".$termsId[$j]."'>".$names[$j]."</data>";
+                                }
                             }
-                            echo "</select>";
                         echo "</td>";
                         echo "<td>";
-                            echo "<input id='dose-quantity' type='number' name ='dose-quantity' value='".$doses[$i]->quantity."'>";
+                            echo "<input id='dose-quantity-".($i+1)."' type='number' name ='dose-quantity-".($i+1)."' value='".$doses[$i]->quantity."' style='width:70px;'>";
                         echo "</td>";
                         echo "<td>";
-                            echo "<select id='dose-unit-select' name='dose-unit-select' autocomplete='off'>";
+                            echo "<select id='dose-unit-select-".($i+1)."' name='dose-unit-select-".($i+1)."' autocomplete='off'>";
                             for($j = 0; $j < count($unitTable); $j++) {
                                 echo '<option value="'.$j.'" '.( $j == $doses[$i]->unit ? 'selected="selected"' : '' ).'>'.$unitTable[$j].'</option>';
                             }
                             echo "</select>";
                         echo "</td>";
-                        echo "<td><input id='dose-modify-button' type='button' name='dose-modify-button' value='Modifier la dose' data-post-id='".$post->ID."' ></td>";
+                        echo "<td><input id='dose-modify-button-".($i+1)."' class='dose-modify-button' type='button' name='dose-modify-button-".($i+1)."' value='Modifier la dose' data-post-id='".$post->ID."' ></td>";
+                        echo "<td><input id='dose-delete-button-".($i+1)."' class='delete-button' type='button' name='dose-delete-button-".($i+1)."' value='X'></td>";
                     echo "</tr>";
                 } 
-                if ( $arrLengthDoses == 0 ) {
-                    echo "<tr><td><p>Il n'y a pas de doses pour cette recette !</p></td></tr>";
-                } ?>
+                echo "<tr id='dose-message' ".( $arrLengthDoses == 0 ? "" : "style='display:none;" )."'><td><p>Il n'y a pas de doses pour cette recette !</p></td></tr>";
+                ?>
                 </table>
             </table>
             
@@ -279,7 +355,10 @@ class Plugin
                 'labels' => $labels,
                 'hierarchical' => true,
                 'public' => true,
-                'show_in_rest' => true
+                'show_in_rest' => true,
+                'show_ui'                    => false,
+                'show_in_quick_edit'         => false,
+                'meta_box_cb'                => false,
             ]
         );
     }

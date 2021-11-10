@@ -23,13 +23,11 @@ jQuery(document).on(
                     inputIngredient.style.backgroundColor = 'green';
                     //console.log("insertion nouveau ingredient dans liste deroulante");
 
-                    var insertions = document.getElementsByClassName('dose-ingredient-list');
-                    for (var i = 0; i < insertions.length; i++) {
-                        var option = document.createElement("option");
-                        option.text = name;
-                        option.value = response.term_id;
-                        insertions[i].add(option,null);
-                    }
+                    var insertion = document.getElementById('dose-ingredient-list');
+                    var option = document.createElement("option");
+                    option.text = name;
+                    option.value = response.term_id;
+                    insertion.add(option,null);
                 }
             }
         );

@@ -80,8 +80,10 @@ class Recipe_Ingredient
         );
     }
     
-    public function ochope_update($id,$ingredient_id,$recipe_id,$quantity,$unit)
+    public static function ochope_update($id,$ingredient_id,$recipe_id,$quantity,$unit)
     {
+        global $wpdb;
+
         $data = [
             'ingredient_id' => $ingredient_id,
             'recipe_id' => $recipe_id,
@@ -93,7 +95,7 @@ class Recipe_Ingredient
             'id' => $id
         ];
 
-        $this->database->update(
+        return $wpdb->update(
             'wp_ochope_recipe_ingredient',
             $data,
             $where
