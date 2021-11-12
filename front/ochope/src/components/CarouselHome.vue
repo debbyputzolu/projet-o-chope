@@ -1,7 +1,7 @@
 <template>
-<carousel class="carousselHome" :perPage="1" :autoplay='true' :loop="true" :autoplayTimeout="2500">
+<carousel class="carousselHome" :perPage="1" :autoplay='true' :loop="true" :autoplayTimeout="2500" >
   <slide
-    v-for="recipe in recipes"
+    v-for="recipe in recipes.slice(0,3)"
                 :key="recipe.id"
             >
     <RecipeCarousel :recipe="recipe"/> 

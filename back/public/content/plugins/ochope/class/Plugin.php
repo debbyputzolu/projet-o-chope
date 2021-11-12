@@ -60,10 +60,7 @@ class Plugin
             [$this, 'ochope_meta_menu']
         );
 
-        //add_filter(
-          //  'jwt_auth_token_before_dispatch',
-         //   [$this. 'ochope_add_info_user']
-       // );
+        add_filter( 'jwt_auth_token_before_dispatch', 'ochope_add_info_user', 10, 2 );
     }
     
     public function ochope_pw_load_scripts() {
@@ -350,10 +347,10 @@ class Plugin
         remove_role('brewer');
     }
 
-   // public function ochope_add_info_user($data, $user)
-   // {
-     //   $data['id'] = $user->data->user_id;
-       // return $data;
-    //}
+    public function ochope_add_info_user($data, $user)
+    {
+        $data['user_id'] = $user->data->ID;
+        return $data;
+    }
 }
 

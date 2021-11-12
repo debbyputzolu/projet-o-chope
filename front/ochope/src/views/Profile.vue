@@ -1,8 +1,8 @@
 <template v-if="user">
   <div class="profile" v-if="isUserConnected" >
       <div class="headProfile">
-          <img src="../assets/images/machin.png" class="profileImage">
-          <h2 class="profileTitle">{{user.user_display_name}}</h2>
+          <img src="../assets/images/profiledefault.png" class="profileImage">
+          <h2 class="profileTitle">{{user.user_display_name}}{{user.user_id}}</h2>
           <button class="buttonProfile"><router-link :to="{
                     name: 'recipe-create',
                 }"
@@ -68,7 +68,7 @@ export default {
 
 computed: {
     user(){
-      
+      console.log(this.$store.state.user);
       return this.$store.state.user;
     }
   }

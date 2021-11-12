@@ -165,8 +165,6 @@ export default{
             this.selectedTypes,
             this.description,
             this.selectedIngredients,
-            this.quantity,
-            this.selectedUnit
             ); 
           
           
