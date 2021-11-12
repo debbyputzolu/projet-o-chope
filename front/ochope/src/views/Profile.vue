@@ -45,6 +45,8 @@ export default {
             isUserConnected: false,
             recipes: [],
             authorId: null,
+           infoUser: [],
+           name: null
         };
   },
 
@@ -61,19 +63,19 @@ export default {
             this.isUserConnected = true;
         }
 
-        this.authorId = this.$route.params.id;
+       this.authorId = this.$route.params.id;
         
-        this.recipes = await recipeService.getRecipeByAuthor(this.authorId);
+       this.name = this.$store.state.user.user_display_name;
+       this.recipes = await recipeService.getRecipeByAuthor(this.name);
   },
 
 computed: {
     user(){
-      console.log(this.$store.state.user);
+      //console.log(this.$store.state);
       return this.$store.state.user;
     }
   }
 }
-// vm.$forceUpdate();
 
 
 </script>

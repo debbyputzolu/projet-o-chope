@@ -21,7 +21,9 @@ const userService = {
                     return false;
                 }
             );
+            
         return response.data;
+        
     },
 
     isConnected: async function(){

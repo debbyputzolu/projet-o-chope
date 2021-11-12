@@ -6,15 +6,18 @@
 
 <script>
 import userService from '../services/userService'
+
 export default {
     name: 'Logout',
   
   created(){
       //deconnexion user
-      userService.logout();  
-  },
-
+      userService.logout();
+      this.$router.push('/')
+      this.$router.go();
   
+  },
+   
 }
 </script>
 

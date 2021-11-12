@@ -35,7 +35,16 @@ const recipeService = {
     return response.data;
   },
 
-  async getRecipeByAuthor(authorId) {
+  async getUserInfo (name) {
+    
+    const response = await axios.get(recipeService.baseURI + '/users/?slug=' + name);
+    //console.log(response.data);
+    return response.data;
+  },
+
+  async getRecipeByAuthor(username) {
+    this.infoUser = await recipeService.getUserInfo(username);
+    const authorId = this.infoUser[0].id;
     const response = await axios.get(recipeService.baseURI + '/recipe?_embed=true&author=' + authorId);
     return response.data;
   },
