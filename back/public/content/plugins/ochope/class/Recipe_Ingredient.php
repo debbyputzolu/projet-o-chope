@@ -68,13 +68,15 @@ class Recipe_Ingredient
         return $wpdb->get_results($cmd);
     }
 
-    public function ochope_delete($id)
+    public static function ochope_delete($id)
     {
+        global $wpdb;
+
         $where = [
             'id' => $id
         ];
         
-        $this->database->delete(
+        $wpdb->delete(
             'wp_ochope_recipe_ingredient',
             $where
         );

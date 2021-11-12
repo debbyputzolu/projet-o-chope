@@ -14,7 +14,7 @@ jQuery(document).on(
             url: ajaxurl, 
             type: "POST", 
             data : {
-                'action' : 'dose_modification',
+                'action' : 'modify_dose',
                 'post_id' : post_id,
                 'ingredient_id' : ingredient_id,
                 'quantity' : quantity,

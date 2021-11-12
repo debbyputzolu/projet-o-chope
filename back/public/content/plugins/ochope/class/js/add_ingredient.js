@@ -9,7 +9,7 @@ jQuery(document).on(
             url: ajaxurl, 
             type: "POST", 
             data : {
-                'action' : 'create_ingredient',
+                'action' : 'add_ingredient',
                 'post_id' : post_id,
                 'name' : name
             }

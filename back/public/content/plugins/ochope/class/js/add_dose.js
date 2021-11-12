@@ -11,7 +11,7 @@ jQuery(document).on(
             url: ajaxurl, 
             type: "POST", 
             data : {
-                'action' : 'meta_menu',
+                'action' : 'add_dose',
                 'post_id' : post_id,
                 'ingredient_id' : ingredient_id,
                 'quantity' : quantity,
@@ -34,6 +34,8 @@ jQuery(document).on(
                     var row = document.getElementById('ingredient-rows');
                     var newDose = row.cloneNode(true);
 
+                    newDose.id = "";
+
                     //remplcement du select ingredient par un texte avec 1 ingredient
                     newDose.children[0].children[0].remove();
                     newDose.children[0].children[0].remove();
@@ -43,7 +45,7 @@ jQuery(document).on(
                     data.textContent = getNameIngredient.options[getNameIngredient.selectedIndex].text;
                     var nb = document.querySelectorAll('data').length + 1;
                     data.id = 'dose-ingredient-'+nb;
-                    ronewDosew2.children[0].append(data);
+                    newDose.children[0].append(data);
 
                     newDose.children[1].children[0].id = 'dose-quantity-'+nb;
                     newDose.children[1].children[0].value = quantity;
@@ -55,19 +57,20 @@ jQuery(document).on(
                     newDose.children[3].children[0].value = "Modifier la dose";
                     newDose.children[3].children[0].className = 'dose-modify-button';
 
+                    //creer bouton supprimer dose
                     var rowAdd = document.createElement("td");
-                    var btn = document.createElement("button");
-                    btn.innerHTML = "X";
-                    
+                    var btn = document.createElement("input");
+                    btn.value = "X";
+                    btn.id = 'dose-delete-button-'+nb;
+                    btn.className = 'delete-button';
+                    btn.type = 'button';
+                    btn.name = 'dose-delete-button-'+nb;
                     rowAdd.appendChild(btn);
-                    newDose.appendChild(rowAdd);
 
-                    newDose.children[4].children[0].id = 'dose-delete-button-'+nb;
-                    newDose.children[4].children[0].name = 'dose-delete-button-'+nb;
-                    newDose.children[4].children[0].className = 'delete-button';
+                    newDose.appendChild(rowAdd);
             
                     var elt = document.getElementById("dose-table");
-                    elt.append(newDose);
+                    elt.children[2].append(newDose);
                 }
             }
         );

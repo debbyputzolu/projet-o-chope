@@ -36,67 +36,62 @@ class Plugin
             [$this,'ochope_pw_load_scripts']
         );
 
-        //executer ajax
+        /*
+            scripts JS
+        */
         add_action(
-            'wp_ajax_create_ingredient',
-            [$this, 'ochope_create_ingredient']
+            'wp_ajax_add_ingredient',
+            [$this, 'ochope_add_ingredient']
         );
 
-        //executer ajax
         add_action(
-            'wp_ajax_nopriv_create_ingredient',
-            [$this, 'ochope_create_ingredient']
+            'wp_ajax_nopriv_add_ingredient',
+            [$this, 'ochope_add_ingredient']
         );
 
-        //executer ajax
         add_action(
-            'wp_ajax_meta_menu',
-            [$this, 'ochope_meta_menu']
+            'wp_ajax_add_dose',
+            [$this, 'ochope_add_dose']
         );
 
-        //executer ajax
         add_action(
-            'wp_ajax_nopriv_meta_menu',
-            [$this, 'ochope_meta_menu']
+            'wp_ajax_nopriv_add_dose',
+            [$this, 'ochope_add_dose']
         );
 
-        //executer ajax
         add_action(
-            'wp_ajax_dose_modification',
-            [$this, 'ochope_dose_modification']
+            'wp_ajax_modify_dose',
+            [$this, 'ochope_modify_dose']
         );
 
-        //executer ajax
         add_action(
-            'wp_ajax_nopriv_dose_modification',
-            [$this, 'ochope_dose_modification']
+            'wp_ajax_nopriv_modify_dose',
+            [$this, 'ochope_modify_dose']
         );
 
-        //executer ajax
         add_action(
-            'wp_ajax_element_deletion',
-            [$this, 'ochope_element_deletion']
+            'wp_ajax_delete_element',
+            [$this, 'ochope_delete_element']
         );
 
-        //executer ajax
         add_action(
-            'wp_ajax_nopriv_element_deletion',
-            [$this, 'ochope_element_deletion']
+            'wp_ajax_nopriv_delete_element',
+            [$this, 'ochope_delete_element']
         );
     }
     
     public function ochope_pw_load_scripts() {
-        wp_enqueue_script( 'ochope-meta_menu', plugins_url( 'class/js/meta_menu.js' , dirname(__FILE__) ) , array('jquery') );
-        wp_localize_script('ochope-meta_menu', 'ajaxurl', array(admin_url('admin-ajax.php')));
+        wp_enqueue_script( 'ochope-add_dose', plugins_url( 'class/js/add_dose.js' , dirname(__FILE__) ) , array('jquery') );
+        wp_localize_script('ochope-add_dose', 'ajaxurl', array(admin_url('admin-ajax.php')));
 
-        wp_enqueue_script( 'ochope-add_ingredients', plugins_url( 'class/js/add_ingredients.js' , dirname(__FILE__) ) , array('jquery') );
-        wp_localize_script('ochope-add_ingredients', 'ajaxurl', array(admin_url('admin-ajax.php')));
+        wp_enqueue_script( 'ochope-add_ingredient', plugins_url( 'class/js/add_ingredient.js' , dirname(__FILE__) ) , array('jquery') );
+        wp_localize_script('ochope-add_ingredient', 'ajaxurl', array(admin_url('admin-ajax.php')));
 
-        wp_enqueue_script( 'ochope-dose_modification', plugins_url( 'class/js/dose_modification.js' , dirname(__FILE__) ) , array('jquery') );
-        wp_localize_script('ochope-dose_modification', 'ajaxurl', array(admin_url('admin-ajax.php')));
+        wp_enqueue_script( 'ochope-modify_dose', plugins_url( 'class/js/modify_dose.js' , dirname(__FILE__) ) , array('jquery') );
+        wp_localize_script('ochope-modify_dose', 'ajaxurl', array(admin_url('admin-ajax.php')));
 
-        wp_enqueue_script( 'ochope-element_deletion', plugins_url( 'class/js/element_deletion.js' , dirname(__FILE__) ) , array('jquery') );
-        wp_localize_script('ochope-element_deletion', 'ajaxurl', array(admin_url('admin-ajax.php')));
+        wp_enqueue_script( 'ochope-delete_element', plugins_url( 'class/js/delete_element.js' , dirname(__FILE__) ) , array('jquery') );
+        wp_localize_script('ochope-delete_element', 'ajaxurl', array(admin_url('admin-ajax.php')));
     }
 
     public function ochope_metabox_recipe_data() {
@@ -108,7 +103,7 @@ class Plugin
         );
     }
 
-    public function ochope_create_ingredient() {
+    public function ochope_add_ingredient() {
         if (isset($_POST['post_id']) && isset($_POST['name']))
         {
             $postId = intval($_POST['post_id']);
@@ -123,7 +118,7 @@ class Plugin
         wp_die();
     }
 
-    public function ochope_meta_menu() {
+    public function ochope_add_dose() {
         global $wpdb;
         $response = "failure";
 
@@ -150,7 +145,7 @@ class Plugin
         wp_die();
     }
 
-    public function ochope_dose_modification() {
+    public function ochope_modify_dose() {
         global $wpdb;
         $response = "failure";
 
@@ -175,23 +170,24 @@ class Plugin
         wp_die();
     }
 
-    public function ochope_element_deletion() {
+    public function ochope_delete_element() {
         global $wpdb;
         $response = "failure";
 
-        if(isset($_POST['post_id']) && isset($_POST['ingredient_id']) && isset($_POST['quantity']) && isset($_POST['unit']))
+        if( isset($_POST['concerned_element']) && isset($_POST['post_id']) && isset($_POST['ingredient_id']) )
         {
             $recipe_id = intval($_POST['post_id']);
             $ingredient_id = intval($_POST['ingredient_id']);
-            $quantity = intval($_POST['quantity']);
-            $unit = sanitize_text_field($_POST['unit']);
+            $concerned_element = $_POST['concerned_element'];
 
             $res = Recipe_Ingredient::ochope_get_doses_of_a_recipe_and_ingredient($recipe_id,$ingredient_id);
-            
-            if( $res[0]->quantity != $quantity || $res[0]->unit != $unit ) {
-                if( Recipe_Ingredient::ochope_update($res[0]->id,$ingredient_id,$recipe_id,$quantity,$unit) ) {
-                    $response = "success";
-                }
+
+            for($i=0;$i<count($res);$i++) {
+                Recipe_Ingredient::ochope_delete($res[$i]->id);
+            }
+
+            if( $concerned_element == 'ingredient' ) {
+                wp_delete_term($ingredient_id,'ingredient');
             }
         }
 
@@ -217,59 +213,69 @@ class Plugin
         $arrLength = count($names);
         $doses = Recipe_Ingredient::ochope_get_doses_of_a_recipe($post->ID);
         $arrLengthDoses = count($doses);
-        $unitTable = array("L","g","unité");
+        $unitTable = array("cL","g","unité");
 
         //var_dump($doses[0]->id);die();
 
          ?>
-            <table>
-                Ajout d'ingrédients
-                <table style="border:solid;">
-                    <tr>
-                        <td>Nom de l'ingredient</td>
-                    </tr>
+            <table style="border:solid;">
+                <caption>Ajout d'ingrédients</caption>
+                <thead>
+                    <th>Nom de l'ingredient</th>
+                </thead>
+                <tbody>
                     <tr> 
                         <td><input id="new-ingredient-name" type="text" name ="ing"></td>
                         <td><input type="button" id="add-ingredient" name="add-ingredient" value="Ajouter un ingrédient" data-post-id="<?= $post->ID ?>" ></td>
                     </tr>
-                </table>
-            
-                <table style="border:solid;">
-                    Ajout de doses
-                    <tr>
-                        <td>Nom</td><td>Quantité</td><td>Unité</td>
-                    </tr>
+                </tbody>
+            </table>
+
+            <table style="border:solid;">
+                <caption>Ajout de doses</caption>
+                <thead>
+                    <th>Nom</th>
+                    <th>Quantité</th>
+                    <th>Unité</th>
+                </thead>
+                <tbody>
                     <tr id="ingredient-rows">
                         <td>
-                            <select id="dose-ingredient-list" class="dose-ingredient-list" autocomplete="off">
+                            <select id="dose-ingredient-list" autocomplete="off">
                             <?php for($i = 0; $i < $arrLength; $i++) {
                                 echo '<option value="'.$termsId[$i].'">';
                                     echo $names[$i];
                                 echo '</option>';
                             } ?>
                             </select>
-                            <input id="ingredient-delete-button" class="delete-button" type="button" name="ingredient-delete-button" value="X" >
+                            <input id="ingredient-delete-button" class="delete-button" type="button" name="ingredient-delete-button" value="X" data-post-id="<?= $post->ID ?>">
                         </td>
                         <td>
                             <input id="dose-quantity" type="number" name ="dose-quantity" style="width:70px;"></input>
                         </td>
                         <td>
                             <select id="dose-unit-select" name="dose-unit-select">
-                                <option value="0">L</option>
-                                <option value="1">g</option>
-                                <option value="2">unité</option>
+                            <?php for($j = 0; $j < count($unitTable); $j++) {
+                                echo '<option value="'.$j.'">'.$unitTable[$j].'</option>';
+                            } ?>
                             </select>
                         </td>
                         <td><input id="dose-add-button" type="button" name="dose-add-button" value="Ajouter une dose" data-post-id="<?= $post->ID ?>" ></td>
                     </tr>
-                </table>
+                </tbody>
+            </table>
             
-                <table id="dose-table" style="border:solid;">
-                    Doses
-                    <tr id="dose-list">
-                        <td>Nom</td><td>Quantité</td><td>Unité</td>
-                    </tr>
-                <?php for($i = 0; $i < $arrLengthDoses; $i++) {
+            <table id="dose-table" style="border:solid;">
+                <caption>Doses</caption>
+                <thead>
+                    <th>Nom</th>
+                    <th>Quantité</th>
+                    <th>Unité</th>
+                </thead>
+                <tbody>
+                <?php 
+                    echo "<tr id='dose-message' ".( $arrLengthDoses == 0 ? "" : "style='display:none;" )."'><td><p>Il n'y a pas de doses pour cette recette !</p></td></tr>";
+                for($i = 0; $i < $arrLengthDoses; $i++) {
                     echo "<tr>";
                         echo "<td>";
                             for($j = 0; $j < $arrLength; $j++) {
@@ -292,9 +298,8 @@ class Plugin
                         echo "<td><input id='dose-delete-button-".($i+1)."' class='delete-button' type='button' name='dose-delete-button-".($i+1)."' value='X'></td>";
                     echo "</tr>";
                 } 
-                echo "<tr id='dose-message' ".( $arrLengthDoses == 0 ? "" : "style='display:none;" )."'><td><p>Il n'y a pas de doses pour cette recette !</p></td></tr>";
                 ?>
-                </table>
+                </tbody>
             </table>
             
         <?php
