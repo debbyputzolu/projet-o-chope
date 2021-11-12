@@ -29,7 +29,9 @@ jQuery(document).on(
                 } else {
                     button.style.backgroundColor = 'green';
                 }
-            })
+            }
+        )
 
+        return true;
     }
 );

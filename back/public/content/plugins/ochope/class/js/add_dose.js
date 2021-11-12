@@ -56,6 +56,7 @@ jQuery(document).on(
                     newDose.children[3].children[0].id = 'dose-modify-button-'+nb;
                     newDose.children[3].children[0].value = "Modifier la dose";
                     newDose.children[3].children[0].className = 'dose-modify-button';
+                    newDose.children[3].children[0].style.backgroundColor = '';
 
                     //creer bouton supprimer dose
                     var rowAdd = document.createElement("td");
@@ -74,5 +75,7 @@ jQuery(document).on(
                 }
             }
         );
+
+        return true;
     }
 );

@@ -104,12 +104,10 @@ class Plugin
     }
 
     public function ochope_add_ingredient() {
-        if (isset($_POST['post_id']) && isset($_POST['name']))
+        if (isset($_POST['name']))
         {
-            $postId = intval($_POST['post_id']);
             $name = sanitize_text_field($_POST['name']);
 
-            // wp_insert_term( string $term, string $taxonomy, array|string $args = array() )
             $newTerm = wp_insert_term($name, 'ingredient');
         }
 
@@ -122,7 +120,7 @@ class Plugin
         global $wpdb;
         $response = "failure";
 
-        if(isset($_POST['post_id']) && isset($_POST['ingredient_id']) && isset($_POST['quantity']) && isset($_POST['unit']))
+        if(isset($_POST['post_id']) && isset($_POST['ingredient_id']) && 0 < strlen($_POST['ingredient_id']) && isset($_POST['quantity']) && isset($_POST['unit']))
         {
             $recipe_id = intval($_POST['post_id']);
             $ingredient_id = intval($_POST['ingredient_id']);
@@ -226,7 +224,7 @@ class Plugin
                 <tbody>
                     <tr> 
                         <td><input id="new-ingredient-name" type="text" name ="ing"></td>
-                        <td><input type="button" id="add-ingredient" name="add-ingredient" value="Ajouter un ingrédient" data-post-id="<?= $post->ID ?>" ></td>
+                        <td><input type="button" id="add-ingredient" name="add-ingredient" value="Ajouter un ingrédient" ></td>
                     </tr>
                 </tbody>
             </table>
@@ -251,7 +249,7 @@ class Plugin
                             <input id="ingredient-delete-button" class="delete-button" type="button" name="ingredient-delete-button" value="X" data-post-id="<?= $post->ID ?>">
                         </td>
                         <td>
-                            <input id="dose-quantity" type="number" name ="dose-quantity" style="width:70px;"></input>
+                            <input id="dose-quantity" type="number" name ="dose-quantity" style="width:70px;" min="1" ></input>
                         </td>
                         <td>
                             <select id="dose-unit-select" name="dose-unit-select">
@@ -274,7 +272,7 @@ class Plugin
                 </thead>
                 <tbody>
                 <?php 
-                    echo "<tr id='dose-message' ".( $arrLengthDoses == 0 ? "" : "style='display:none;" )."'><td><p>Il n'y a pas de doses pour cette recette !</p></td></tr>";
+                    echo "<tr id='dose-message' ".( $arrLengthDoses == 0 ? "style=''" : "style='display:none;'" )."><td><p>Il n'y a pas de doses pour cette recette !</p></td></tr>";
                 for($i = 0; $i < $arrLengthDoses; $i++) {
                     echo "<tr>";
                         echo "<td>";

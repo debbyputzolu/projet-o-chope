@@ -6,7 +6,6 @@ jQuery(document).on(
         var concerned_element = null;
         var post_id = null;
         var ingredient_id = null;
-        //alert("attention, vous allez supprimer un ingredient");
 
         if( targetId == 'ingredient-delete-button' ) {
             concerned_element = 'ingredient';
@@ -21,44 +20,50 @@ jQuery(document).on(
             ingredient_id = document.getElementById('dose-ingredient-'+no).value;
         }
         
-        jQuery.ajax({
-            url: ajaxurl, 
-            type: "POST", 
-            data : {
-                'action' : 'delete_element',
-                'concerned_element' : concerned_element,
-                'post_id' : post_id,
-                'ingredient_id' : ingredient_id
-            }
-        }).done(
-            function(response) {
-                if( concerned_element == 'ingredient' ) {
-                    var ingredientList = document.getElementById("dose-ingredient-list");
-
-                    for(i=0;i<ingredientList.childElementCount;i++) {
-                        if( ingredientList.children[i].value == ingredient_id ) {
-                            ingredientList.children[i].remove();
+        if (confirm('Etes vous sûr de vouloir supprimer cet ingrédient et toutes les doses qui en contiennent ?')) {
+            jQuery.ajax({
+                url: ajaxurl, 
+                type: "POST", 
+                data : {
+                    'action' : 'delete_element',
+                    'concerned_element' : concerned_element,
+                    'post_id' : post_id,
+                    'ingredient_id' : ingredient_id
+                }
+            }).done(
+                function(response) {
+                    if( concerned_element == 'ingredient' ) {
+                        var ingredientList = document.getElementById("dose-ingredient-list");
+    
+                        for(i=0;i<ingredientList.childElementCount;i++) {
+                            if( ingredientList.children[i].value == ingredient_id ) {
+                                ingredientList.children[i].remove();
+                                break;
+                            }
+                        }
+                    }
+    
+                    var doseList = document.getElementById("dose-table").children[2];
+    
+                    for(i=0;i<doseList.childElementCount;i++) {
+                        if( doseList.children[i].children[0].children[0].value == ingredient_id ) {
+                            doseList.children[i].remove();
                             break;
                         }
                     }
-                }
-
-                var doseList = document.getElementById("dose-table").children[2];
-
-                for(i=0;i<doseList.childElementCount;i++) {
-                    if( doseList.children[i].children[0].children[0].value == ingredient_id ) {
-                        doseList.children[i].remove();
-                        break;
+    
+                    var doseMessage = document.getElementById("dose-message");
+                    if( doseList.childElementCount == 1 ) {
+                        doseMessage.style = "";
+                    } else {
+                        doseMessage.style = "display:none;";
                     }
                 }
+            )
 
-                var doseMessage = document.getElementById("dose-message");
-                if( doseList.childElementCount == 1 ) {
-                    doseMessage.style = "";
-                } else {
-                    doseMessage.style = "display:none;";
-                }
-            }
-        )
+            return true;
+        } else {
+            return false;
+        }
     }
 );
