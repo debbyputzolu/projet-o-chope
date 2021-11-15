@@ -4,8 +4,8 @@ import storage from '../plugins/storage.js';
 
 const recipeService = {
 
-    baseURI: 'http://localhost/valkyrie/apotheose/ochope/back/public/wp-json/wp/v2',
-    oChopeBaseURI: 'http://localhost/valkyrie/apotheose/ochope/back/public/wp-json/ochope/v1',
+    baseURI: 'http://localhost/apo/projet-binouze/back/public/wp-json/wp/v2',
+    oChopeBaseURI: 'http://localhost/apo/projet-binouze/back/public/wp-json/ochope/v1',
 
     async loadRecipes() {
       const response = await axios.get(recipeService.baseURI + '/recipe?_embed=true');
@@ -74,7 +74,7 @@ const recipeService = {
     return response.data;
   },
 
-  async saveRecipe(title, type, description, selectedIngredients, imageId) {
+  async saveRecipe(title, type, description, selectedDoses, imageId) {
 
     const userData = storage.get('userData');
 
@@ -95,7 +95,7 @@ const recipeService = {
             title: title,
             type: type,
             description: description,
-            ingredients: selectedIngredients, //array
+            doses: selectedDoses, //array
             imageId: imageId
           },
           options
