@@ -23,7 +23,7 @@
 </div>
   <div>
 
-    <CommentSection/>
+    <CommentSection :recipe="this.recipe"/>
 
     
 

@@ -5,7 +5,7 @@
             <CommentForm v-if="user" :recipe="recipe"/>
         </section>
 
-        <section v-if="recipe._embedded.replies">
+        <section v-if="recipe">
             <CommentCard
                 v-for="comment in recipe._embedded.replies[0]"
                 :key="comment.id"

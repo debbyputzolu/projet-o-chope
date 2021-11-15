@@ -134,7 +134,7 @@ export default {
             //console.log(result);
           
           
-          if(result ){
+          if(result){
               console.log('OK TOUT EST NICKEL');
               this.$router.push('profile');
           }

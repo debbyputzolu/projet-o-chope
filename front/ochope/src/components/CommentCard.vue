@@ -1,6 +1,6 @@
 <template>
 
-<div class="recipe-comment">
+<div class="recipeComment">
     <div v-html="comment.content.rendered"></div>
 </div>
 

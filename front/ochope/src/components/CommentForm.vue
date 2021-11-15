@@ -6,8 +6,6 @@
         <form @submit="saveComment">
             <textarea v-model="comment" class="commentFormTextarea"></textarea><br>
 
-            
-
             <button class="commentFormButton">Envoyer</button>
         </form>
         </div>
@@ -33,14 +31,20 @@ export default({
             // nous n'envoyons le commentaire que si l'utilisateur est bien connectée
             if(this.$store.state.user) {
                 // nous faisons appel à l'api pour enregistrer le commentaire
-                this.$store.state.services.recipe.saveComment(
+                
+                const result = this.$store.state.services.recipe.saveComment(
                     this.recipe.id,
                     this.comment
                 );
-                this.userDisconnected = false;
+                
+                if(result ){
+              console.log('OK TOUT EST NICKEL');
+              //this.$router.push('profile');
+                }
+                
             }
             else {
-                this.userDisconnected = true;
+                return ('raté');
             }
         }
     }
