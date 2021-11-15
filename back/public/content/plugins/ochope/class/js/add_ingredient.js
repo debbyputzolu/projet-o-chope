@@ -2,6 +2,7 @@ jQuery(document).on(
     'click',
     '#add-ingredient',
     function() {
+        const post_id = document.getElementById('dose-add-button').dataset.postId;
         const name = document.getElementById('new-ingredient-name').value;
         
         jQuery.ajax({
@@ -9,6 +10,7 @@ jQuery(document).on(
             type: "POST", 
             data : {
                 'action' : 'add_ingredient',
+                'post_id' : post_id,
                 'name' : name
             }
         }).done(

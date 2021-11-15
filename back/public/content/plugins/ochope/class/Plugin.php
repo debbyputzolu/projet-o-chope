@@ -104,12 +104,15 @@ class Plugin
     }
 
     public function ochope_add_ingredient() {
-        if (isset($_POST['name']))
+        if (isset($_POST['post_id']) && isset($_POST['name']))
         {
             $name = sanitize_text_field($_POST['name']);
+            $postId = intval($_POST['post_id']);
 
             $newTerm = wp_insert_term($name, 'ingredient');
         }
+
+        wp_set_object_terms($postId,$newTerm['term_id'],'ingredient',true);
 
         wp_send_json($newTerm);
 
@@ -185,6 +188,7 @@ class Plugin
             }
 
             if( $concerned_element == 'ingredient' ) {
+                wp_remove_object_terms($recipe_id,$ingredient_id,'ingredient');
                 wp_delete_term($ingredient_id,'ingredient');
             }
         }
@@ -224,7 +228,7 @@ class Plugin
                 <tbody>
                     <tr> 
                         <td><input id="new-ingredient-name" type="text" name ="ing"></td>
-                        <td><input type="button" id="add-ingredient" name="add-ingredient" value="Ajouter un ingrédient" ></td>
+                        <td><input type="button" id="add-ingredient" name="add-ingredient" value="Ajouter un ingrédient" data-post-id="<?= $post->ID ?>" ></td>
                     </tr>
                 </tbody>
             </table>
