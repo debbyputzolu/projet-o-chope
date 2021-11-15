@@ -39,7 +39,8 @@ export default({
                 
                 if(result ){
               console.log('OK TOUT EST NICKEL');
-              //this.$router.push('profile');
+              //this.$router.go();
+              
                 }
                 
             }

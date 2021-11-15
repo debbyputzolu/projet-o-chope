@@ -112,7 +112,8 @@ class Api {
                     wp_set_post_terms(
                         $recipeCreateResult,
                         [$dose['ingredient']],
-                        'ingredient'
+                        'ingredient',
+                        true
                     );
                 }
 

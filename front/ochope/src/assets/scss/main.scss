@@ -132,7 +132,7 @@ font-size: 3rem;
   margin-bottom: 1rem;
 }
 
-.recipeAuthor {
+.recipeAuthor, .commentAuthor {
   font-style: italic;
 }
 
@@ -149,12 +149,19 @@ font-size: 3rem;
   color:#FFCE00;
 }
 
-.commentSection{
+.commentSection {
   border: solid 1px white;
   border-radius: 1rem;
   color: white;
   margin: 1rem;
   padding-bottom: 2rem;
+}
+
+.recipeComment {
+  border: solid 1px white;
+  border-radius: 1rem;
+  color: white;
+  margin: 1rem;
 }
 
 .commentFormTextarea {

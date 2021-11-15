@@ -1,7 +1,8 @@
 <template>
 
 <div class="recipeComment">
-    <div v-html="comment.content.rendered"></div>
+    <div class="commentAuthor">{{comment.author}}, nous dit à propos de cette recette:</div>
+    <div class="commentContent" v-html="comment.content.rendered"></div>
 </div>
 
 </template>

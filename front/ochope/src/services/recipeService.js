@@ -74,7 +74,7 @@ const recipeService = {
     return response.data;
   },
 
-  async saveRecipe(title, type, description, selectedIngredients, imageId) {
+  async saveRecipe(title, type, description, selectedDoses, imageId) {
 
     const userData = storage.get('userData');
 
@@ -95,7 +95,7 @@ const recipeService = {
             title: title,
             type: type,
             description: description,
-            ingredients: selectedIngredients, //array
+            doses: selectedDoses, //array
             imageId: imageId
           },
           options
