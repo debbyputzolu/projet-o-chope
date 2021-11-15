@@ -52,18 +52,18 @@
                     <td>Nom</td><td>Quantité</td><td>Unité</td>
                 </tr>
                 
-                <tr class = "ingredient-rows recipeCreateTable" v-for="(ingredient, index) in selectedIngredients" :key="index">
+                <tr class = "ingredient-rows recipeCreateTable" v-for="(ingredientData, index) in selectedIngredients" :key="index">
                     <td>
-                        <select v-model="selectedIngredients[index][ingredient]">
-                        <option v-for="ingredient in ingredients" :key="ingredient.id" :value="ingredient.id" >{{ingredient.name}}</option>
+                        <select v-model="ingredientData.ingredient">
+                        <option v-for="ingredientFound in ingredients" :key="ingredientFound.id" :value="ingredientFound.id" >{{ingredientFound.name}}</option>
                       
                         </select>
                     </td>
                     <td>
-                        <input type="number" v-model="selectedIngredients[index][quantity]">
+                        <input type="number" v-model="ingredientData.quantity">
                     </td>
                     <td>
-                        <select v-model="selectedIngredients[index][unit]">
+                        <select v-model="ingredientData.unit">
                             <option value="0">L</option>
                             <option value="1">g</option>
                             <option value="2">unité</option>

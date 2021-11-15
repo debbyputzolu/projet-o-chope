@@ -46,10 +46,10 @@ export default {
     //! IMPORTANT depuis la mise en place de notre router
     // les composant on acces a une "armoire" this.$router, cette dernière contient un tiroir "params" dans lequel je vais trouver la partie dynamique de mon URL
     this.recipeId = this.$route.params.id;
-    console.log('Je suis dans le composant Recipe et ma data recipeId contient :' + this.recipeId);  
+    //console.log('Je suis dans le composant Recipe et ma data recipeId contient :' + this.recipeId);  
 
     this.recipe = await recipeService.getRecipeById(this.recipeId);
-    console.log(this.recipe);
+    //console.log(this.recipe);
   },
   computed: {
     getImageURL() {
