@@ -52,7 +52,7 @@
                     <td>Nom</td><td>Quantité</td><td>Unité</td>
                 </tr>
                 
-                <tr class = "ingredient-rows recipeCreateTable" v-for="(ingredientData, index) in selectedIngredients" :key="index">
+                <tr class = "ingredient-rows recipeCreateTable" v-for="(ingredientData, index) in selectedDoses" :key="index">
                     <td>
                         <select v-model="ingredientData.ingredient">
                         <option v-for="ingredientFound in ingredients" :key="ingredientFound.id" :value="ingredientFound.id" >{{ingredientFound.name}}</option>
@@ -106,7 +106,7 @@ export default{
         types: [],
         ingredients: [],
         selectedTypes:null,
-        selectedIngredients:[{
+        selectedDoses:[{
             ingredient: 0,
             quantity: 0,
             unit: 0
@@ -145,7 +145,7 @@ export default{
               console.log('ETAPE EST VIDE !!');
               this.descriptionEmpty = true;
           }
-          if(this.selectedIngredients.length == 0){
+          if(this.selectedDoses.length == 0){
               console.log('INGREDIENT EST VIDE !!');
               this.ingredientEmpty = true;
           }
@@ -158,13 +158,13 @@ export default{
           if(this.title != '' && 
           this.selectedTypes != null &&
           this.description != '' &&
-          this.selectedIngredients.length != 0
+          this.selectedDoses.length != 0
           ){
             const result = await recipeService.saveRecipe(
             this.title,
             this.selectedTypes,
             this.description,
-            this.selectedIngredients,
+            this.selectedDoses,
             ); 
           
           
@@ -197,7 +197,7 @@ export default{
 
     async loadIngredients() {
             this.ingredients = await recipeService.loadRecipesIngredients();
-            this.selectedIngredients[0].ingredient = this.ingredients[0].id;
+            this.selectedDoses[0].ingredient = this.ingredients[0].id;
         },
     
     handleClick(evt){
@@ -206,7 +206,7 @@ export default{
         // const row = document.querySelector(".ingredient-rows"); //premier enfant
         // const addRow = row.cloneNode(true); //a insérer
         // const arrayIngredient = document.querySelector('#array'); //parent
-        this.selectedIngredients.push({
+        this.selectedDoses.push({
             ingredient: 0,
             quantity: 0,
             unit: 0

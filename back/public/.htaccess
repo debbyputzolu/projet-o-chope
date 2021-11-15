@@ -1,9 +1,9 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-RewriteBase /valkyrie/apotheose/ochope/back/public/
+RewriteBase /apo/projet-binouze/back/public/
 RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /valkyrie/apotheose/ochope/back/public/index.php [L]
+RewriteRule . /apo/projet-binouze/back/public/index.php [L]
 </IfModule>
