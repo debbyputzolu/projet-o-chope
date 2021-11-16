@@ -7,6 +7,8 @@ use Database\Recipe_Ingredient;
 
 class Plugin
 {
+    const UNITS = array("L","g","unité");
+         
     public function __construct()
     {
         // coté constructeur je vais placer tous mes add_action
@@ -61,9 +63,43 @@ class Plugin
         );
 
         add_filter('rest_prepare_comment', [$this, 'custom_comment_author'], 10, 2 );
-        
+        add_filter('rest_pre_echo_response', [$this, 'addDoseDataToRecipe']);
     }
 
+    function addDoseDataToRecipe($response) {
+        //* Get the post ID
+        $post_id = $response[ 'id' ];
+      
+        //* Make sure of the post_type
+        //if( 'recipe' !== $response[ 'post' ] ) return;
+      
+        //* Do something with the post ID
+        $ingredientsArgs = [
+            'taxonomy'      => 'ingredient',
+            'hide_empty'    => false
+        ];
+        
+        $doses = Recipe_Ingredient::ochope_get_doses_of_a_recipe($post_id);
+        $ingredients = get_terms($ingredientsArgs);
+        $formattedDoses = [];
+        foreach ($doses as $dose) {
+            $dose->formatted_unit = self::UNITS[$dose->unit];
+            $ingredientName = '';
+            foreach ($ingredients as $ingredient) {
+                if($ingredient->term_id == intval($dose->ingredient_id)) {
+                    $ingredientName = $ingredient->name;
+                    break;
+                }
+            }
+            $dose->formatted_ingredient = $ingredientName;
+            $formattedDoses[] = $dose;
+        }
+        $response['dose'] = $formattedDoses;
+      
+        //* Return the new response
+        return $response;
+      }
+    
 function custom_comment_author( $response, $comment ) {
     $userData = get_userdata($comment->user_id);
     $comment->comment_author = $userData->display_name;
@@ -148,7 +184,6 @@ function custom_comment_author( $response, $comment ) {
         $arrLength = count($names);
         $doses = Recipe_Ingredient::ochope_get_doses_of_a_recipe($post->ID);
         $arrLengthDoses = count($doses);
-        $unitTable = array("L","g","unité");
 
         //var_dump($doses[0]->id);die();
 
@@ -185,9 +220,9 @@ function custom_comment_author( $response, $comment ) {
                         </td>
                         <td>
                             <select id="dose-unit-select" name="dose-unit-select">
-                                <option value="0">L</option>
-                                <option value="1">g</option>
-                                <option value="2">unité</option>
+                                <?php foreach (self::UNITS as $key => $unit) : ?>
+                                    <option value="<?= $key ?>"><?= $unit ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </td>https://developer.mozilla.org/fr/docs/Web/API/Node/cloneNode
                         <td><input id="dose-add-button" type="button" name="dose-add-button" value="Ajouter une dose" data-post-id="<?= $post->ID ?>" ></td>
@@ -216,8 +251,8 @@ function custom_comment_author( $response, $comment ) {
                         echo "</td>";
                         echo "<td>";
                             echo "<select id='dose-unit-select' name='dose-unit-select' autocomplete='off'>";
-                            for($j = 0; $j < count($unitTable); $j++) {
-                                echo '<option value="'.$j.'" '.( $j == $doses[$i]->unit ? 'selected="selected"' : '' ).'>'.$unitTable[$j].'</option>';
+                            for($j = 0; $j < count(self::UNITS); $j++) {
+                                echo '<option value="'.$j.'" '.( $j == $doses[$i]->unit ? 'selected="selected"' : '' ).'>'.self::UNITS[$j].'</option>';
                             }
                             echo "</select>";
                         echo "</td>";
