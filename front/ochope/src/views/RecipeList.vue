@@ -7,7 +7,7 @@
         </div>
         <div>
         
-           <!-- <Filters v-on:recipes-loaded="handleRecipesLoaded"/> -->
+           <Filters v-on:recipes-loaded="handleRecipesLoaded"/> 
 
         </div>
 
@@ -27,7 +27,7 @@
 
 
 import RecipeCard from '../components/RecipeCard.vue';
-//import Filters from '../components/Filters.vue';
+import Filters from '../components/Filters.vue';
 
 import recipeService from '../services/recipeService.js';
 
@@ -47,7 +47,7 @@ export default({
 
     components: {
         RecipeCard,
-       // Filters,
+        Filters,
     },
 
     methods: {

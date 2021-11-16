@@ -39,8 +39,8 @@ export default({
                 
                 if(result ){
               console.log('OK TOUT EST NICKEL');
-              //this.$router.go();
-              
+              alert('Votre commentaire a bien etait posté!');
+              this.$router.go();
                 }
                 
             }

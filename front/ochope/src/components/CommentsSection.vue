@@ -6,11 +6,12 @@
         </section>
 
         <section v-if="recipe">
-            <CommentCard
-                v-for="comment in recipe._embedded.replies[0]"
-                :key="comment.id"
-                :comment="comment"
-            />
+            <ul
+                v-for="comment in comments"
+                :key="comment.id">
+   
+            <CommentCard :comment="comment"/>
+            </ul> 
         </section>
        
 
@@ -22,12 +23,27 @@
 <script>
 import CommentForm from './CommentForm.vue';
 import CommentCard from './CommentCard.vue';
+import recipeService from '../services/recipeService.js';
 
 export default({
     name: 'CommentsSection',
     components: {
         CommentForm,
         CommentCard
+    },
+    data() {
+
+        return {
+            comments: [],
+            recipeId: null
+        }
+    },
+
+async created() {
+        this.recipeId = this.$route.params.id;
+        //console.log(this.recipeId);
+        this.comments = await recipeService.getCommentByRecipe(this.recipeId);
+        
     },
     computed: {
         user() {

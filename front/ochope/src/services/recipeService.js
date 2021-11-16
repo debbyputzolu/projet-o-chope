@@ -74,6 +74,11 @@ const recipeService = {
     return response.data;
   },
 
+  async getCommentByRecipe(recipeId) {
+    const response = await axios.get(recipeService.baseURI + '/comments?post=' + recipeId);
+    return response.data;
+  },
+
   async saveRecipe(title, type, description, selectedDoses, imageId) {
 
     const userData = storage.get('userData');

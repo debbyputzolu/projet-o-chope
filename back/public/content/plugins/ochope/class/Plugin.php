@@ -60,8 +60,15 @@ class Plugin
             [$this, 'ochope_meta_menu']
         );
 
+        add_filter('rest_prepare_comment', [$this, 'custom_comment_author'], 10, 2 );
         
     }
+
+function custom_comment_author( $response, $comment ) {
+    $userData = get_userdata($comment->user_id);
+    $comment->comment_author = $userData->display_name;
+    return $comment;
+}
     
     public function ochope_pw_load_scripts() {
         wp_enqueue_script( 'ochope-meta_menu', plugins_url( 'class/js/meta_menu.js' , dirname(__FILE__) ) , array('jquery') );

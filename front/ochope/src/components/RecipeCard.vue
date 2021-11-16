@@ -34,7 +34,6 @@ export default {
     };
   },
   props: {
-    
     recipeProps: Object,
   },
   methods: {
