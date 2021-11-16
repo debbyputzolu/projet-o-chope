@@ -1,4 +1,33 @@
 <template>
+<div>
+<nav  class="headerMobile">
+    <label class="toggleLabel" for="toggle">☰</label>
+      <input type="checkbox" id="toggle">
+        <div class="main_pages">
+          <div class="navHeaderItem"><router-link :to="{
+                    name: 'home',
+                }"
+            >Home</router-link></div>
+    <div class="navHeaderItem"><router-link :to="{
+                    name: 'recipes',
+                }"
+            >Recipes</router-link></div>
+    <div class="navHeaderItem"><router-link :to="{
+                    name: 'register',
+                }"
+            >Register/Login</router-link></div>
+    <div class="navHeaderItem"><router-link :to="{
+                    name: 'logout',
+                }"
+            >Logout</router-link></div>
+    <div class="navHeaderItem">About</div>
+    <div class="navHeaderItem">Forum</div>
+    <div class="navHeaderItem"><router-link :to="{
+                    name: 'profile',
+                }"
+            >Profile</router-link></div>
+    </div>
+</nav>
   <header class="header header--vertical">
   <div class="headerTop">
   <img class="logo" src="../assets/logo.png">
@@ -34,6 +63,7 @@
     <div class="navHeaderBottomItem">Privacy policy</div>
   </nav>
   </header>
+  </div>
 </template>
 
 <script>

@@ -1,7 +1,7 @@
 $header-height: 5vh;
 
 
-
+.headerMobile{display: none;}
 #app{
   flex-direction: column;
   justify-content: space-between;
@@ -306,4 +306,178 @@ border-radius: 2rem;
 
 .notFoundText {
   font-size: 1.5rem;
+}
+
+img{
+  max-width: 90%;
+}
+$phone: 400px; 
+$tablet: 770px; 
+$destop: 1000px; 
+$destopHd: 1200px; 
+$destopWide: 1400px; 
+
+@media (max-width: $tablet
+) {
+  .title{
+   display: flex;
+   align-items: center;
+  }
+  body{ 
+    display: flex;
+    flex-wrap: column;
+  }
+  
+  #app{
+    width:auto;
+    flex: 1;
+  }
+  main{
+    margin:0%;
+    width:auto;
+  }
+  .header{
+    display: none;
+  }
+  .home{
+   width: fit-content;
+   display: flex;
+   flex-direction: column;
+  }
+  .headerMobile{
+    display: flex;
+    height: auto;
+  }
+  .navHeaderItem{
+    font-size: 25px;
+  }
+  .carousselHome{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+  }
+  .forumHomeImage{
+    width:auto;
+    height:auto;
+  }
+  .registerHomeImage{
+    width:auto;
+    height:auto;
+  }
+  .register{
+    display: flex;
+    flex-direction: column;
+    width: auto;
+  }
+  .inscriptionLabel, .loginLabel, .recipeCreateLabel {
+    margin-bottom: 1rem;
+    justify-content: center;
+    font-size: auto;
+  }
+  .recipeCreate{
+    display: flex;;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+  }
+  input, select{
+    font-size: x-large;
+  }
+  .recipeCreateLabel{
+    font-size: x-large;
+  }
+  textarea{
+    font-size:xxx-large;
+  }
+  button{
+    font-size: x-large;
+  }
+  .login{
+    width: auto;
+    margin: 0%
+  }
+  .loginLabel{
+    width: auto;
+    flex: auto;
+    flex-direction: column;
+  
+  }
+  .inscription{
+    width: auto;    
+    margin: 0%;
+    margin-top: 10px;  
+      
+  }
+  .cardContent{
+    font-size: x-large;
+  }
+  .inscriptionLabel{
+    width: auto;
+    flex: auto;
+    flex-direction: column;
+  }
+  .loginButton{
+    width: auto;
+  }
+  .inscriptionButton{
+    width: auto;
+  }
+  .profile{
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+  .infoProfile{
+    display: flex
+  }
+  .infoProfileItem{
+    font-size: x-large;
+  }
+  
+}
+.toggleLabel, #toggle
+{
+    display: none;
+}
+
+
+@media (max-width: $tablet)
+{
+    nav
+    {
+        height: 300px;
+        
+    }
+ 
+    nav .main_pages 
+    {
+        display: none;
+        flex-direction: column;
+        background: #FFCE00;
+        height: 100%;
+        width: auto;
+        float: left;
+    }
+ 
+    nav .main_pages a {
+        width: 50%;
+    }
+   #toggle{
+      display: none;
+    }
+    .toggleLabel
+    {
+        float: left;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px;
+        font-size: 40px;
+        color: white;
+        cursor: pointer;
+    }
+ 
+    #toggle:checked + .main_pages {
+        display: flex;
+    }
 }

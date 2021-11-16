@@ -55,7 +55,7 @@ export default {
     //console.log('Je suis dans le composant Recipe et ma data recipeId contient :' + this.recipeId);  
 
     this.recipe = await recipeService.getRecipeById(this.recipeId);
-    //console.log(this.recipe);
+    console.log(this.recipe);
   },
   computed: {
     getImageURL() {
