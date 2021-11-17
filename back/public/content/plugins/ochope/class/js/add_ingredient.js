@@ -2,14 +2,14 @@ jQuery(document).on(
     'click',
     '#add-ingredient',
     function() {
-        const post_id = document.getElementById('add-ingredient').dataset.postId;
+        const post_id = document.getElementById('dose-add-button').dataset.postId;
         const name = document.getElementById('new-ingredient-name').value;
         
         jQuery.ajax({
             url: ajaxurl, 
             type: "POST", 
             data : {
-                'action' : 'create_ingredient',
+                'action' : 'add_ingredient',
                 'post_id' : post_id,
                 'name' : name
             }
@@ -19,19 +19,20 @@ jQuery(document).on(
 
                 if( typeof response.term_id === 'undefined' ) {
                     inputIngredient.style.backgroundColor = 'red';
+
+                    return false;
                 } else {
                     inputIngredient.style.backgroundColor = 'green';
-                    //console.log("insertion nouveau ingredient dans liste deroulante");
 
-                    var insertions = document.getElementsByClassName('dose-ingredient-list');
-                    for (var i = 0; i < insertions.length; i++) {
-                        var option = document.createElement("option");
-                        option.text = name;
-                        option.value = response.term_id;
-                        insertions[i].add(option,null);
-                    }
+                    var insertion = document.getElementById('dose-ingredient-list');
+                    var option = document.createElement("option");
+                    option.text = name;
+                    option.value = response.term_id;
+                    insertion.add(option,null);
                 }
             }
         );
+
+        return true;
     }
 );
