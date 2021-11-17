@@ -12,9 +12,9 @@
         <div class="recipeSubtitle">Ingrédients</div>
         <div class="recipeIngredient">
         
-          <span v-for="(ingredient, index) in recipe._embedded['wp:term'][0]" :key="ingredient.id">
+          <span v-for="(dose, index) in recipe.dose" :key="dose.id">
             
-            <span v-if="index !== 0">, </span>{{ingredient.name}}
+            <span v-if="index !== 0">, </span>{{dose.formatted_ingredient}}  {{dose.quantity}} {{dose.formatted_unit}}
           </span>
         </div>
         <div class="recipeSubtitle">Préparation</div>
