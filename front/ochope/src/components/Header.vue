@@ -1,15 +1,60 @@
 <template>
+<div>
+<nav  class="headerMobile">
+    <label class="toggleLabel" for="toggle">☰</label>
+      <input type="checkbox" id="toggle">
+        <div class="main_pages">
+          <div class="navHeaderItem"><router-link :to="{
+                    name: 'home',
+                }"
+            >Home</router-link></div>
+    <div class="navHeaderItem"><router-link :to="{
+                    name: 'recipes',
+                }"
+            >Recipes</router-link></div>
+    <div class="navHeaderItem"><router-link :to="{
+                    name: 'register',
+                }"
+            >Register/Login</router-link></div>
+    <div class="navHeaderItem"><router-link :to="{
+                    name: 'logout',
+                }"
+            >Logout</router-link></div>
+    <div class="navHeaderItem">About</div>
+    <div class="navHeaderItem">Forum</div>
+    <div class="navHeaderItem"><router-link :to="{
+                    name: 'profile',
+                }"
+            >Profile</router-link></div>
+    </div>
+</nav>
   <header class="header header--vertical">
   <div class="headerTop">
   <img class="logo" src="../assets/logo.png">
   </div> 
   <nav class="navHeader">
-    <div class="navHeaderItem">Home</div>
-    <div class="navHeaderItem">Recipes</div>
-    <div class="navHeaderItem">Register/Login</div>
+    <div class="navHeaderItem"><router-link :to="{
+                    name: 'home',
+                }"
+            >Home</router-link></div>
+    <div class="navHeaderItem"><router-link :to="{
+                    name: 'recipes',
+                }"
+            >Recipes</router-link></div>
+    <div class="navHeaderItem"><router-link v-if="!user" :to="{
+                    name: 'register',
+                }"
+            >Register/Login</router-link></div>
+    <div class="navHeaderItem"><router-link v-if="user" :to="{
+                    name: 'logout',
+                }"
+            >Logout</router-link></div>
     <div class="navHeaderItem">About</div>
     <div class="navHeaderItem">Forum</div>
-    <div class="navHeaderItem">Profile</div>
+    <div class="navHeaderItem"><router-link v-if="user" :to="{
+                    name: 'profile',
+                }"
+            >Profile</router-link></div>
   </nav>
   <nav class="navHeaderBottom">
     <div class="navHeaderBottomItem"><img class="pictureFb" src="../assets/images/facebook.png"></div>
@@ -18,12 +63,25 @@
     <div class="navHeaderBottomItem">Privacy policy</div>
   </nav>
   </header>
+  </div>
 </template>
 
 <script>
+
+
 export default {
   name: 'Header',
- 
+
+ computed: {
+
+    user() {
+        //console.log("on est bien la");
+        //console.log(this.$store.state.user);
+            return this.$store.state.user;
+       }
+    }
+
+  
 }
 </script>
 

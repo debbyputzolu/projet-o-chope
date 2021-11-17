@@ -12,3 +12,4 @@ vendor
 wp
 composer.lock
 wp-config.php
+.htaccess

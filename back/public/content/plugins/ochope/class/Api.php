@@ -53,6 +53,26 @@ class Api {
                 'callback' => [$this, 'ochope_inscription']  
             ]
         );
+
+        register_rest_route(
+            'ochope/v1', // le nom de notre API
+            '/comment-save', // la route qui se mettra après le nom de notre api
+            [
+                // Attention, methods avec un S
+                'methods' => 'post',
+                'callback' => [$this, 'ochope_commentSave']  
+            ]
+        );
+
+        register_rest_route(
+            'ochope/v1', // le nom de notre API
+            '/upload-image', // la route qui se mettra après le nom de notre api
+            [
+                // Attention, methods avec un S
+                'methods' => 'post',
+                'callback' => [$this, 'ochope_uploadImage']  
+            ]
+        );
     }
 
     public function ochope_recipe_save(WP_REST_Request $request)
@@ -62,7 +82,7 @@ class Api {
         $title = $request->get_param('title'); 
         $type = $request->get_param('type');
         $description = $request->get_param('description');
-        $ingredients = $request->get_param('ingredients');
+        $doses = $request->get_param('doses');
         $imageId = $request->get_param('imageId');
 
         // récupération de l'utilisateur ayant envoyé la requête
@@ -85,14 +105,15 @@ class Api {
             // si la recette a bien été crée
             // $recipeCreateResult va etre egal a l'id de cette dernière
             if(is_int($recipeCreateResult)){
-                foreach($ingredients as $ingredient) {
+                foreach($doses as $dose) {
 
-                    Recipe_Ingredient::ochope_insert($recipeCreateResult,$ingredient['id'],$ingredient['quantity'],$ingredient['unit']);
+                    Recipe_Ingredient::ochope_insert($recipeCreateResult,$dose['ingredient'],$dose['quantity'],$dose['unit']);
 
                     wp_set_post_terms(
                         $recipeCreateResult,
-                        [$ingredient['name']],
-                        'ingredient'
+                        [$dose['ingredient']],
+                        'ingredient',
+                        true
                     );
                 }
 
@@ -120,7 +141,7 @@ class Api {
                 'title' => $title,
                 'type' => $type,
                 'description' => $description,
-                'ingredients' => $ingredients,
+                'doses' => $doses,
                 'user' => $user,
                 'recipe-id'=> $recipeCreateResult
 
@@ -198,14 +219,14 @@ class Api {
         if(is_int($userCreateResult)) {
             $user = new WP_User($userCreateResult);
             $user->remove_role('subscriber');
-            $user->add_role('contributor');
+            $user->add_role('brewer');
 
             return [
                 'success' => true,
                 'userId' => $userCreateResult,
                 'username' => $$userName,
                 'email' => $email,
-                'role' => 'contributor'
+                'role' => 'brewer'
             ];
 
 

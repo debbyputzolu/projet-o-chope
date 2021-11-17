@@ -7,6 +7,8 @@ use Database\Recipe_Ingredient;
 
 class Plugin
 {
+    const UNITS = array("L","g","unité");
+         
     public function __construct()
     {
         // coté constructeur je vais placer tous mes add_action
@@ -78,7 +80,53 @@ class Plugin
             'wp_ajax_nopriv_delete_element',
             [$this, 'ochope_delete_element']
         );
+
+        add_filter('rest_prepare_comment', [$this, 'custom_comment_author'], 10, 2 );
+        add_filter('rest_pre_echo_response', [$this, 'addDoseDataToRecipe']);
     }
+
+    function addDoseDataToRecipe($response) {
+        //* Get the post ID
+        $post_id = $response[ 'id' ];
+      
+        //* Make sure of the post_type
+        if ('recipe' !== $response['type']) {
+            return $response;
+        }
+      
+         //* Do something with the post ID
+            $ingredientsArgs = [
+            'taxonomy'      => 'ingredient',
+            'hide_empty'    => false
+         ];
+        
+            $doses = Recipe_Ingredient::ochope_get_doses_of_a_recipe($post_id);
+            $ingredients = get_terms($ingredientsArgs);
+            $formattedDoses = [];
+            foreach ($doses as $dose) {
+                $dose->formatted_unit = self::UNITS[$dose->unit];
+                $ingredientName = '';
+                foreach ($ingredients as $ingredient) {
+                    if ($ingredient->term_id == intval($dose->ingredient_id)) {
+                        $ingredientName = $ingredient->name;
+                        break;
+                    }
+                }
+                $dose->formatted_ingredient = $ingredientName;
+                $formattedDoses[] = $dose;
+            }
+            $response['dose'] = $formattedDoses;
+      
+            //* Return the new response
+            return $response;
+        
+      }
+    
+function custom_comment_author( $response, $comment ) {
+    $userData = get_userdata($comment->user_id);
+    $comment->comment_author = $userData->display_name;
+    return $comment;
+}
     
     public function ochope_pw_load_scripts() {
         wp_enqueue_script( 'ochope-add_dose', plugins_url( 'class/js/add_dose.js' , dirname(__FILE__) ) , array('jquery') );
@@ -215,9 +263,7 @@ class Plugin
         $arrLength = count($names);
         $doses = Recipe_Ingredient::ochope_get_doses_of_a_recipe($post->ID);
         $arrLengthDoses = count($doses);
-        $unitTable = array("cL","g","unité");
 
-        //var_dump($doses[0]->id);die();
 
          ?>
             <table style="border:solid;">
@@ -257,11 +303,13 @@ class Plugin
                         </td>
                         <td>
                             <select id="dose-unit-select" name="dose-unit-select">
-                            <?php for($j = 0; $j < count($unitTable); $j++) {
-                                echo '<option value="'.$j.'">'.$unitTable[$j].'</option>';
-                            } ?>
+
+                                <?php foreach (self::UNITS as $key => $unit) : ?>
+                                    <option value="<?= $key ?>"><?= $unit ?></option>
+                                <?php endforeach; ?>
+
                             </select>
-                        </td>
+                        </td>https://developer.mozilla.org/fr/docs/Web/API/Node/cloneNode
                         <td><input id="dose-add-button" type="button" name="dose-add-button" value="Ajouter une dose" data-post-id="<?= $post->ID ?>" ></td>
                     </tr>
                 </tbody>
@@ -290,9 +338,11 @@ class Plugin
                             echo "<input id='dose-quantity-".($i+1)."' type='number' name ='dose-quantity-".($i+1)."' value='".$doses[$i]->quantity."' style='width:70px;'>";
                         echo "</td>";
                         echo "<td>";
-                            echo "<select id='dose-unit-select-".($i+1)."' name='dose-unit-select-".($i+1)."' autocomplete='off'>";
-                            for($j = 0; $j < count($unitTable); $j++) {
-                                echo '<option value="'.$j.'" '.( $j == $doses[$i]->unit ? 'selected="selected"' : '' ).'>'.$unitTable[$j].'</option>';
+
+                            echo "<select id='dose-unit-select' name='dose-unit-select' autocomplete='off'>";
+                            for($j = 0; $j < count(self::UNITS); $j++) {
+                                echo '<option value="'.$j.'" '.( $j == $doses[$i]->unit ? 'selected="selected"' : '' ).'>'.self::UNITS[$j].'</option>';
+
                             }
                             echo "</select>";
                         echo "</td>";
@@ -430,5 +480,7 @@ class Plugin
         // suppression du role chef
         remove_role('brewer');
     }
+
+  
 }
 

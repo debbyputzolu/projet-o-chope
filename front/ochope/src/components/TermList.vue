@@ -23,9 +23,7 @@
 export default({
 
     async created() {
-
-
-        if(this.$store.state.termsList[this.taxonomy]) {
+        if(this.$store.state.termsList !== undefined && this.$store.state.termsList[this.taxonomy]) {
             this.terms = this.$store.state.termsList[this.taxonomy];
         }
         else {
