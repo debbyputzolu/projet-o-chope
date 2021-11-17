@@ -166,24 +166,22 @@ export default{
             this.description,
             this.selectedDoses,
             ); 
-          
+         // console.log(this.title,this.selectedTypes,this.description,this.selectedDoses);
           
           if(result){
               this.$router.push('/');
           }
+          //console.log(result);
         }
       },    
       async uploadImage(evt){
         evt.preventDefault();
         
-    this.picture = this.ref;
-    console.log(this.picture);
-        const imageData = HTMLInputElement.files;
-        //console.log(imageData);
+       // const imageData = HTMLInputElement.files;
+       const imageData = evt.target.files[0] || evt.dataTransfer.files[0];
+        console.log(imageData);
         if(imageData.length != 0){
-         const result = await recipeService.uploadImage(
-            this.imageData
-            );  
+         const result = await recipeService.uploadImage(imageData);  
             
             if(result){
                 console.log('image ok');

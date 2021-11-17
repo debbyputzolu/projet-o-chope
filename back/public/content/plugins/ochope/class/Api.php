@@ -78,7 +78,7 @@ class Api {
     public function ochope_recipe_save(WP_REST_Request $request)
     {
         // première étape, récupération des éléments de ma nouvelle recette (qui sont en transit dans ma requête)
-        
+        //var_dump($request); 
         $title = $request->get_param('title'); 
         $type = $request->get_param('type');
         $description = $request->get_param('description');
@@ -347,7 +347,9 @@ class Api {
         }
 
         return [
-            'status' => 'failed'
+            'status' => 'failed',
+            'data'  => $imageSource,
+            'post'  => $imageDestination,
         ];
     }
 }

@@ -82,7 +82,7 @@ const recipeService = {
   async saveRecipe(title, type, description, selectedDoses, imageId) {
 
     const userData = storage.get('userData');
-
+    //console.log(title, type, description, selectedDoses);
     if(userData != null) {
       const token = userData.token;
       if(token) {
@@ -108,7 +108,7 @@ const recipeService = {
           console.log(error);
           return false;
         });
-
+        //console.log(result);
         return result;
       }
     }
