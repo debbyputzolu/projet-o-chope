@@ -71,33 +71,36 @@ class Plugin
         $post_id = $response[ 'id' ];
       
         //* Make sure of the post_type
-        //if( 'recipe' !== $response[ 'post' ] ) return;
+        if ('recipe' !== $response['type']) {
+            return $response;
+        }
       
-        //* Do something with the post ID
-        $ingredientsArgs = [
+         //* Do something with the post ID
+            $ingredientsArgs = [
             'taxonomy'      => 'ingredient',
             'hide_empty'    => false
-        ];
+         ];
         
-        $doses = Recipe_Ingredient::ochope_get_doses_of_a_recipe($post_id);
-        $ingredients = get_terms($ingredientsArgs);
-        $formattedDoses = [];
-        foreach ($doses as $dose) {
-            $dose->formatted_unit = self::UNITS[$dose->unit];
-            $ingredientName = '';
-            foreach ($ingredients as $ingredient) {
-                if($ingredient->term_id == intval($dose->ingredient_id)) {
-                    $ingredientName = $ingredient->name;
-                    break;
+            $doses = Recipe_Ingredient::ochope_get_doses_of_a_recipe($post_id);
+            $ingredients = get_terms($ingredientsArgs);
+            $formattedDoses = [];
+            foreach ($doses as $dose) {
+                $dose->formatted_unit = self::UNITS[$dose->unit];
+                $ingredientName = '';
+                foreach ($ingredients as $ingredient) {
+                    if ($ingredient->term_id == intval($dose->ingredient_id)) {
+                        $ingredientName = $ingredient->name;
+                        break;
+                    }
                 }
+                $dose->formatted_ingredient = $ingredientName;
+                $formattedDoses[] = $dose;
             }
-            $dose->formatted_ingredient = $ingredientName;
-            $formattedDoses[] = $dose;
-        }
-        $response['dose'] = $formattedDoses;
+            $response['dose'] = $formattedDoses;
       
-        //* Return the new response
-        return $response;
+            //* Return the new response
+            return $response;
+        
       }
     
 function custom_comment_author( $response, $comment ) {
@@ -184,8 +187,6 @@ function custom_comment_author( $response, $comment ) {
         $arrLength = count($names);
         $doses = Recipe_Ingredient::ochope_get_doses_of_a_recipe($post->ID);
         $arrLengthDoses = count($doses);
-
-        //var_dump($doses[0]->id);die();
 
          ?>
             <table>

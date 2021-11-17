@@ -20,7 +20,7 @@ export default{
 
     async created() {
         this.recipes = await recipeService.loadRecipes();
-        //console.log(this.recipes);
+        
     },
 
     components: {

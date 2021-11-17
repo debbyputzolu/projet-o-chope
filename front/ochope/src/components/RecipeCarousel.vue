@@ -5,7 +5,12 @@
         <div class="recipeAuthor">Proposé par {{recipe._embedded['author'][0].name}} </div>
         <div class="recipeType">Elle est de {{recipe._embedded['wp:term'][1][0].name}} </div>
         <div class="recipeSubtitle">Ingrédients</div>
-        <div class="recipeIngredient">{{recipe._embedded['wp:term'][0][0].name}}, {{recipe._embedded['wp:term'][0][1].name}}, {{recipe._embedded['wp:term'][0][2].name}}, {{recipe._embedded['wp:term'][0][3].name}}, {{recipe._embedded['wp:term'][0][4].name}}</div>
+        <div class="recipeIngredient">
+        
+          <span v-for="(ingredient, index) in recipe._embedded['wp:term'][0]" :key="ingredient.id">
+            
+            <span v-if="index !== 0">, </span>{{ingredient.name}}
+          </span></div>
         <div class="recipeSubtitle">Préparation</div>
         <div class="recipeContent" v-html="recipe.content.rendered"></div>
         
@@ -24,8 +29,7 @@ export default {
     
     recipe: Object,
   },
-  methods: {
-  },
+
   computed: {
     getImageURL() {
             
