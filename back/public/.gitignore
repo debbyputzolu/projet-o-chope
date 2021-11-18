@@ -11,5 +11,5 @@ content/plugins/ochope/*
 vendor
 wp
 composer.lock
-//wp-config.php
+wp-config.php
 .htaccess
