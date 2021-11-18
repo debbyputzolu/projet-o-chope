@@ -1,0 +1,519 @@
+$header-height: 5vh;
+
+
+.headerMobile{display: none;}
+#app{
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  text-align: center;
+  height: 100%;
+  margin-top: 0;
+}
+
+body {
+  margin: 0;
+  height: 100vh; 
+  background-color: #32325B;
+}
+
+.header {
+    align-items: center;
+    background-image: url(../images/fondmenuheader.png);
+    background-size: contain; 
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    padding: 2rem;
+    flex-basis: 30%;
+    border: 1px solid black;
+    color: #32325B;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.logo {
+  border-radius: 5%;
+}
+.header .logo {
+  align-items: center;
+  box-sizing: border-box;
+  width: 55%;
+}
+  
+.header--vertical {
+    bottom: 0;
+    flex-direction: column;
+    height: auto;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 25%;
+}
+  
+.header--vertical .logo {
+    height: auto;
+    margin-bottom: 4rem;
+    margin-right: 0;
+  }
+  .header--vertical .menu {
+    width: 100%;
+  }
+
+.navHeader, .navHeaderItem, .navHeaderBottom {
+  padding: 0.5rem;
+
+}
+
+.navHeaderBottom {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 10px 30px;
+    margin-top: 5em;
+    align-items: center;
+}
+
+.pictureFb {
+  width: 27%;
+}
+
+.pictureTwitter {
+ width: 25%;
+}
+.navHeaderBottomItem {
+  flex-basis: 30%;
+}
+
+main {
+  margin-left: 30%;
+  width: 70%;
+}
+ 
+.recipeListDiv{
+display: inline;
+}
+
+.recipeListTitle, .recipeCreateTitle {
+color:#FFCE00;
+margin: 0.5 px;
+font-size: 3rem;
+}
+
+.recipeListImage {
+  height: 25%;
+  width: 70%;
+  border-radius: 1rem;
+}
+
+.cardImage {
+  width: 30%;
+  margin-top: 1em;
+  border-radius: 5%;
+}
+
+.card, .recipe, .login, .inscription, .infoProfile, .headProfile, .recipeProfile, .recipeCreate{
+  border: solid 1px white;
+  border-radius: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin: 1rem;
+  color: white;
+}
+
+.recipeImage {
+  width: 60%;
+  border-radius: 5%;
+}
+
+.recipeTitle, .commentSectionTitle, .profileTitle, .aboutTitle {
+  color:#FFCE00;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.recipeAuthor, .commentAuthor {
+  font-style: italic;
+}
+
+.recipeType{
+  padding-bottom: 1rem;
+  font-style: italic;
+}
+
+.recipeSubtitle, .subtitleProfile {
+  font-size: 1.5rem;
+  margin: 1rem;
+  border: solid 1px white;
+  border-radius: 1rem;
+  color:#FFCE00;
+}
+
+.commentSection {
+  border: solid 1px white;
+  border-radius: 1rem;
+  color: white;
+  margin: 1rem;
+  padding-bottom: 2rem;
+}
+
+.recipeComment {
+  border: solid 1px white;
+  border-radius: 1rem;
+  color: white;
+  margin: 1rem;
+}
+
+.commentFormTextarea {
+  border-radius: 0.5rem;
+}
+
+.commentFormButton {
+  border-radius: 0.5rem;
+}
+
+.register {
+  display: flex;
+}
+
+.login, .inscription {
+  width: 45%;
+  height: 60%;
+  margin: 1rem;
+}
+
+.inscriptionImage, .loginImage {
+  border-radius: 1rem;
+  width: 65%;
+}
+
+.loginTitle, .inscriptionTitle, .logoutTitle, .aboutTeamSubtitle {
+  color:#FFCE00;
+  font-size: 1.7rem;
+  margin-bottom: 1rem;
+}
+
+.loginForm, .inscriptionForm, .recipeCreateForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.inscriptionLabel, .loginLabel, .recipeCreateLabel {
+  margin-bottom: 1rem;
+  justify-content: center;
+}
+
+.inscriptionButton, .loginButton, .recipeCreateButton {
+  width: 20%;
+  align-self: center;
+  margin-top: 0.5rem;
+}
+
+.error {
+  color: #FFCE00;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.profile {
+ display: grid;
+ grid-template-areas: 
+ "head info info info"
+ "head recipe recipe recipe"
+ "head recipe recipe recipe";
+}
+
+.headProfile {
+  grid-area: head;
+}
+
+.infoProfile {
+  grid-area: info;
+}
+
+.recipeProfile {
+  grid-area: recipe;
+}
+
+.profileImage{
+  width: 60%;
+  border-radius: 50%;
+}
+
+.buttonProfile {
+  margin: 0.5rem;
+}
+
+.infoProfileItem {
+  margin: 0.2rem;
+}
+
+.recipeCreateImage {
+  border-radius: 1rem;
+  width: 35%;
+}
+
+.home {
+  display: grid;
+  grid-template-areas: 
+ "caroussel log"
+ "caroussel forum";
+ grid-gap:0px;
+}
+
+.carousselHome {
+  grid-area: caroussel;
+  width: 35rem;
+}
+
+.registerHomeImage {
+  grid-area: log;
+ width: 35rem;
+ border: solid 1.5px black;
+ border-radius: 1rem;
+} 
+
+.forumHomeImage {
+  grid-area: forum;
+  width: 35rem;
+  border: solid 1.5px black;
+  border-radius: 1rem;
+}
+
+a {
+  text-decoration: none;
+  
+}
+
+.linkDiscovery{
+  font-weight: bolder;
+  color: white;
+  text-decoration: underline;
+}
+.notFound{
+  border-radius: 2rem;
+  width: 45%;
+}
+
+.notFoundSection {
+  color: white;
+}
+
+.notFoundTitle {
+  font-size: 2.5rem;
+}
+
+.notFoundText {
+  font-size: 1.5rem;
+}
+
+img{
+  max-width: 90%;
+}
+
+.about{
+  color: white;
+  justify-content: center;
+}
+
+.team {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  p{
+    font-size: 2rem;
+  }
+}
+
+.aboutTeam {
+  border: solid 1.5px white;
+  border-radius: 2rem;
+  margin: 1rem;
+  display: flex;
+  flex-direction:row;
+  justify-content: space-around;
+  width: 70%;
+}
+
+.aboutTeamImage {
+  width: 30%;
+  border-radius: 15%;
+  margin: 1rem;
+}
+
+$phone: 400px; 
+$tablet: 770px; 
+$destop: 1000px; 
+$destopHd: 1200px; 
+$destopWide: 1400px; 
+
+@media (max-width: $tablet
+) {
+  .title{
+   display: flex;
+   align-items: center;
+  }
+  body{ 
+    display: flex;
+    flex-wrap: column;
+  }
+  
+  #app{
+    width:auto;
+    flex: 1;
+  }
+  main{
+    margin:0%;
+    width:auto;
+  }
+  .header{
+    display: none;
+  }
+  .home{
+   width: fit-content;
+   display: flex;
+   flex-direction: column;
+  }
+  .headerMobile{
+    display: flex;
+    height: auto;
+    color: white;
+  }
+  .headerMobileTitle {
+    font-size: 2rem;
+    margin-left: 30%;
+  }
+  .navHeaderItem{
+    font-size: 25px;
+  }
+  .carousselHome{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+  }
+  .forumHomeImage{
+    width:auto;
+    height:auto;
+  }
+  .registerHomeImage{
+    width:auto;
+    height:auto;
+  }
+  .register{
+    display: flex;
+    flex-direction: column;
+    width: auto;
+  }
+  .inscriptionLabel, .loginLabel, .recipeCreateLabel {
+    margin-bottom: 1rem;
+    justify-content: center;
+    font-size: auto;
+  }
+  .recipeCreate{
+    display: flex;;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+  }
+  input, select{
+    font-size: x-large;
+  }
+  .recipeCreateLabel{
+    font-size: x-large;
+  }
+  textarea{
+    font-size:xxx-large;
+  }
+  button{
+    font-size: x-large;
+  }
+  .login{
+    width: auto;
+    margin: 0%
+  }
+  .loginLabel{
+    width: auto;
+    flex: auto;
+    flex-direction: column;
+  
+  }
+  .inscription{
+    width: auto;    
+    margin: 0%;
+    margin-top: 10px;  
+      
+  }
+  .cardContent{
+    font-size: x-large;
+  }
+  .inscriptionLabel{
+    width: auto;
+    flex: auto;
+    flex-direction: column;
+  }
+  .loginButton{
+    width: auto;
+  }
+  .inscriptionButton{
+    width: auto;
+  }
+  .profile{
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+  .infoProfile{
+    display: flex
+  }
+  .infoProfileItem{
+    font-size: x-large;
+  }
+  
+}
+.toggleLabel, #toggle
+{
+    display: none;
+}
+
+
+@media (max-width: $tablet)
+{
+    nav
+    {
+        height: 300px;
+        
+    }
+ 
+    nav .main_pages 
+    {
+        display: none;
+        flex-direction: column;
+        background: #FFCE00;
+        height: 100%;
+        width: auto;
+        float: left;
+    }
+ 
+    nav .main_pages a {
+        width: 50%;
+    }
+   #toggle{
+      display: none;
+    }
+    .toggleLabel
+    {
+        float: left;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px;
+        font-size: 40px;
+        color: white;
+        cursor: pointer;
+    }
+ 
+    #toggle:checked + .main_pages {
+        display: flex;
+    }
+}

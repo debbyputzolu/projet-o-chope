@@ -4,8 +4,8 @@ import storage from '../plugins/storage.js';
 
 const recipeService = {
 
-    baseURI: process.env.VUE_APP_WORDPRESS_API_URL + '/wp/v2',
-    oCookingBaseURI: process.env.VUE_APP_WORDPRESS_API_URL + '/ocooking/v1',
+    baseURI: 'http://3.228.147.122/back/wp-json/wp/v2',
+    oChopeBaseURI: 'http://3.228.147.122/back/wp-json/ochope/v1',
 
     async loadRecipes() {
       const response = await axios.get(recipeService.baseURI + '/recipe?_embed=true');
@@ -24,13 +24,28 @@ const recipeService = {
   },
 
   async getRecipesByType(selectedType) {
-   
+
     const response = await axios.get(recipeService.baseURI + '/recipe?_embed=true&recipe-type=' + selectedType);
     return response.data;
+  
   },
 
   async getRecipeById(recipeId) {
     const response = await axios.get(recipeService.baseURI + '/recipe/' + recipeId + '?_embed=true');
+    return response.data;
+  },
+
+  async getUserInfo (name) {
+    
+    const response = await axios.get(recipeService.baseURI + '/users/?slug=' + name);
+    //console.log(response.data);
+    return response.data;
+  },
+
+  async getRecipeByAuthor(username) {
+    this.infoUser = await recipeService.getUserInfo(username);
+    const authorId = this.infoUser[0].id;
+    const response = await axios.get(recipeService.baseURI + '/recipe?_embed=true&author=' + authorId);
     return response.data;
   },
 
@@ -59,7 +74,48 @@ const recipeService = {
     return response.data;
   },
 
-  async saveRecipe(title, type, description, ingredients, imageId) {
+  async getCommentByRecipe(recipeId) {
+    const response = await axios.get(recipeService.baseURI + '/comments?post=' + recipeId);
+    return response.data;
+  },
+
+  async saveRecipe(title, type, description, selectedDoses, imageId) {
+
+    const userData = storage.get('userData');
+    //console.log(title, type, description, selectedDoses);
+    if(userData != null) {
+      const token = userData.token;
+      if(token) {
+
+        const options = {
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
+        };
+
+
+        const result = await axios.post(
+          recipeService.oChopeBaseURI + '/recipe-save',
+          {
+            title: title,
+            type: type,
+            description: description,
+            doses: selectedDoses, //array
+            imageId: imageId
+          },
+          options
+        ).catch(function(error) {
+          console.log(error);
+          return false;
+        });
+        //console.log(result);
+        return result;
+      }
+    }
+    return false;
+  },
+
+  async saveDose(recipeId, ingredientId, quantity, unit) {
 
     const userData = storage.get('userData');
 
@@ -75,13 +131,12 @@ const recipeService = {
 
 
         const result = await axios.post(
-          recipeService.oCookingBaseURI + '/recipe-save',
+          recipeService.oChopeBaseURI + '/dose-save',
           {
-            title: title,
-            type: type,
-            description: description,
-            ingredients: ingredients,
-            imageId: imageId
+            recipeId: recipeId,
+            ingredientId: ingredientId,
+            quantity: quantity,
+            unit: unit
           },
           options
         ).catch(function(error) {
@@ -102,10 +157,11 @@ const recipeService = {
 
     const userData = storage.get('userData');
     const token = userData.token;
-
+    //console.log('FORM DATA : ');
+   // console.log(formData);
 
     const result = await axios.post(
-      recipeService.oCookingBaseURI + '/upload-image',
+      recipeService.oChopeBaseURI + '/upload-image',
       formData,
       {
         headers: {
@@ -114,7 +170,7 @@ const recipeService = {
         }
       }
     );
-
+   //console.log(result.data);
     return result.data;
   },
 
@@ -134,7 +190,7 @@ const recipeService = {
 
 
         const result = await axios.post(
-          recipeService.oCookingBaseURI + '/comment-save',
+          recipeService.oChopeBaseURI + '/comment-save',
           {
             recipeId: recipeId,
             comment: comment,
@@ -154,4 +210,3 @@ const recipeService = {
 };
 
 export default recipeService;
-
