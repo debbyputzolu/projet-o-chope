@@ -72,7 +72,7 @@ export default {
                 }
             }
             else {
-                return 'http://localhost/valkyrie/apotheose/ochope/front/ochope/src/assets/images/recipeCard.png';
+                return '/assets/images/recipeCard.png';
                 //trouver solution pour mettre image biere
             }
       

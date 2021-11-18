@@ -64,7 +64,7 @@ export default {
               if(userData){
                   storage.set('userData', userData);
                   this.loginFailed = false;
-                  this.$router.push('profile');
+                  this.$router.push('profile');                 
                   this.$router.go();
               }
               else {
