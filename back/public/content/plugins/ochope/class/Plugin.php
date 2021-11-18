@@ -311,7 +311,7 @@ class Plugin
                             <?php endforeach; ?>
 
                         </select>
-                    </td>https://developer.mozilla.org/fr/docs/Web/API/Node/cloneNode
+                    </td>
                     <td><input id="dose-add-button" type="button" name="dose-add-button" value="Ajouter une dose" data-post-id="<?= $post->ID ?>"></td>
                 </tr>
             </tbody>
@@ -414,9 +414,9 @@ class Plugin
                 'hierarchical' => true,
                 'public' => true,
                 'show_in_rest' => true,
-                'show_ui'                    => false,
-                'show_in_quick_edit'         => false,
-                'meta_box_cb'                => false,
+                'show_ui'                    => true,
+                'show_in_quick_edit'         => true,
+                'meta_box_cb'                => true,
             ]
         );
     }
