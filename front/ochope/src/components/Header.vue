@@ -2,6 +2,7 @@
 <div>
 <nav  class="headerMobile">
     <label class="toggleLabel" for="toggle">☰</label>
+    <h2 class="headerMobileTitle">O'Chope</h2>
       <input type="checkbox" id="toggle">
         <div class="main_pages">
           <div class="navHeaderItem"><router-link :to="{
@@ -20,7 +21,10 @@
                     name: 'logout',
                 }"
             >Logout</router-link></div>
-    <div class="navHeaderItem">About</div>
+    <div class="navHeaderItem"><router-link :to="{
+                    name: 'about',
+                }"
+            >About</router-link></div>
     <div class="navHeaderItem">Forum</div>
     <div class="navHeaderItem"><router-link :to="{
                     name: 'profile',
@@ -49,7 +53,10 @@
                     name: 'logout',
                 }"
             >Logout</router-link></div>
-    <div class="navHeaderItem">About</div>
+    <div class="navHeaderItem"><router-link :to="{
+                    name: 'about',
+                }"
+            >About</router-link></div>
     <div class="navHeaderItem">Forum</div>
     <div class="navHeaderItem"><router-link v-if="user" :to="{
                     name: 'profile',

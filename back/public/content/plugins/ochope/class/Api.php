@@ -282,6 +282,8 @@ class Api {
     public function ochope_uploadImage(WP_REST_Request $request)
     {
 
+        //print_r($request);
+        //exit();
         // correspond au nom de la variable utilisée pour envoyer l'image
         $imageFileIndex = 'image';
 

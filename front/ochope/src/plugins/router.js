@@ -9,6 +9,7 @@ import Profile from '../views/Profile.vue'
 import RecipeCreate from '../views/RecipeCreate.vue'
 import Logout from '../views/Logout.vue'
 import Error from '../views/Error.vue'
+import About from '../views/About.vue'
 
 Vue.use(VueRouter)
 
@@ -59,6 +60,12 @@ const routes = [
       path: '/:catchAll(.*)', // URL configuration to match
       name: 'not-found', // road name
       component: Error // component to call
+    },
+
+    {
+      path: '/about', // URL configuration to match
+      name: 'about', // road name
+      component: About // component to call
     },
 ]
 

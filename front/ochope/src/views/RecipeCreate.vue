@@ -165,6 +165,7 @@ export default{
             this.selectedTypes,
             this.description,
             this.selectedDoses,
+            this.imageId
             ); 
          // console.log(this.title,this.selectedTypes,this.description,this.selectedDoses);
           
@@ -178,13 +179,18 @@ export default{
         evt.preventDefault();
         
        // const imageData = HTMLInputElement.files;
-       const imageData = evt.target.files[0] || evt.dataTransfer.files[0];
-        console.log(imageData);
+       const imageData = evt.target.files[0] ;
+       //console.log('On est coté front dans upladImage');
+        //console.log(imageData);
         if(imageData.length != 0){
          const result = await recipeService.uploadImage(imageData);  
             
             if(result){
                 console.log('image ok');
+                //console.log('result : ');
+                //console.log(result);
+                this.image = result.image.url;
+                this.imageId= result.image.id;
             }
         }
       },

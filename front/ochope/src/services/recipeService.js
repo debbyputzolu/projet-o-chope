@@ -157,7 +157,8 @@ const recipeService = {
 
     const userData = storage.get('userData');
     const token = userData.token;
-
+    //console.log('FORM DATA : ');
+   // console.log(formData);
 
     const result = await axios.post(
       recipeService.oChopeBaseURI + '/upload-image',
@@ -169,7 +170,7 @@ const recipeService = {
         }
       }
     );
-
+   //console.log(result.data);
     return result.data;
   },
 
