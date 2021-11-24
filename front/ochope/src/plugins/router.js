@@ -57,15 +57,15 @@ const routes = [
     },
 
     {
-      path: '/:catchAll(.*)', // URL configuration to match
-      name: 'not-found', // road name
-      component: Error // component to call
-    },
-
-    {
       path: '/about', // URL configuration to match
       name: 'about', // road name
       component: About // component to call
+    },
+
+    {
+      path: '/:catchAll(.*)', // URL configuration to match
+      name: 'not-found', // road name
+      component: Error // component to call
     },
 ]
 

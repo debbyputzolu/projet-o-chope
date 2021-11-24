@@ -27,12 +27,10 @@
 
 </template>
 
-
 <script>
 
 export default({
     name: 'TypeList',
 
 })
-
 </script>

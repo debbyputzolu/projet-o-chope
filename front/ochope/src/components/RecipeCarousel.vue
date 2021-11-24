@@ -3,7 +3,7 @@
         <img class="recipeImage" :src="getImageURL">
         <h2 class="recipeTitle">{{recipe.title.rendered}}</h2>
         <div class="recipeAuthor">Proposé par {{recipe._embedded['author'][0].name}} </div>
-        <div class="recipeType">Elle est de {{recipe._embedded['wp:term'][1][0].name}} </div>
+        <div class="recipeType">Elle est de type {{recipe._embedded['wp:term'][1][0].name}} </div>
         <div class="recipeSubtitle">Ingrédients</div>
         <div class="recipeIngredient">
         

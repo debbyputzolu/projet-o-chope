@@ -1,14 +1,11 @@
 <template>
-  <article
-    v-if="recipe" 
-  >
+  <article v-if="recipe">
   
-
 <div class="recipe">
         <img class="recipeImage" :src="getImageURL">
         <h2 class="recipeTitle">{{recipe.title.rendered}}</h2>
         <div class="recipeAuthor">Proposé par {{recipe._embedded['author'][0].name}} </div>
-        <div class="recipeType">Elle est de {{recipe._embedded['wp:term'][1][0].name}} </div>
+        <div class="recipeType">Elle est de type{{recipe._embedded['wp:term'][1][0].name}} </div>
         <div class="recipeSubtitle">Ingrédients</div>
         <div class="recipeIngredient">
         
@@ -24,8 +21,6 @@
   <div>
 
     <CommentSection :recipe="this.recipe"/>
-
-    
 
   </div>
 
@@ -49,17 +44,14 @@ export default {
       };
   },
   async created(){
-    //! IMPORTANT depuis la mise en place de notre router
-    // les composant on acces a une "armoire" this.$router, cette dernière contient un tiroir "params" dans lequel je vais trouver la partie dynamique de mon URL
-    this.recipeId = this.$route.params.id;
-    //console.log('Je suis dans le composant Recipe et ma data recipeId contient :' + this.recipeId);  
+    // the components we access to a "cabinet" this.$router, the latter contains a "params" drawer in which I will find the dynamic part of my URL
+    this.recipeId = this.$route.params.id; 
 
-    this.recipe = await recipeService.getRecipeById(this.recipeId);
-    console.log(this.recipe);
+    this.recipe = await recipeService.getRecipeById(this.recipeId); 
   },
   computed: {
     getImageURL() {
-            // Vérification : la recette a-t-elle une image
+            // check does the recipe have an image
             if(this.recipe._embedded['wp:featuredmedia']) {
                 if(this.recipe._embedded['wp:featuredmedia'][0].media_details.sizes.large) {
                     return this.recipe._embedded['wp:featuredmedia'][0].media_details.sizes.large.source_url;

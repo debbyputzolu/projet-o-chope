@@ -281,14 +281,12 @@ class Api {
     }
     public function ochope_uploadImage(WP_REST_Request $request)
     {
-
-        //print_r($request);
-        //exit();
+//print_r($request); die;
         // correspond au nom de la variable utilisée pour envoyer l'image
         $imageFileIndex = 'image';
-
+        
         // récupération des informations concernant l'image uploadée
-        $imageData = $_FILES[$imageFileIndex];
+        $imageData = $_FILES[$imageFileIndex]; //=> null
 
         // récupération du chemin fichier dans lequel est stockée l'image qui vient d'être uploadée
         $imageSource = $imageData['tmp_name'];

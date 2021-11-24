@@ -9,7 +9,6 @@ const recipeService = {
 
     async loadRecipes() {
       const response = await axios.get(recipeService.baseURI + '/recipe?_embed=true');
-
       return response.data;
   },
 
@@ -24,10 +23,8 @@ const recipeService = {
   },
 
   async getRecipesByType(selectedType) {
-
     const response = await axios.get(recipeService.baseURI + '/recipe?_embed=true&recipe-type=' + selectedType);
     return response.data;
-  
   },
 
   async getRecipeById(recipeId) {
@@ -36,9 +33,7 @@ const recipeService = {
   },
 
   async getUserInfo (name) {
-    
     const response = await axios.get(recipeService.baseURI + '/users/?slug=' + name);
-    //console.log(response.data);
     return response.data;
   },
 
@@ -82,7 +77,6 @@ const recipeService = {
   async saveRecipe(title, type, description, selectedDoses, imageId) {
 
     const userData = storage.get('userData');
-    //console.log(title, type, description, selectedDoses);
     if(userData != null) {
       const token = userData.token;
       if(token) {
@@ -108,7 +102,6 @@ const recipeService = {
           console.log(error);
           return false;
         });
-        //console.log(result);
         return result;
       }
     }
@@ -170,7 +163,7 @@ const recipeService = {
         }
       }
     );
-   //console.log(result.data);
+   console.log(result.data);
     return result.data;
   },
 
