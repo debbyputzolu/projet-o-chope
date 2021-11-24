@@ -51,12 +51,11 @@ export default {
   },
 
   async created() {
-        console.log('%c' + "UserHome created", 'color: #0bf; font-size: 1rem; background-color:#fff');
-        // STEP AUTHENFICATION est ce que l'utilisateur est connecté
+        // STEP AUTHENFICATION is the user logged in
         const isTokenValid = await userService.isConnected();
         if(!isTokenValid) {
-            // le token est invalide, nous redirigeons l'utilisateur vers la page de connexion
-            // IMPORTANT VUEJS router : faire une redirection
+            // the token is invalid, we redirect the user to the login page
+            // IMPORTANT VUEJS router : make a redirect
             this.$router.push('register');
         }
         else {
@@ -71,12 +70,10 @@ export default {
 
 computed: {
     user(){
-      //console.log(this.$store.state);
       return this.$store.state.user;
     }
   }
 }
-
 
 </script>
 

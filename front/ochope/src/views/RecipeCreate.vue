@@ -84,8 +84,6 @@
                 <button class="recipeCreateButton">Enregistrer</button>
             </div>
 
-
-
         </form>
 
     </section>
@@ -167,28 +165,22 @@ export default{
             this.selectedDoses,
             this.imageId
             ); 
-         // console.log(this.title,this.selectedTypes,this.description,this.selectedDoses);
           
           if(result){
               this.$router.push('/');
           }
-          //console.log(result);
         }
       },    
       async uploadImage(evt){
         evt.preventDefault();
-        
-       // const imageData = HTMLInputElement.files;
+       
        const imageData = evt.target.files[0] ;
-       //console.log('On est coté front dans upladImage');
-        //console.log(imageData);
+
         if(imageData.length != 0){
          const result = await recipeService.uploadImage(imageData);  
             
             if(result){
                 console.log('image ok');
-                //console.log('result : ');
-                //console.log(result);
                 this.image = result.image.url;
                 this.imageId= result.image.id;
             }
@@ -206,17 +198,12 @@ export default{
     
     handleClick(evt){
         evt.preventDefault();
-        
-        // const row = document.querySelector(".ingredient-rows"); //premier enfant
-        // const addRow = row.cloneNode(true); //a insérer
-        // const arrayIngredient = document.querySelector('#array'); //parent
+       
         this.selectedDoses.push({
             ingredient: 0,
             quantity: 0,
             unit: 0
-        });
-        // arrayIngredient.insertBefore(addRow, row);
-        
+        });   
     }
  }    
    

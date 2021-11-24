@@ -11,7 +11,7 @@ export default {
     name: 'Logout',
   
   created(){
-      //deconnexion user
+      //user logout
       userService.logout();
       this.$router.push('/')
       this.$router.go();

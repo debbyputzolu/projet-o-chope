@@ -8,8 +8,8 @@ const userService = {
     baseOchope: 'http://localhost/valkyrie/apotheose/ochope/back/public/wp-json/ochope/v1',
 
     login: async function(login, password){
-        // première utilisation de axios.post, il ne nous suffit plus de juste récupérer des données grace a notre api (axios.get), nous voulons ENVOYER des donnes vers notre api, j'utilise donc axios.post(ENDPOINT, DonnesAEnvoyer)
-        // Pour etre plus précis, nous pouvons parler pour les données a envoyer de "corps de la requete"
+        // first use of axios.post, it is not enough for us to just recover data thanks to our API (axios.get), we want to SEND data to our api, so I am using axios.post(ENDPOINT, DonnesAEnvoyer)
+        // To be more precise, we can speak for the data to be sent of "body of the request"
         let response = await axios.post(
             userService.baseURI + '/token',
             {
@@ -27,18 +27,17 @@ const userService = {
     },
 
     isConnected: async function(){
-        // je viens récupérer les infos sur le user grace a l'entrée "userData" dans mon localstorage
+        // I come to retrieve the information on the user thanks to the entry "userData" in my localstorage
         const userData = storage.get('userData');
-        // je récupère un object ! Je peux donc acceder au "tirroir" token en faisant monObjet.token
-        // si userData n'est PAS EGAL a null (donc si il contient bien qqchose)
+        // I get an object! I can therefore access the token "drawer" by entering myObjet.token
+        // if userData is NOT EQUAL to null (so if it does contain something)
         if(userData != null){
             const token = userData.token;
             if(token){
-                //console.log(token);
-                // j'ai bien récupéré un token, je vais pouvoir faire la vérification ..
+                // I have recovered a token, I will be able to verify ..
                 
-                // Attention, il ne me suffit PAS d'envoyer des données comme nous avons pu le faire dans la methode login (ci-dessus), il va falloir que j'envoi ce token au back en passant pas les en-têtes (headers) de ma requete ! 
-                // Nous allons donc découvrir qu'il est possible de donner un 3eme argument a la methode post : 
+                // Attention, it is NOT enough for me to send data as we were able to do in the login method (above), I will have to send this token to the back without passing the headers of my request!
+                // We are therefore going to discover that it is possible to give a 3rd argument to the post method : 
                 // axios.post(Endpoint, DonnesRequete, Options)
                 const options = {
                     headers: {
@@ -56,7 +55,6 @@ const userService = {
                         }
                     );
 
-                // console.log(response.data);
                 return response.data;
                 
             }
@@ -85,19 +83,12 @@ const userService = {
                 .catch(function(){
                     return false;
                 })
-                //console.log(result);
+
             return result;
             
-    },
-
-    
+    },   
 
 };
 
 
-
-
-
 export default userService;
-
-

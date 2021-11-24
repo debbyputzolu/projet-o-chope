@@ -11,7 +11,6 @@
 
         </div>
 
-
             <ul
                 v-for="recipe in recipes"
                 :key="recipe.id"

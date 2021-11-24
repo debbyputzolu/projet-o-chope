@@ -1,11 +1,8 @@
 <template>
     <div class="home">
-        
-        
+   
         <CarouselHome/>
-       
-       
-        
+              
        <router-link
             :to="{
                 name: 'register',
