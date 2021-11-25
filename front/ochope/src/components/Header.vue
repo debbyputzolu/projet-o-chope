@@ -2,7 +2,11 @@
 <div>
 <nav  class="headerMobile">
     <label class="toggleLabel" for="toggle">☰</label>
-    <h2 class="headerMobileTitle">O'Chope</h2>
+    <router-link :to="{
+                    name: 'home',
+                }"
+            >
+    <h2 class="headerMobileTitle">O'Chope</h2></router-link>
       <input type="checkbox" id="toggle">
         <div class="main_pages">
           <div class="navHeaderItem"><router-link :to="{
@@ -33,8 +37,11 @@
     </div>
 </nav>
   <header class="header header--vertical">
-  <div class="headerTop">
-  <img class="logo" src="../assets/logo.png">
+  <div class="headerTop"> <router-link :to="{
+                    name: 'home',
+                }"
+            >
+  <img class="logo" src="../assets/logo.png"></router-link>
   </div> 
   <nav class="navHeader">
     <div class="navHeaderItem"><router-link :to="{

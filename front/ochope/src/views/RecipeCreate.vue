@@ -81,7 +81,7 @@
             </div>
 
             <div>
-                <button class="recipeCreateButton">Enregistrer</button>
+                <button class="recipeCreateButton">Craft Beer!</button>
             </div>
 
         </form>
