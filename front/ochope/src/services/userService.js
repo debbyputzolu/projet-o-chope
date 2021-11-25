@@ -3,9 +3,9 @@ import storage from '../plugins/storage.js'
 
 const userService = {
 
-    baseURI:'http://3.228.147.122/back/wp-json/jwt-auth/v1',
+    baseURI:'http://localhost/projet/projet-o-chope/back/public/wp-json/jwt-auth/v1',
  
-    baseOchope: 'http://3.228.147.122/back/wp-json/ochope/v1',
+    baseOchope: 'http://localhost/projet/projet-o-chope/back/public/wp-json/ochope/v1',
 
     login: async function(login, password){
         // first use of axios.post, it is not enough for us to just recover data thanks to our API (axios.get), we want to SEND data to our api, so I am using axios.post(ENDPOINT, DonnesAEnvoyer)

@@ -8,8 +8,10 @@ import Register from '../views/Register.vue'
 import Profile from '../views/Profile.vue'
 import RecipeCreate from '../views/RecipeCreate.vue'
 import Logout from '../views/Logout.vue'
-import Error from '../views/Error.vue'
 import About from '../views/About.vue'
+import ModifyProfile from '../views/ModifyProfile.vue'
+import Error from '../views/Error.vue'
+
 
 Vue.use(VueRouter)
 
@@ -62,6 +64,13 @@ const routes = [
       component: About // component to call
     },
 
+    {
+      path: '/modify-profile', // URL configuration to match
+      name: 'modify-profile', // road name
+      component: ModifyProfile // component to call
+    },
+
+    //! WARNING : do not declare routes after the error route, risk of problems
     {
       path: '/:catchAll(.*)', // URL configuration to match
       name: 'not-found', // road name

@@ -16,7 +16,10 @@
           <h3 class="subtitleProfile">Informations</h3>
           <div class="infoProfileItem">Mon pseudo : {{user.user_display_name}} </div>
           <div class="infoProfileItem">Mon email : {{user.user_email}} </div>
-          <button class="buttonProfile">Modifier le profil</button>
+          <button class="buttonProfile"><router-link :to="{
+                    name: 'modify-profile',
+                }"
+            >Modifier le profil</router-link></button>
       </div>
       <div class="recipeProfile">
           <h3 class="subtitleProfile">Mes recettes</h3>
@@ -30,7 +33,7 @@
 
 <script>
 import RecipeCard from '../components/RecipeCard.vue'
-import userService from  "../services/userService.js";
+import userService from  '../services/userService.js';
 import recipeService from '../services/recipeService.js';
 
 export default {
